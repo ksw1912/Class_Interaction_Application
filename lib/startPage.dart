@@ -84,7 +84,7 @@ class PageSlideExampleState extends State<PageSlideExample> {
                             builder: (context) => const LoginPage()),
                       );
                     },
-                    child: Text("교수님으로 시작"),
+                    child: Text("교수님으로 시작 "),
                   ),
                 ),
                 Align(
