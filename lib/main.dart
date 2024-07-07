@@ -12,6 +12,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ClassService()),
+        ChangeNotifierProvider(create: (_) => ClassOpinion()),
       ],
       child: const MaterialApp(home: PageSlideExample()),
     ),

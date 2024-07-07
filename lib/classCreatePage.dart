@@ -13,10 +13,11 @@ class _MyWidgetState extends State<ClassCreatePage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ClassService>(builder: (context, classService, child) {
-      // memoService로 부터 memoList 가져오기
+      // classService로 부터 classList 가져오기
       List<ClassData> classList = classService.classList;
 
       return Scaffold(
+        resizeToAvoidBottomInset: false, //키보드 오버플러우
         body: PageView(
           children: [
             Container(
@@ -55,11 +56,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ClassCreatePage()),
-                        );
+                        addDialog(context);
                       },
                       child: Text(
                           "수업 생성하기                                                       +"),
@@ -96,13 +93,151 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ClassCreatePage()),
+                                    builder: (context) =>
+                                        const ClassCreatePage(),
+                                  ),
                                 );
                               },
                               child: Text(
                                 classData.content,
                                 overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+}
+
+void addDialog(context) {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.white,
+    isScrollControlled: true,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20.0),
+        topRight: Radius.circular(20.0),
+      ),
+    ),
+    builder: (BuildContext context) {
+      return AddClassDialog();
+    },
+  );
+}
+
+class AddClassDialog extends StatefulWidget {
+  @override
+  _AddClassDialogState createState() => _AddClassDialogState();
+}
+
+class _AddClassDialogState extends State<AddClassDialog> {
+  @override
+  Widget build(BuildContext context) {
+    // classService로 부터 classList 가져오기
+    return Consumer<ClassOpinion>(builder: (context, classOpinion, child) {
+      List<ClassOpinionData> opinionList = classOpinion.opinionList;
+      return SizedBox(
+        height: MediaQuery.of(context).size.height * 0.7,
+        width: double.infinity,
+        child: PageView(
+          children: [
+            Container(
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment(-0.56, -0.85),
+                    child: Text('수업을 생성해주세요.', style: TextStyle(fontSize: 20)),
+                  ),
+                  Align(
+                    alignment: Alignment(-0.5, -0.2),
+                    child:
+                        Text('수업 의견을 생성해주세요.', style: TextStyle(fontSize: 17)),
+                  ),
+                  Align(
+                    alignment: Alignment(0, -0.325),
+                    child: Container(
+                      height: 3,
+                      width: 300,
+                      color: Colors.black,
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 90.0,
+                      left: 50,
+                      right: 50,
+                    ),
+                    child: Container(
+                      width: 300,
+                      height: 50,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          fillColor: Color.fromARGB(255, 214, 214, 214),
+                          filled: true,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          hintText: '수업명을 입력해주세요',
+                        ),
+                      ),
+                    ),
+                  ),
+                  // 플러스 아이콘 버튼
+                  Align(
+                      alignment: Alignment(0.7, -0.2),
+                      child: IconButton(
+                        icon: Icon(Icons.add_circle_outline),
+                        onPressed: () {
+                          classOpinion.createOpinion(content: '');
+                        },
+                      )),
+                  // 버튼 눌렀을때 의견 생성
+
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 220.0, left: 50), // ListView 위치 조정
+                    child: ListView.builder(
+                      itemCount: opinionList.length,
+                      itemBuilder: (content, index) {
+                        ClassOpinionData classOpinionData = opinionList[index];
+
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: .50),
+                          child: Container(
+                            alignment: Alignment.centerLeft, // 아이템 정렬
+                            child: Container(
+                              width: 300,
+                              height: 40,
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  fillColor: Color.fromARGB(255, 214, 214, 214),
+                                  filled: true,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  hintText: '의견을 적어주세요',
+                                ),
                               ),
                             ),
                           ),
