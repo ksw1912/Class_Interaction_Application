@@ -103,6 +103,9 @@ flutter:
     - family: NanumL
       fonts:
         - asset: assets/fonts/NanumSquareRoundOTFL.otf
+    - family: NanumR
+      fonts:
+        - asset: assets/fonts/NanumSquareRoundOTFR.otf
        
 
        
