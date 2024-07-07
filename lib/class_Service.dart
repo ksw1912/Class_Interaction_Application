@@ -32,6 +32,9 @@ class ClassService extends ChangeNotifier {
     ClassData(
         content: '데이라베이수 B반 \n최근 수업일 : 2024.03.06',
         date: '최근 수업일 : 2024.03.06'), // 더미(dummy) 데이터
+    ClassData(
+        content: '데이라베이수 B반 \n최근 수업일 : 2024.03.06',
+        date: '최근 수업일 : 2024.03.06'), // 더미(dummy) 데이터
   ];
 }
 
