@@ -10,6 +10,20 @@ class ClassCreatePage extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<ClassCreatePage> {
+  ScrollController? _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ClassService>(builder: (context, classService, child) {
@@ -84,6 +98,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
                       width: screenWidth * 0.8,
                       height: screenHeight * 0.4,
                       child: ListView.builder(
+                        controller: _scrollController, // ScrollController 추가
                         itemCount: classList.length,
                         itemBuilder: (context, index) {
                           ClassData classData = classList[index];
@@ -152,6 +167,20 @@ class AddClassDialog extends StatefulWidget {
 }
 
 class _AddClassDialogState extends State<AddClassDialog> {
+  ScrollController? _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ClassOpinion>(builder: (context, classOpinion, child) {
@@ -162,6 +191,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
 
       return SingleChildScrollView(
         scrollDirection: Axis.vertical,
+        controller: _scrollController, // ScrollController 추가
         child: Padding(
           padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -235,9 +265,14 @@ class _AddClassDialogState extends State<AddClassDialog> {
                           width: screenWidth * 0.8,
                           height: screenHeight * 0.2,
                           child: Scrollbar(
-                            isAlwaysShown: true,
+                            thumbVisibility: true,
+                            controller:
+                                _scrollController, // ScrollController 추가
                             child: ListView.builder(
                               scrollDirection: Axis.vertical,
+                              controller:
+                                  _scrollController, // ScrollController 추가
+
                               itemCount: opinionList.length,
                               itemBuilder: (context, index) {
                                 ClassOpinionData classOpinionData =

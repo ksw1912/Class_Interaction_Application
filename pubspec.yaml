@@ -70,7 +70,7 @@ flutter:
   - assets/images/icon_Google.png
   - assets/images/icon_Kakao.png
   - assets/images/profil1.png
-
+  
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
@@ -96,7 +96,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-  fonts:
+fonts:
     - family: NanumB
       fonts:
         - asset: assets/fonts/NanumSquareRoundOTFB.otf
@@ -106,8 +106,6 @@ flutter:
     - family: NanumR
       fonts:
         - asset: assets/fonts/NanumSquareRoundOTFR.otf
-     - family: NanumEB
+    - family: NanumEB
       fonts:
         - asset: assets/fonts/NanumSquareRoundOTFEB.otf
-
-       
