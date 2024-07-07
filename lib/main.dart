@@ -5,16 +5,15 @@ import 'package:spaghetti/startPage.dart';
 
 void main() {
   runApp(
-    const MaterialApp(home: PageSlideExample()),
-  );
-
-  runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ClassService()),
         ChangeNotifierProvider(create: (_) => ClassOpinion()),
       ],
-      child: const MaterialApp(home: PageSlideExample()),
+      child: MaterialApp(
+        home: PageSlideExample(),
+        theme: ThemeData(fontFamily: 'NanumB'),
+      ),
     ),
   );
 }
