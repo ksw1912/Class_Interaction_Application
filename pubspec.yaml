@@ -106,6 +106,8 @@ flutter:
     - family: NanumR
       fonts:
         - asset: assets/fonts/NanumSquareRoundOTFR.otf
-       
+     - family: NanumEB
+      fonts:
+        - asset: assets/fonts/NanumSquareRoundOTFEB.otf
 
        
