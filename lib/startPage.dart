@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'LoginPage.dart';
+import 'classEnterPage.dart';
 
 class PageSlideExample extends StatefulWidget {
   const PageSlideExample({super.key});
@@ -98,7 +99,13 @@ class PageSlideExampleState extends State<PageSlideExample> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ClassEnterPage()),
+                      );
+                    },
                     child: Text(" 학생으로 시작  "),
                   ),
                 ),

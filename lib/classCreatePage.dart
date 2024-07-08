@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'classDetailPage.dart';
 import 'class_Service.dart';
 
 class ClassCreatePage extends StatefulWidget {
@@ -92,7 +93,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
                         style: TextStyle(fontSize: screenWidth * 0.04)),
                   ),
                   Positioned(
-                    top: screenHeight * 0.375,
+                    top: screenHeight * 0.45,
                     left: screenWidth * 0.1,
                     child: Container(
                       width: screenWidth * 0.8,
@@ -119,8 +120,9 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ClassCreatePage(),
+                                    builder: (_) => classDetailPage(
+                                      index: index,
+                                    ),
                                   ),
                                 );
                               },
@@ -265,14 +267,11 @@ class _AddClassDialogState extends State<AddClassDialog> {
                           width: screenWidth * 0.8,
                           height: screenHeight * 0.2,
                           child: Scrollbar(
-                            thumbVisibility: true,
+                            thumbVisibility: false,
                             controller:
                                 _scrollController, // ScrollController 추가
                             child: ListView.builder(
                               scrollDirection: Axis.vertical,
-                              controller:
-                                  _scrollController, // ScrollController 추가
-
                               itemCount: opinionList.length,
                               itemBuilder: (context, index) {
                                 ClassOpinionData classOpinionData =
