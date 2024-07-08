@@ -28,11 +28,11 @@ class PageSlideExampleState extends State<PageSlideExample> {
             child: Stack(
               children: [
                 Align(
-                  alignment: Alignment(0, -0.7),
+                  alignment: Alignment(0.3, -0.1),
                   child: Image.asset('assets/images/1.png'),
                 ),
                 Align(
-                  alignment: Alignment(0, 0.2),
+                  alignment: Alignment(0, 0.6),
                   child: Text('자신의 의견을 반영하세요', style: TextStyle(fontSize: 20)),
                 )
               ],
@@ -43,11 +43,11 @@ class PageSlideExampleState extends State<PageSlideExample> {
             child: Stack(
               children: [
                 Align(
-                  alignment: Alignment(0, -0.7),
+                  alignment: Alignment(0, 0),
                   child: Image.asset('assets/images/2.png'),
                 ),
                 Align(
-                  alignment: Alignment(0, 0.2),
+                  alignment: Alignment(0, 0.6),
                   child:
                       Text('부끄러울 땐 온라인으로 말해요', style: TextStyle(fontSize: 20)),
                 )
@@ -59,11 +59,11 @@ class PageSlideExampleState extends State<PageSlideExample> {
             child: Stack(
               children: [
                 Align(
-                  alignment: Alignment(0, -0.7),
+                  alignment: Alignment(0, -0.3),
                   child: Image.asset('assets/images/3.png'),
                 ),
                 Align(
-                  alignment: Alignment(0, 0.2),
+                  alignment: Alignment(0, 0.3),
                   child: Text('교수님과 학생이 직접 소통할 수 있어요',
                       style: TextStyle(fontSize: 20)),
                 ),
