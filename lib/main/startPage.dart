@@ -35,7 +35,12 @@ class PageSlideExampleState extends State<PageSlideExample> {
                 Align(
                   alignment: Alignment(0, 0.6),
                   child: Text('자신의 의견을 반영하세요', style: TextStyle(fontSize: 20)),
-                )
+                ),
+                
+                Align(
+                  alignment: Alignment(0, 0.8),
+                  child: Image.asset('assets/images/Onboarding1.png',width: 100,fit: BoxFit.fill),
+                ), 
               ],
             ),
           ),
@@ -51,7 +56,11 @@ class PageSlideExampleState extends State<PageSlideExample> {
                   alignment: Alignment(0, 0.6),
                   child:
                       Text('부끄러울 땐 온라인으로 말해요', style: TextStyle(fontSize: 20)),
-                )
+                ),
+                Align(
+                  alignment: Alignment(0, 0.8),
+                  child: Image.asset('assets/images/Onboarding2.png',width: 100,fit: BoxFit.fill),
+                ), 
               ],
             ),
           ),
@@ -68,6 +77,10 @@ class PageSlideExampleState extends State<PageSlideExample> {
                   child: Text('교수님과 학생이 직접 소통할 수 있어요',
                       style: TextStyle(fontSize: 20)),
                 ),
+                Align(
+                  alignment: Alignment(0, 0.4),
+                  child: Image.asset('assets/images/Onboarding3.png',width: 100,fit: BoxFit.fill),
+                ), 
                 Align(
                   alignment: Alignment(-0.5, 0.6),
                   child: ElevatedButton(
