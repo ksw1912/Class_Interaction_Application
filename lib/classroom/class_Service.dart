@@ -27,19 +27,19 @@ class ClassOpinionData {
 class ClassService extends ChangeNotifier {
   List<ClassData> classList = [
     ClassData(
-        content: '데이터베이스 A반 \n최근 수업일 : 2024.03.05',
+        content: '데이터베이스 A반',
         date: '최근 수업일 : 2024.03.05'), // 더미(dummy) 데이터
     ClassData(
-        content: '데이라베이수 B반 \n최근 수업일 : 2024.03.06',
+        content: '데이라베이수 B반',
         date: '최근 수업일 : 2024.03.06'), // 더미(dummy) 데이터
     ClassData(
-        content: '데이라베이수 B반 \n최근 수업일 : 2024.03.06',
+        content: '데이라베이수 B반',
         date: '최근 수업일 : 2024.03.06'), // 더미(dummy) 데이터
     ClassData(
-        content: '데이라베이수 B반 \n최근 수업일 : 2024.03.06',
+        content: '데이라베이수 B반',
         date: '최근 수업일 : 2024.03.05'), // 더미(dummy) 데이터
     ClassData(
-        content: '데이라베이수 B반 \n최근 수업일 : 2024.03.06',
+        content: '데이라베이수 B반',
         date: '최근 수업일 : 2024.03.06'), // 더미(dummy) 데이터
   ];
 }

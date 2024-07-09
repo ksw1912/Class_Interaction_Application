@@ -29,7 +29,7 @@ class PageSlideExampleState extends State<PageSlideExample> {
               children: [
                 Align(
                   alignment: Alignment(0.3, -0.1),
-                  child: Image.asset('assets/images/1.png'),
+                  child: Image.asset('assets/images/1.png', height: 400,),
                 ),
                 
                 Align(
@@ -39,7 +39,7 @@ class PageSlideExampleState extends State<PageSlideExample> {
                 
                 Align(
                   alignment: Alignment(0, 0.8),
-                  child: Image.asset('assets/images/Onboarding1.png',width: 100,fit: BoxFit.fill),
+                  child: Image.asset('assets/images/Onboarding1.png',width: 80,fit: BoxFit.fill),
                 ), 
               ],
             ),
@@ -59,7 +59,7 @@ class PageSlideExampleState extends State<PageSlideExample> {
                 ),
                 Align(
                   alignment: Alignment(0, 0.8),
-                  child: Image.asset('assets/images/Onboarding2.png',width: 100,fit: BoxFit.fill),
+                  child: Image.asset('assets/images/Onboarding2.png',width: 80,fit: BoxFit.fill),
                 ), 
               ],
             ),
@@ -79,10 +79,10 @@ class PageSlideExampleState extends State<PageSlideExample> {
                 ),
                 Align(
                   alignment: Alignment(0, 0.4),
-                  child: Image.asset('assets/images/Onboarding3.png',width: 100,fit: BoxFit.fill),
+                  child: Image.asset('assets/images/Onboarding3.png',width: 80,fit: BoxFit.fill),
                 ), 
                 Align(
-                  alignment: Alignment(-0.5, 0.6),
+                  alignment: Alignment(-0.7, 0.6),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 5, 179, 214),
@@ -105,7 +105,7 @@ class PageSlideExampleState extends State<PageSlideExample> {
                   ),
                 ),
                 Align(
-                  alignment: Alignment(0.5, 0.6),
+                  alignment: Alignment(0.7, 0.6),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(192, 56, 255, 1),
