@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spaghetti/classroom/classCreatePage.dart';
+import 'package:spaghetti/login/AuthService.dart';
 
 class LoginPage extends StatelessWidget {
   final String role;
@@ -56,11 +57,7 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ClassCreatePage()),
-                      );
+                      loginModal(context);
                     },
                     child:
                         Text("                   카카오로 시작하기                   "),
@@ -109,6 +106,83 @@ class LoginPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  //로그인모달 메소드
+  Future<dynamic> loginModal(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        var email = "";
+        var password = "";
+        return AlertDialog(
+          title: Text("로그인"),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  decoration: InputDecoration(labelText: '아이디'),
+                  onChanged: (value) {
+                    email = value;
+                  },
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                TextField(
+                  decoration: InputDecoration(labelText: '비밀번호'),
+                  onChanged: (value) {
+                    password = value;
+                  },
+                  obscureText: true, // 비밀번호 입력
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('취소'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                // 로그인 요청
+                var response = await AuthService().login(email, password, role);
+                if (response.statusCode == 200) {
+                  print('로그인 성공');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ClassCreatePage()),
+                  );
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Text("아이디 또는 비밀번호가 잘못되었습니다."),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text("취소"),
+                          )
+                        ],
+                      );
+                    },
+                  );
+                }
+              },
+              child: Text('로그인'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
