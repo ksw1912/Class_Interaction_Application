@@ -31,15 +31,16 @@ class PageSlideExampleState extends State<PageSlideExample> {
                   alignment: Alignment(0.3, -0.1),
                   child: Image.asset('assets/images/1.png'),
                 ),
+                
                 Align(
                   alignment: Alignment(0, 0.6),
                   child: Text('자신의 의견을 반영하세요', style: TextStyle(fontSize: 20)),
                 ),
+                
                 Align(
                   alignment: Alignment(0, 0.8),
-                  child: Image.asset('assets/images/Onboarding1.png',
-                      width: 100, fit: BoxFit.fill),
-                ),
+                  child: Image.asset('assets/images/Onboarding1.png',width: 100,fit: BoxFit.fill),
+                ), 
               ],
             ),
           ),
@@ -58,103 +59,77 @@ class PageSlideExampleState extends State<PageSlideExample> {
                 ),
                 Align(
                   alignment: Alignment(0, 0.8),
-                  child: Image.asset('assets/images/Onboarding2.png',
-                      width: 100, fit: BoxFit.fill),
-                ),
+                  child: Image.asset('assets/images/Onboarding2.png',width: 100,fit: BoxFit.fill),
+                ), 
               ],
             ),
           ),
           // 페이지 컨트롤러의 세 번째 위젯, 인덱스 : 2
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 100,
-                  ),
-                  Image.asset(
-                    'assets/images/3.png', // 이미지 경로 설정
-                    height: 200,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    '교수님과 학생이 직접 소통할 수 있어요',
-                    style: TextStyle(
-                      fontSize: 18,
+          Container(
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment(0, -0.3),
+                  child: Image.asset('assets/images/3.png'),
+                ),
+                Align(
+                  alignment: Alignment(0, 0.3),
+                  child: Text('교수님과 학생이 직접 소통할 수 있어요',
+                      style: TextStyle(fontSize: 20)),
+                ),
+                Align(
+                  alignment: Alignment(0, 0.4),
+                  child: Image.asset('assets/images/Onboarding3.png',width: 100,fit: BoxFit.fill),
+                ), 
+                Align(
+                  alignment: Alignment(-0.5, 0.6),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 5, 179, 214),
+                      surfaceTintColor: Color.fromARGB(255, 5, 179, 214),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const LoginPage(role: "instructor"),
-                            ),
-                          );
-                        },
-                        child: Text('교수님으로 시작'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 5, 179, 214),
-                          surfaceTintColor: Color.fromARGB(255, 5, 179, 214),
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ), // 배경색 설정
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const LoginPage(role: "instructor"),
                         ),
+                      );
+                    },
+                    child: Text("교수님으로 시작 "),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment(0.5, 0.6),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(192, 56, 255, 1),
+                      surfaceTintColor: Color.fromARGB(192, 56, 255, 1),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const LoginPage(role: "student"),
-                            ),
-                          );
-                        },
-                        child: Text('학생으로 시작'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(192, 56, 255, 1),
-                          surfaceTintColor: Color.fromARGB(192, 56, 255, 1),
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const LoginPage(role: "student"),
                         ),
-                      ),
-                    ],
+                      );
+                    },
+                    child: Text(" 학생으로 시작  "),
                   ),
-                  SizedBox(
-                    height: 100,
-                  ),
-                  SizedBox(
-                    height: 100,
-                  ),
-                  Image.asset('assets/images/Onboarding3.png',
-                      width: 100, fit: BoxFit.fill),
-                ],
-              ),
+                ),
+              ],
             ),
-          )
+          ),
         ],
       ),
     );
