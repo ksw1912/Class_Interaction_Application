@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:spaghetti/class_Service.dart';
+import 'package:spaghetti/classroom/class_Service.dart';
 
 class classDetailPage extends StatelessWidget {
   classDetailPage({super.key, required this.index});

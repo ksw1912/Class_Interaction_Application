@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spaghetti/classCreatePage.dart';
+import 'package:spaghetti/classroom/classCreatePage.dart';
 
 class LoginPage extends StatelessWidget {
   final String role;
