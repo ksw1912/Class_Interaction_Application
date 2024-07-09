@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'LoginPage.dart';
-import 'classEnterPage.dart';
+import '../login/LoginPage.dart';
+import '../classEnterPage.dart';
 
 class PageSlideExample extends StatefulWidget {
   const PageSlideExample({super.key});

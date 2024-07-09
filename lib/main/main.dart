@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';  // kReleaseMode 사용을 위해 추가
 import 'package:spaghetti/class_Service.dart';
-import 'package:spaghetti/startPage.dart';
+import 'package:spaghetti/main/startPage.dart';
 
 void main() {
   runApp(
