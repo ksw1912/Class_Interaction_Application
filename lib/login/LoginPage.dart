@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spaghetti/classroom/classCreatePage.dart';
+import 'package:spaghetti/classroom/classEnterPage.dart';
 import 'package:spaghetti/login/AuthService.dart';
 
 class LoginPage extends StatelessWidget {
@@ -83,11 +84,19 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ClassCreatePage()),
-                      );
+                      if (role == "student") {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ClassEnterPage()),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ClassCreatePage()),
+                        );
+                      }
                     },
                     child: Text(
                         "                     구글로 시작하기                     "),
@@ -153,12 +162,19 @@ class LoginPage extends StatelessWidget {
                 // 로그인 요청
                 var response = await AuthService().login(email, password, role);
                 if (response.statusCode == 200) {
-                  print('로그인 성공');
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ClassCreatePage()),
-                  );
+                  if (role == "student") {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ClassEnterPage()),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ClassCreatePage()),
+                    );
+                  }
                 } else {
                   showDialog(
                     context: context,
