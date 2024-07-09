@@ -31,6 +31,7 @@ class PageSlideExampleState extends State<PageSlideExample> {
                   alignment: Alignment(0.3, -0.1),
                   child: Image.asset('assets/images/1.png'),
                 ),
+                
                 Align(
                   alignment: Alignment(0, 0.6),
                   child: Text('자신의 의견을 반영하세요', style: TextStyle(fontSize: 20)),
@@ -82,7 +83,9 @@ class PageSlideExampleState extends State<PageSlideExample> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const LoginPage()),
+                          builder: (context) =>
+                              const LoginPage(role: "instructor"),
+                        ),
                       );
                     },
                     child: Text("교수님으로 시작 "),
@@ -103,7 +106,9 @@ class PageSlideExampleState extends State<PageSlideExample> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ClassEnterPage()),
+                          builder: (context) =>
+                              const LoginPage(role: "student"),
+                        ),
                       );
                     },
                     child: Text(" 학생으로 시작  "),

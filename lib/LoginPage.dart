@@ -2,12 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:spaghetti/classCreatePage.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  final String role;
+
+  const LoginPage({Key? key, required this.role}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String name;
+
+    if (role == "student") {
+      name = "학생님";
+    } else {
+      name = "교수님";
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_rounded),
+        ),
+      ),
       body: PageView(
         children: [
           Container(
@@ -23,7 +42,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 Align(
                   alignment: Alignment(-0.78, -0.51),
-                  child: Text('교수님, 반가워요!', style: TextStyle(fontSize: 10)),
+                  child: Text('$name, 반가워요!', style: TextStyle(fontSize: 10)),
                 ),
                 Align(
                   alignment: Alignment(0, 0.4),
@@ -36,7 +55,13 @@ class LoginPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ClassCreatePage()),
+                      );
+                    },
                     child:
                         Text("                   카카오로 시작하기                   "),
                   ),
