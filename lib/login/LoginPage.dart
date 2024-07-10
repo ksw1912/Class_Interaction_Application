@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:spaghetti/classroom/classCreatePage.dart';
-import 'package:spaghetti/classroom/classEnterPage.dart';
+import 'package:spaghetti/classroom/instructor/classCreatePage.dart';
+import 'package:spaghetti/classroom/student/classEnterPage.dart';
 import 'package:spaghetti/login/AuthService.dart';
 
 class LoginPage extends StatelessWidget {
