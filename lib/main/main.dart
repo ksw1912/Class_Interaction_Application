@@ -20,7 +20,6 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ClassService()),
-        ChangeNotifierProvider(create: (_) => ClassOpinion()),
       ],
       child: MaterialApp(
         builder: DevicePreview.appBuilder, // DevicePreview.appBuilder 사용

@@ -64,21 +64,3 @@ class ClassService extends ChangeNotifier {
     notifyListeners();
   }
 }
-
-class ClassOpinion extends ChangeNotifier {
-  List<ClassOpinionData> opinionList = [
-    ClassOpinionData(content: ''),
-  ];
-
-  createOpinion({required String content}) {
-    ClassOpinionData opinion = ClassOpinionData(content: content);
-    opinionList.add(opinion);
-    notifyListeners();
-  }
-
-  updateOpinion({required int index, required String content}) {
-    ClassOpinionData opinion = opinionList[index];
-    opinion.content = content;
-    notifyListeners();
-  }
-}

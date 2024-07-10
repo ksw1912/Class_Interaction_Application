@@ -261,8 +261,8 @@ class _AddClassDialogState extends State<AddClassDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ClassOpinion>(builder: (context, classOpinion, child) {
-      List<ClassOpinionData> opinionList = classOpinion.opinionList;
+    return Consumer<ClassService>(builder: (context, classService, child) {
+      List<ClassOpinionData> opinionList = classService.opinionList;
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
@@ -337,7 +337,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                         child: IconButton(
                           icon: Icon(Icons.add_circle_outline),
                           onPressed: () {
-                            classOpinion.createOpinion(content: '');
+                            classService.createOpinion(content: '');
                           },
                         ),
                       ),
@@ -368,7 +368,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                                     height: screenHeight * 0.07,
                                     child: TextField(
                                       onChanged: (value) {
-                                        classOpinion.updateOpinion(
+                                        classService.updateOpinion(
                                             index: index, content: value);
                                       },
                                       decoration: InputDecoration(
