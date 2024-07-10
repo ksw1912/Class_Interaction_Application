@@ -352,6 +352,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                               itemBuilder: (context, index) {
                                 ClassOpinionData classOpinionData =
                                     opinionList[index];
+
                                 return Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 4.0),
@@ -360,6 +361,10 @@ class _AddClassDialogState extends State<AddClassDialog> {
                                     width: screenWidth * 0.8,
                                     height: screenHeight * 0.07,
                                     child: TextField(
+                                      onChanged: (value) {
+                                        classOpinion.updateOpinion(
+                                            index: index, content: value);
+                                      },
                                       decoration: InputDecoration(
                                         fillColor:
                                             Color.fromARGB(255, 214, 214, 214),
