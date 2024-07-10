@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import '../classDetailPage.dart';
 import '../class_Service.dart';
 
@@ -265,7 +266,9 @@ class _AddClassDialogState extends State<AddClassDialog> {
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
-
+      var className = "";
+      List<String>? ops;
+      ClassroomService classroomService = new ClassroomService();
       return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         controller: _scrollController, // ScrollController 추가
@@ -322,6 +325,9 @@ class _AddClassDialogState extends State<AddClassDialog> {
                               ),
                               hintText: '수업명을 입력해주세요',
                             ),
+                            onChanged: (value) {
+                              className = value;
+                            },
                           ),
                         ),
                       ),
@@ -403,8 +409,14 @@ class _AddClassDialogState extends State<AddClassDialog> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                             ),
-                            onPressed: () {
-                              addDialog(context);
+                            onPressed: () async {
+                              var response = await classroomService
+                                  .classroomCreate(className, ops ?? []);
+                              if (response.statusCode == 200) {
+                                //여기서 classroom정보를 처리
+                              } else {
+                                print("수업방생성이안되는건 다른예외적인문제");
+                              }
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

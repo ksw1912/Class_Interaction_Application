@@ -28,7 +28,7 @@ class AuthService {
       if (response.statusCode == 200) {
         // response.body를 JSON으로 파싱하여 토큰 추출
         var token = response.headers['Authorization'];
-        
+
         print("token");
 
         // FlutterSecureStorage에 토큰 저장
@@ -46,5 +46,10 @@ class AuthService {
   Future<void> logout() async {
     // FlutterSecureStorage에서 토큰 삭제
     await storage.delete(key: 'jwt_token');
+  }
+
+  Future<String?> getToken() async {
+    // FlutterSecureStorage에서 토큰 불러오기
+    return await storage.read(key: 'Authorization');
   }
 }
