@@ -85,29 +85,32 @@ class _ClassDetailPageState extends State<classDetailPage> {
                   Positioned(
                     top: screenHeight * 0.375, // "이전 수업" 텍스트 아래 30px
                     left: screenWidth * 0.1,
-                    child: Container(
-                      width: screenWidth * 0.8,
-                      height: screenHeight * 0.95 -
-                          (screenHeight * 0.375 + 30), // 화면 높이의 90% - top 위치
+                    child: Scrollbar(
+                      thumbVisibility: true,
+                      child: Container(
+                        width: screenWidth * 0.8,
+                        height: screenHeight * 0.4, // 화면 높이의 90% - top 위치
 
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero, // ListView의 패딩을 없앰
-                        itemCount: opinionList.length,
-                        itemBuilder: (context, index) {
-                          ClassOpinionData classOpinionData =
-                              opinionList[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: RadioListTile(
-                              title: Text(classOpinionData.content),
-                              value: index,
-                              groupValue: selectedRadio,
-                              onChanged: (int? value) {
-                                setState(() => selectedRadio = value);
-                              },
-                            ),
-                          );
-                        },
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero, // ListView의 패딩을 없앰
+                          itemCount: opinionList.length,
+                          itemBuilder: (context, index) {
+                            ClassOpinionData classOpinionData =
+                                opinionList[index];
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: RadioListTile(
+                                title: Text(classOpinionData.content),
+                                value: index,
+                                groupValue: selectedRadio,
+                                onChanged: (int? value) {
+                                  setState(() => selectedRadio = value);
+                                },
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -127,7 +130,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
                           ),
                         ),
                         onPressed: () {
-                          // addDialog(context);
+                          addDialog(context);
                         },
                         child: Text(
                           "퀴즈풀기",
@@ -143,6 +146,114 @@ class _ClassDetailPageState extends State<classDetailPage> {
               ),
             ),
           ],
+        ),
+      );
+    });
+  }
+}
+
+void addDialog(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.white,
+    isScrollControlled: true,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20.0),
+        topRight: Radius.circular(20.0),
+      ),
+    ),
+    builder: (BuildContext context) {
+      return AddClassDialog();
+    },
+  );
+}
+
+class AddClassDialog extends StatefulWidget {
+  @override
+  _AddClassDialogState createState() => _AddClassDialogState();
+}
+
+class _AddClassDialogState extends State<AddClassDialog> {
+  ScrollController? _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ClassService>(builder: (context, classService, child) {
+      List<ClassOpinionData> opinionList = classService.opinionList;
+      final mediaQuery = MediaQuery.of(context);
+      final screenHeight = mediaQuery.size.height;
+      final screenWidth = mediaQuery.size.width;
+      return SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        controller: _scrollController, // ScrollController 추가
+        child: Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: SizedBox(
+            height: screenHeight * 0.5,
+            width: double.infinity,
+            child: PageView(
+              children: [
+                Container(
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: screenWidth * 0.12,
+                        top: screenHeight * 0.05,
+                        child: Text('퀴즈를 풀어주세요.',
+                            style: TextStyle(fontSize: screenWidth * 0.05)),
+                      ),
+                      Positioned(
+                        left: screenWidth * 0.1,
+                        top: screenHeight * 0.1,
+                        child: Container(
+                          height: 3,
+                          width: screenWidth * 0.8,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Positioned(
+                        left: screenWidth * 0.1,
+                        top: screenHeight * 0.4,
+                        child: Container(
+                          width: screenWidth * 0.8, // 화면 너비의 80%
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(192, 5, 165, 0),
+                              surfaceTintColor: Color.fromARGB(192, 5, 165, 0),
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            onPressed: () async {},
+                            child: Text(
+                              "답안 제출",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       );
     });
