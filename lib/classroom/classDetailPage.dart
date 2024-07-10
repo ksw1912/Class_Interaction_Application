@@ -83,7 +83,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
                             fontSize: screenWidth * 0.04, color: Colors.grey)),
                   ),
                   Positioned(
-                    top: screenHeight * 0.375, // "이전 수업" 텍스트 아래 30px
+                    top: screenHeight * 0.355, // "이전 수업" 텍스트 아래 30px
                     left: screenWidth * 0.1,
                     child: Scrollbar(
                       thumbVisibility: true,
@@ -100,13 +100,35 @@ class _ClassDetailPageState extends State<classDetailPage> {
                             return Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 8.0),
-                              child: RadioListTile(
-                                title: Text(classOpinionData.content),
-                                value: index,
-                                groupValue: selectedRadio,
-                                onChanged: (int? value) {
-                                  setState(() => selectedRadio = value);
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() => selectedRadio = index);
                                 },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.grey), // 테두리 선 추가
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0),
+                                        child: Text(classOpinionData.content),
+                                      ),
+                                      Radio<int>(
+                                        value: index,
+                                        groupValue: selectedRadio,
+                                        onChanged: (int? value) {
+                                          setState(() => selectedRadio = value);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             );
                           },
@@ -114,6 +136,8 @@ class _ClassDetailPageState extends State<classDetailPage> {
                       ),
                     ),
                   ),
+
+
                   Positioned(
                     left: screenWidth * 0.1,
                     top: screenHeight * 0.85,

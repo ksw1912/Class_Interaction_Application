@@ -71,7 +71,7 @@ class PageSlideExampleState extends State<PageSlideExample> {
           Expanded(
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -81,6 +81,8 @@ class PageSlideExampleState extends State<PageSlideExample> {
                     Image.asset(
                       'assets/images/3.png', // 이미지 경로 설정
                       height: 200,
+                      width: MediaQuery.of(context).size.width, // 화면 너비에 맞게 설정
+                      fit: BoxFit.cover,
                     ),
                     SizedBox(
                       height: 20,

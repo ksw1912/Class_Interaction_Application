@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
-import '../classDetailPage.dart';
+import 'classRoomPage.dart';
 import '../class_Service.dart';
 
 class ClassCreatePage extends StatefulWidget {
@@ -146,7 +146,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) => classDetailPage(
+                                    builder: (_) => classRoomPage(
                                       index: index,
                                     ),
                                   ),

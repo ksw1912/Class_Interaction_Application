@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spaghetti/classroom/classDetailPage.dart';
+import 'package:spaghetti/classroom/qr_scan_page.dart';
 import '../class_Service.dart';
 
 class ClassEnterPage extends StatefulWidget {
@@ -12,7 +13,7 @@ class ClassEnterPage extends StatefulWidget {
 
 class _ClassEnterPageState extends State<ClassEnterPage> {
   ScrollController? _scrollController;
-  String _output = 'Empty Scan Code';
+  String output = 'Empty Scan Code';
 
   @override
   void initState() {
@@ -83,7 +84,19 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => QRScanPage()),
+                          );
+                          if (result != null) {
+                            setState(() {
+                              output = result;
+                            });
+                            print('QR 코드 데이터: $result');
+                          }
+                        },
                         child: Text("QR코드로 입장하기",
                             style: TextStyle(fontSize: screenWidth * 0.04)),
                       ),
@@ -124,7 +137,6 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                         width: screenWidth * 0.8,
                         height: screenHeight * 0.95 -
                             (screenHeight * 0.45 + 30), // 화면 높이의 90% - top 위치
-
                         child: ListView.builder(
                           controller: _scrollController, // ScrollController 추가
                           padding: EdgeInsets.zero, // ListView의 패딩을 없앰
