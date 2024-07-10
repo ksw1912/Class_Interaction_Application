@@ -27,11 +27,12 @@ class AuthService {
 
       if (response.statusCode == 200) {
         // response.body를 JSON으로 파싱하여 토큰 추출
-        var responseBody = jsonDecode(response.body);
-        var token = responseBody['token'];
-        print("$email , $password");
+        var token = response.headers['Authorization'];
+        
+        print("token");
+
         // FlutterSecureStorage에 토큰 저장
-        await storage.write(key: 'jwt_token', value: token);
+        await storage.write(key: 'Authorization', value: token);
       } else {
         print(response.statusCode);
       }

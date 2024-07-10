@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../main/main.dart';
 
-
 class ClassData {
   // 기존 수업 데이터
   ClassData({
@@ -46,7 +45,7 @@ class ClassService extends ChangeNotifier {
 
 class ClassOpinion extends ChangeNotifier {
   List<ClassOpinionData> opinionList = [
-    ClassOpinionData(content: '데이터베이스 A반 \n최근 수업일 : 2024.03.05'),
+    ClassOpinionData(content: '좆같아요'),
   ];
 
   createOpinion({required String content}) {
