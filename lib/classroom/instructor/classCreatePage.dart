@@ -410,13 +410,12 @@ class _AddClassDialogState extends State<AddClassDialog> {
                               ),
                             ),
                             onPressed: () async {
-                              var response = await classroomService
-                                  .classroomCreate(className, ops ?? []);
-                              if (response.statusCode == 200) {
-                                //여기서 classroom정보를 처리
-                              } else {
-                                print("수업방생성이안되는건 다른예외적인문제");
-                              }
+                              var classroom =
+                                  await classroomService.classroomCreate(
+                                      context,
+                                      className,
+                                      ops ?? []); //??:의견 추가안했을 때는 빈 배열
+                              // 이전 수업에다가 배열 값 을 추가
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

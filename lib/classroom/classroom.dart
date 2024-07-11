@@ -24,5 +24,5 @@ class Classroom {
         className = json['className'],
         id = json['id'],
         instructorName = json['instructorName'],
-        date = json['date'];
+        date = DateTime.parse(json['date']);
 }

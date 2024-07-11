@@ -26,7 +26,6 @@ class ClassOpinionData {
   String content;
 }
 
-// Memo 데이터는 모두 여기서 관리
 class ClassService extends ChangeNotifier {
   List<ClassData> classList = [
     ClassData(
