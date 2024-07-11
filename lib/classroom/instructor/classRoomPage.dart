@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:spaghetti/classroom/class_Service.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/services.dart';
+import 'package:fl_chart/fl_chart.dart';
+
 import 'classCreatePage.dart';
 
 class classRoomPage extends StatefulWidget {
@@ -133,8 +135,7 @@ class _ClassRoomPageState extends State<classRoomPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => ClassCreatePage(
-                              ),
+                              builder: (_) => ClassCreatePage(),
                             ),
                           );
                         },
@@ -252,6 +253,15 @@ class _ClassRoomPageState extends State<classRoomPage> {
                       },
                     ),
                   ),
+
+                  Positioned(
+                    left: screenWidth * 0.1,
+                    top: screenHeight * 0.3,
+                    child: Container(
+                        width: screenWidth * 0.8,
+                        height: screenHeight * 0.3,
+                        child: _BarChart()),
+                  ),
                 ],
               ),
             ),
@@ -340,7 +350,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                         left: screenWidth * 0.1,
                         top: screenHeight * 0.4,
                         child: Container(
-                          width: screenWidth * 0.8, // 화면 너비의 80%
+                          width: screenWidth * 0.2, // 화면 너비의 80%
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color.fromARGB(192, 5, 165, 0),
@@ -426,4 +436,195 @@ void showQRCodeModal(BuildContext context, String classNumber) {
     },
     backgroundColor: Colors.transparent,
   );
+}
+
+/////////////////////////////////////////////////////// 차트 생성
+class _BarChart extends StatelessWidget {
+  const _BarChart();
+
+  @override
+  Widget build(BuildContext context) {
+    return BarChart(
+      BarChartData(
+        barTouchData: barTouchData,
+        titlesData: titlesData,
+        borderData: borderData,
+        barGroups: barGroups,
+        gridData: const FlGridData(show: false),
+        alignment: BarChartAlignment.spaceAround,
+        maxY: 20,
+      ),
+    );
+  }
+
+  BarTouchData get barTouchData => BarTouchData(
+        enabled: false,
+        touchTooltipData: BarTouchTooltipData(
+          getTooltipColor: (group) => Colors.transparent,
+          tooltipPadding: EdgeInsets.zero,
+          tooltipMargin: 8,
+          getTooltipItem: (
+            BarChartGroupData group,
+            int groupIndex,
+            BarChartRodData rod,
+            int rodIndex,
+          ) {
+            return BarTooltipItem(
+              rod.toY.round().toString(),
+              const TextStyle(
+                color: Color.fromARGB(255, 4, 238, 255),
+                fontWeight: FontWeight.bold,
+              ),
+            );
+          },
+        ),
+      );
+
+  Widget getTitles(double value, TitleMeta meta) {
+    final style = TextStyle(
+      color: Color.fromARGB(255, 4, 238, 255),
+      fontWeight: FontWeight.bold,
+      fontSize: 14,
+    );
+    String text;
+    switch (value.toInt()) {
+      case 0:
+        text = 'Mn';
+        break;
+      case 1:
+        text = 'Te';
+        break;
+      case 2:
+        text = 'Wd';
+        break;
+      case 3:
+        text = 'Tu';
+        break;
+      case 4:
+        text = 'Fr';
+        break;
+      case 5:
+        text = 'St';
+        break;
+      case 6:
+        text = 'Sn';
+        break;
+      default:
+        text = '';
+        break;
+    }
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      space: 4,
+      child: Text(text, style: style),
+    );
+  }
+
+  FlTitlesData get titlesData => FlTitlesData(
+        show: true,
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 30,
+            getTitlesWidget: getTitles,
+          ),
+        ),
+        leftTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        topTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        rightTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+      );
+
+  FlBorderData get borderData => FlBorderData(
+        show: false,
+      );
+
+  LinearGradient get _barsGradient => LinearGradient(
+        colors: [
+          Color.fromARGB(255, 0, 102, 255),
+          Color.fromARGB(255, 4, 238, 255),
+          // AppColors.contentColorBlue.darken(20),
+          //AppColors.contentColorCyan,
+        ],
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter,
+      );
+
+  List<BarChartGroupData> get barGroups => [
+        BarChartGroupData(
+          x: 0,
+          barRods: [
+            BarChartRodData(
+              toY: 8,
+              gradient: _barsGradient,
+            )
+          ],
+          showingTooltipIndicators: [0],
+        ),
+        BarChartGroupData(
+          x: 1,
+          barRods: [
+            BarChartRodData(
+              toY: 10,
+              gradient: _barsGradient,
+            )
+          ],
+          showingTooltipIndicators: [0],
+        ),
+        BarChartGroupData(
+          x: 2,
+          barRods: [
+            BarChartRodData(
+              toY: 14,
+              gradient: _barsGradient,
+            )
+          ],
+          showingTooltipIndicators: [0],
+        ),
+        BarChartGroupData(
+          x: 3,
+          barRods: [
+            BarChartRodData(
+              toY: 15,
+              gradient: _barsGradient,
+            )
+          ],
+          showingTooltipIndicators: [0],
+        ),
+        BarChartGroupData(
+          x: 4,
+          barRods: [
+            BarChartRodData(
+              toY: 13,
+              gradient: _barsGradient,
+            )
+          ],
+          showingTooltipIndicators: [0],
+        ),
+        BarChartGroupData(
+          x: 5,
+          barRods: [
+            BarChartRodData(
+              toY: 10,
+              gradient: _barsGradient,
+            )
+          ],
+          showingTooltipIndicators: [0],
+        ),
+        BarChartGroupData(
+          x: 6,
+          barRods: [
+            BarChartRodData(
+              toY: 16,
+              gradient: _barsGradient,
+            )
+          ],
+          showingTooltipIndicators: [0],
+        ),
+      ];
 }
