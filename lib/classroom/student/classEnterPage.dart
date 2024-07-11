@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spaghetti/classroom/classDetailPage.dart';
-import 'package:spaghetti/classroom/qr_scan_page.dart';
+import 'package:spaghetti/classroom/student/qr_scan_page.dart';
 import '../class_Service.dart';
 
 class ClassEnterPage extends StatefulWidget {
