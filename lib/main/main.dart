@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         builder: DevicePreview.appBuilder, // DevicePreview.appBuilder 사용
         useInheritedMediaQuery: true, // MediaQuery 정보를 상속 받음
         locale: DevicePreview.locale(context), // DevicePreview 로케일 사용
-        home: PageSlideExample(),
+        home: StartPage(),
         theme: ThemeData(fontFamily: 'NanumB'),
       ),
     );

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:spaghetti/classroom/classDetailPage.dart';
 import 'package:spaghetti/classroom/student/qr_scan_page.dart';
 import '../class_Service.dart';
+import '../../login/LoginPage.dart';
 
 class ClassEnterPage extends StatefulWidget {
   const ClassEnterPage({super.key});
@@ -14,6 +15,7 @@ class ClassEnterPage extends StatefulWidget {
 class _ClassEnterPageState extends State<ClassEnterPage> {
   ScrollController? _scrollController;
   String output = 'Empty Scan Code';
+  final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
@@ -24,6 +26,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
   @override
   void dispose() {
     _scrollController?.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -117,12 +120,136 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              ),
+                            ),
+                            builder: (BuildContext context) {
+                              return StatefulBuilder(
+                                builder: (BuildContext context,
+                                    StateSetter setState) {
+                                  return Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: MediaQuery.of(context)
+                                          .viewInsets
+                                          .bottom,
+                                    ),
+                                    child: Container(
+                                      margin: const EdgeInsets.only(top: 40),
+                                      decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20),
+                                        ),
+                                      ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                              height: 30), // 모달 상단에서 30px 아래
+                                          Text(
+                                            "수업 참여코드",
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(height: 20),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children:
+                                                  List.generate(6, (index) {
+                                                return Container(
+                                                  width: 40,
+                                                  height: 40,
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.black),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      _controller.text.length >
+                                                              index
+                                                          ? _controller
+                                                              .text[index]
+                                                          : '',
+                                                      style: TextStyle(
+                                                          fontSize: 24),
+                                                    ),
+                                                  ),
+                                                );
+                                              }),
+                                            ),
+                                          ),
+                                          SizedBox(height: 10),
+                                          TextField(
+                                            controller: _controller,
+                                            maxLength: 6,
+                                            keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(
+                                              counterText: '',
+                                              border: InputBorder.none,
+                                            ),
+                                            style: TextStyle(
+                                                color: Colors.transparent),
+                                            cursorColor: Colors.transparent,
+                                            onChanged: (value) {
+                                              setState(() {}); // 입력 변경 시 상태 갱신
+                                            },
+                                            autofocus: true, // 자동으로 키보드 띄우기
+                                          ),
+                                          SizedBox(height: 10),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.blue,
+                                              foregroundColor: Colors.white,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.pop(
+                                                  context); // 기존 모달 닫기
+                                              // 입력된 코드로 수업 입장 기능 추가
+                                            },
+                                            child: Text("수업 입장하기"),
+                                          ),
+                                          SizedBox(
+                                              height: 30), // 모달 하단에서 30px 위
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            backgroundColor: Colors.transparent,
+                          );
+                        },
                         child: Text("번호로 입장하기",
                             style: TextStyle(fontSize: screenWidth * 0.04)),
                       ),
                     ),
                   ),
+
+
+
                   Positioned(
                     left: screenWidth * 0.1,
                     top: screenHeight * 0.45,
@@ -233,6 +360,91 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                           },
                         ),
                       ),
+                    ),
+                  ),
+                  Positioned(
+                    right: screenWidth * 0.1,
+                    top: screenHeight * 0.12,
+                    child: IconButton(
+                      icon: Image.asset(
+                        'assets/images/logout.png', // 이미지 경로 확인
+                        width: screenWidth * 0.08,
+                        height: screenWidth * 0.08,
+                      ),
+                      iconSize: screenWidth * 0.08,
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                              ),
+                              contentPadding: EdgeInsets.all(20),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    '로그아웃 하시겠습니까?',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 20),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pop(); // 모달 닫기
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.grey,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          child: Text('취소'),
+                                        ),
+                                      ),
+                                      SizedBox(width: 10), // 버튼 사이 간격
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            // 로그아웃 기능을 여기에 추가
+                                            Navigator.of(context)
+                                                .pop(); // 모달 닫기
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (_) =>
+                                                    LoginPage(role: "student"),
+                                              ),
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.red,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          child: Text('로그아웃'),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
                 ],

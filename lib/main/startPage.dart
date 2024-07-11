@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 import '../login/LoginPage.dart';
-import '../classroom/student/classEnterPage.dart';
 
-class PageSlideExample extends StatefulWidget {
-  const PageSlideExample({super.key});
+class StartPage extends StatefulWidget {
+  const StartPage({super.key});
 
   @override
-  PageSlideExampleState createState() => PageSlideExampleState();
+  StartPageState createState() => StartPageState();
 }
 
-class PageSlideExampleState extends State<PageSlideExample> {
-  // 페이지뷰 컨트롤러 설정
-  // initialPage : 0부터 차례대로 위젯들의 인덱스를 의미
+class StartPageState extends State<StartPage> {
   final PageController _pageController = PageController(initialPage: 0);
 
   @override
@@ -24,9 +19,9 @@ class PageSlideExampleState extends State<PageSlideExample> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: PageView(
-        controller: _pageController, // 페이지 컨트롤러 설정
+        controller: _pageController,
         children: [
-          // 페이지 컨트롤러의 첫 번째 위젯, 인덱스 : 0
+          // 첫 번째 페이지
           Container(
             child: Stack(
               children: [
@@ -54,7 +49,7 @@ class PageSlideExampleState extends State<PageSlideExample> {
               ],
             ),
           ),
-          // 페이지 컨트롤러의 두 번째 위젯, 인덱스 : 1
+          // 두 번째 페이지
           Container(
             child: Stack(
               children: [
@@ -82,7 +77,7 @@ class PageSlideExampleState extends State<PageSlideExample> {
               ],
             ),
           ),
-
+          // 세 번째 페이지
           Container(
             child: Stack(
               children: [
@@ -132,12 +127,11 @@ class PageSlideExampleState extends State<PageSlideExample> {
                     ),
                   ),
                 ),
-                // 페이지 컨트롤러의 세 번째 위젯, 인덱스 : 2
                 Positioned(
                   left: screenWidth * 0.525,
                   top: screenHeight * 0.85,
                   child: Container(
-                    width: screenWidth * 0.375, // 화면 너비의 80%
+                    width: screenWidth * 0.375,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(255, 5, 179, 214),

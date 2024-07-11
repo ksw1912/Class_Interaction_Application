@@ -83,6 +83,8 @@ flutter:
   - assets/images/Onboarding2.png
   - assets/images/Onboarding3.png
   - assets/images/share_icon.png
+  - assets/images/logout.png
+  - assets/images/exit.png
   
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

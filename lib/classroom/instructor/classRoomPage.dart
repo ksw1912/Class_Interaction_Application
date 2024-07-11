@@ -7,16 +7,16 @@ import 'package:fl_chart/fl_chart.dart';
 
 import 'classCreatePage.dart';
 
-class classRoomPage extends StatefulWidget {
+class ClassRoomPage extends StatefulWidget {
   final int index;
 
-  classRoomPage({super.key, required this.index});
+  ClassRoomPage({super.key, required this.index});
 
   @override
   _ClassRoomPageState createState() => _ClassRoomPageState();
 }
 
-class _ClassRoomPageState extends State<classRoomPage> {
+class _ClassRoomPageState extends State<ClassRoomPage> {
   int? selectedRadio = 0;
 
   @override
@@ -34,238 +34,228 @@ class _ClassRoomPageState extends State<classRoomPage> {
       String numberOfStudents = classData.numberStudents;
 
       return Scaffold(
-        resizeToAvoidBottomInset: false, // 키보드 오버플로우 방지
-        body: PageView(
-          children: [
-            Container(
-              child: Stack(
-                children: [
-                  Positioned(
-                    left: screenWidth * 0.1,
-                    top: screenHeight * 0.1,
-                    child: Text(className,
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.06,
-                          fontWeight: FontWeight.w900,
-                          fontFamily: 'NanumB',
-                        )),
-                  ),
-                  Positioned(
-                    left: screenWidth * 0.11,
-                    top: screenHeight * 0.15,
-                    child: Text('참여인원: ' + numberOfStudents + '명',
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.035,
-                          fontWeight: FontWeight.w100,
-                          fontFamily: 'NanumB',
-                        )),
-                  ),
-                  Positioned(
-                    left: screenWidth * 0.1,
-                    top: screenHeight * 0.87 - 60, // 수업 종료 버튼 위로 60px
-                    child: Container(
-                      width: screenWidth * 0.8, // 전체 너비 설정
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              height: 45,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(0xffFDDA60),
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
+        resizeToAvoidBottomInset: false,
+        body: SingleChildScrollView(
+          child: Container(
+            height: screenHeight,
+            child: Stack(
+              children: [
+                Positioned(
+                  left: screenWidth * 0.1,
+                  top: screenHeight * 0.1,
+                  child: Text(className,
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.06,
+                        fontWeight: FontWeight.w900,
+                        fontFamily: 'NanumB',
+                      )),
+                ),
+                Positioned(
+                  left: screenWidth * 0.11,
+                  top: screenHeight * 0.15,
+                  child: Text('참여인원: ' + numberOfStudents + '명',
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.035,
+                        fontWeight: FontWeight.w100,
+                        fontFamily: 'NanumB',
+                      )),
+                ),
+                Positioned(
+                  left: screenWidth * 0.1,
+                  top: screenHeight * 0.87 - 60,
+                  child: Container(
+                    width: screenWidth * 0.8,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: 45,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xffFDDA60),
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                                onPressed: () {},
-                                child: Text(
-                                  "의견 초기화",
-                                  style:
-                                      TextStyle(fontSize: screenWidth * 0.039),
-                                ),
+                              ),
+                              onPressed: () {},
+                              child: Text(
+                                "의견 초기화",
+                                style: TextStyle(fontSize: screenWidth * 0.039),
                               ),
                             ),
                           ),
-                          SizedBox(width: 30), // 버튼 사이의 간격
-                          Expanded(
-                            child: Container(
-                              height: 45,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(0xff28BD25),
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  addDialog(context);
-                                },
-                                child: Text(
-                                  "퀴즈 생성하기",
-                                  style:
-                                      TextStyle(fontSize: screenWidth * 0.039),
+                        ),
+                        SizedBox(width: 30),
+                        Expanded(
+                          child: Container(
+                            height: 45,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xff28BD25),
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  Positioned(
-                    left: screenWidth * 0.1,
-                    top: screenHeight * 0.87,
-                    child: Container(
-                      width: screenWidth * 0.8, // 화면 너비의 80%
-                      height: screenHeight * 0.06,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 228, 228, 228),
-                          surfaceTintColor: Color.fromARGB(255, 228, 228, 228),
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => ClassCreatePage(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          "수업 종료하기",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: screenWidth * 0.05,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  // 공유 버튼 추가
-                  Positioned(
-                    right: screenWidth * 0.1,
-                    top: screenHeight * 0.1,
-                    child: IconButton(
-                      icon: Image.asset(
-                        'assets/images/share_icon.png', // 이미지 경로
-                        width: screenWidth * 0.08,
-                        height: screenWidth * 0.08,
-                      ),
-                      iconSize: screenWidth * 0.08,
-                      onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Consumer<ClassService>(
-                              builder: (context, classService, child) {
-                                ClassData classData =
-                                    classService.classList[widget.index];
-                                String classNumber = classData.classnumber;
-
-                                return Container(
-                                  height: 300, // 모달 높이 크기
-                                  margin: const EdgeInsets.only(
-                                    left: 25,
-                                    right: 25,
-                                    bottom: 40,
-                                  ), // 모달 좌우하단 여백 크기
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white, // 모달 배경색
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(20), // 모달 전체 라운딩 처리
-                                    ),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "수업 참여코드",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(height: 20),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          for (int i = 0;
-                                              i < classNumber.length;
-                                              i++) ...[
-                                            Container(
-                                              width: 40,
-                                              height: 40,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.black),
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  classNumber[i],
-                                                  style:
-                                                      TextStyle(fontSize: 24),
-                                                ),
-                                              ),
-                                            ),
-                                            if (i < classNumber.length - 1)
-                                              SizedBox(
-                                                  width: i == 2
-                                                      ? 20
-                                                      : 5), // 3번째와 4번째 숫자 사이의 간격을 20px로 설정, 나머지는 5px로 설정
-                                          ],
-                                        ],
-                                      ),
-                                      SizedBox(height: 50),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.blue,
-                                          foregroundColor: Colors.white,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.pop(context); // 기존 모달 닫기
-                                          showQRCodeModal(context, classNumber);
-                                        },
-                                        child: Text("QR코드 생성"),
-                                      ),
-                                    ],
-                                  ), // 모달 내부 디자인 영역
-                                );
+                              onPressed: () {
+                                addDialog(context);
                               },
-                            );
-                          },
-                          backgroundColor:
-                              Colors.transparent, // 앱 <=> 모달의 여백 부분을 투명하게 처리
+                              child: Text(
+                                "퀴즈 생성하기",
+                                style: TextStyle(fontSize: screenWidth * 0.039),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: screenWidth * 0.1,
+                  top: screenHeight * 0.87,
+                  child: Container(
+                    width: screenWidth * 0.8,
+                    height: screenHeight * 0.06,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 228, 228, 228),
+                        surfaceTintColor: Color.fromARGB(255, 228, 228, 228),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ClassCreatePage(),
+                          ),
                         );
                       },
+                      child: Text(
+                        "수업 종료하기",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: screenWidth * 0.05,
+                        ),
+                      ),
                     ),
                   ),
+                ),
+                Positioned(
+                  right: screenWidth * 0.1,
+                  top: screenHeight * 0.1,
+                  child: IconButton(
+                    icon: Image.asset(
+                      'assets/images/share_icon.png',
+                      width: screenWidth * 0.08,
+                      height: screenWidth * 0.08,
+                    ),
+                    iconSize: screenWidth * 0.08,
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Consumer<ClassService>(
+                            builder: (context, classService, child) {
+                              ClassData classData =
+                                  classService.classList[widget.index];
+                              String classNumber = classData.classnumber;
 
-                  Positioned(
-                    left: screenWidth * 0.1,
-                    top: screenHeight * 0.3,
-                    child: Container(
-                        width: screenWidth * 0.8,
-                        height: screenHeight * 0.3,
-                        child: _BarChart()),
+                              return Container(
+                                height: 300,
+                                margin: const EdgeInsets.only(
+                                  left: 25,
+                                  right: 25,
+                                  bottom: 40,
+                                ),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(20),
+                                  ),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "수업 참여코드",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(height: 20),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        for (int i = 0;
+                                            i < classNumber.length;
+                                            i++) ...[
+                                          Container(
+                                            width: 40,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.black),
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                classNumber[i],
+                                                style: TextStyle(fontSize: 24),
+                                              ),
+                                            ),
+                                          ),
+                                          if (i < classNumber.length - 1)
+                                            SizedBox(width: i == 2 ? 20 : 5),
+                                        ],
+                                      ],
+                                    ),
+                                    SizedBox(height: 50),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.blue,
+                                        foregroundColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        showQRCodeModal(context, classNumber);
+                                      },
+                                      child: Text("QR코드 생성"),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        backgroundColor: Colors.transparent,
+                      );
+                    },
                   ),
-                ],
-              ),
+                ),
+                Positioned(
+                  left: screenWidth * 0.1,
+                  top: screenHeight * 0.33,
+                  child: Container(
+                    width: screenWidth * 0.8,
+                    height: screenHeight * 0.3,
+                    child: PieChartExample(),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       );
     });
@@ -318,7 +308,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
       final screenWidth = mediaQuery.size.width;
       return SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        controller: _scrollController, // ScrollController 추가
+        controller: _scrollController,
         child: Padding(
           padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -350,7 +340,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                         left: screenWidth * 0.1,
                         top: screenHeight * 0.4,
                         child: Container(
-                          width: screenWidth * 0.2, // 화면 너비의 80%
+                          width: screenWidth * 0.2,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color.fromARGB(192, 5, 165, 0),
@@ -380,7 +370,6 @@ class _AddClassDialogState extends State<AddClassDialog> {
   }
 }
 
-// QR코드를 보여주는 모달 창
 void showQRCodeModal(BuildContext context, String classNumber) {
   showModalBottomSheet(
     context: context,
@@ -390,27 +379,26 @@ void showQRCodeModal(BuildContext context, String classNumber) {
           left: 25,
           right: 25,
           bottom: 40,
-        ), // 기존 모달 창과 동일한 여백
+        ),
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(
-            Radius.circular(20), // 모달 전체 라운딩 처리
+            Radius.circular(20),
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: 70.0, vertical: 10.0), // 가로 여백 추가
+          padding: const EdgeInsets.symmetric(horizontal: 70.0, vertical: 10.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 20), // 위쪽 간격 추가
+              SizedBox(height: 20),
               QrImageView(
                 data: classNumber,
                 version: QrVersions.auto,
                 size: 200.0,
               ),
-              SizedBox(height: 20), // 간격 추가
+              SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -421,14 +409,14 @@ void showQRCodeModal(BuildContext context, String classNumber) {
                 ),
                 onPressed: () {
                   Clipboard.setData(ClipboardData(text: classNumber));
-                  Navigator.pop(context); // 모달창 닫기
+                  Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('수업코드가 클립보드에 복사되었습니다.')),
                   );
                 },
                 child: Text("수업코드 복사"),
               ),
-              SizedBox(height: 20), // 아래쪽 간격 추가
+              SizedBox(height: 20),
             ],
           ),
         ),
@@ -438,193 +426,211 @@ void showQRCodeModal(BuildContext context, String classNumber) {
   );
 }
 
-/////////////////////////////////////////////////////// 차트 생성
-class _BarChart extends StatelessWidget {
-  const _BarChart();
+const Color contentColorBlue = Colors.blue;
+const Color contentColorYellow = Colors.yellow;
+const Color contentColorPurple = Colors.purple;
+const Color contentColorGreen = Colors.green;
+const Color mainTextColor1 = Colors.white;
+
+class PieChartExample extends StatefulWidget {
+  @override
+  PieChart2State createState() => PieChart2State();
+}
+
+class PieChart2State extends State<PieChartExample> {
+  int touchedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
-    return BarChart(
-      BarChartData(
-        barTouchData: barTouchData,
-        titlesData: titlesData,
-        borderData: borderData,
-        barGroups: barGroups,
-        gridData: const FlGridData(show: false),
-        alignment: BarChartAlignment.spaceAround,
-        maxY: 20,
-      ),
-    );
-  }
-
-  BarTouchData get barTouchData => BarTouchData(
-        enabled: false,
-        touchTooltipData: BarTouchTooltipData(
-          getTooltipColor: (group) => Colors.transparent,
-          tooltipPadding: EdgeInsets.zero,
-          tooltipMargin: 8,
-          getTooltipItem: (
-            BarChartGroupData group,
-            int groupIndex,
-            BarChartRodData rod,
-            int rodIndex,
-          ) {
-            return BarTooltipItem(
-              rod.toY.round().toString(),
-              const TextStyle(
-                color: Color.fromARGB(255, 4, 238, 255),
-                fontWeight: FontWeight.bold,
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: AspectRatio(
+            aspectRatio: 1.3,
+            child: PieChart(
+              PieChartData(
+                pieTouchData: PieTouchData(
+                  touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                    setState(() {
+                      if (!event.isInterestedForInteractions ||
+                          pieTouchResponse == null ||
+                          pieTouchResponse.touchedSection == null) {
+                        touchedIndex = -1;
+                        return;
+                      }
+                      touchedIndex =
+                          pieTouchResponse.touchedSection!.touchedSectionIndex;
+                    });
+                  },
+                ),
+                borderData: FlBorderData(show: false),
+                sectionsSpace: 0,
+                centerSpaceRadius: 70,
+                sections: showingSections(),
               ),
-            );
-          },
-        ),
-      );
-
-  Widget getTitles(double value, TitleMeta meta) {
-    final style = TextStyle(
-      color: Color.fromARGB(255, 4, 238, 255),
-      fontWeight: FontWeight.bold,
-      fontSize: 14,
-    );
-    String text;
-    switch (value.toInt()) {
-      case 0:
-        text = 'Mn';
-        break;
-      case 1:
-        text = 'Te';
-        break;
-      case 2:
-        text = 'Wd';
-        break;
-      case 3:
-        text = 'Tu';
-        break;
-      case 4:
-        text = 'Fr';
-        break;
-      case 5:
-        text = 'St';
-        break;
-      case 6:
-        text = 'Sn';
-        break;
-      default:
-        text = '';
-        break;
-    }
-    return SideTitleWidget(
-      axisSide: meta.axisSide,
-      space: 4,
-      child: Text(text, style: style),
-    );
-  }
-
-  FlTitlesData get titlesData => FlTitlesData(
-        show: true,
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 30,
-            getTitlesWidget: getTitles,
+            ),
           ),
         ),
-        leftTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
+        const SizedBox(
+          height: 140,
         ),
-        topTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
+        Container(
+          height: 240,
+          color: Colors.grey[200],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Indicator(
+                  color: contentColorBlue,
+                  text: 'First',
+                  isSquare: true,
+                ),
+                SizedBox(
+                  height: 12,
+                ),
+                Indicator(
+                  color: contentColorYellow,
+                  text: 'Second',
+                  isSquare: true,
+                ),
+                SizedBox(
+                  height: 12,
+                ),
+                Indicator(
+                  color: contentColorPurple,
+                  text: 'Third',
+                  isSquare: true,
+                ),
+                SizedBox(
+                  height: 12,
+                ),
+                Indicator(
+                  color: contentColorGreen,
+                  text: 'Fourth',
+                  isSquare: true,
+                ),
+                SizedBox(
+                  height: 18,
+                ),
+              ],
+            ),
+          ),
         ),
-        rightTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-      );
+      ],
+    );
+  }
 
-  FlBorderData get borderData => FlBorderData(
-        show: false,
-      );
+  List<PieChartSectionData> showingSections() {
+    return List.generate(4, (i) {
+      final isTouched = i == touchedIndex;
+      final fontSize = isTouched ? 25.0 : 16.0;
+      final radius = isTouched ? 60.0 : 50.0;
+      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+      switch (i) {
+        case 0:
+          return PieChartSectionData(
+            color: contentColorBlue,
+            value: 40,
+            title: '40%',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: mainTextColor1,
+              shadows: shadows,
+            ),
+          );
+        case 1:
+          return PieChartSectionData(
+            color: contentColorYellow,
+            value: 30,
+            title: '30%',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: mainTextColor1,
+              shadows: shadows,
+            ),
+          );
+        case 2:
+          return PieChartSectionData(
+            color: contentColorPurple,
+            value: 15,
+            title: '15%',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: mainTextColor1,
+              shadows: shadows,
+            ),
+          );
+        case 3:
+          return PieChartSectionData(
+            color: contentColorGreen,
+            value: 15,
+            title: '15%',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: mainTextColor1,
+              shadows: shadows,
+            ),
+          );
+        default:
+          throw Error();
+      }
+    });
+  }
+}
 
-  LinearGradient get _barsGradient => LinearGradient(
-        colors: [
-          Color.fromARGB(255, 0, 102, 255),
-          Color.fromARGB(255, 4, 238, 255),
-          // AppColors.contentColorBlue.darken(20),
-          //AppColors.contentColorCyan,
-        ],
-        begin: Alignment.bottomCenter,
-        end: Alignment.topCenter,
-      );
+class Indicator extends StatelessWidget {
+  final Color color;
+  final String text;
+  final bool isSquare;
+  final double size;
+  final Color textColor;
 
-  List<BarChartGroupData> get barGroups => [
-        BarChartGroupData(
-          x: 0,
-          barRods: [
-            BarChartRodData(
-              toY: 8,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
+  const Indicator({
+    Key? key,
+    required this.color,
+    required this.text,
+    required this.isSquare,
+    this.size = 16,
+    this.textColor = const Color(0xff505050),
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            shape: isSquare ? BoxShape.rectangle : BoxShape.circle,
+            color: color,
+          ),
         ),
-        BarChartGroupData(
-          x: 1,
-          barRods: [
-            BarChartRodData(
-              toY: 10,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
+        const SizedBox(
+          width: 4,
         ),
-        BarChartGroupData(
-          x: 2,
-          barRods: [
-            BarChartRodData(
-              toY: 14,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
+        Expanded(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 16,
+              color: textColor,
+            ),
+            textAlign: TextAlign.center,
+          ),
         ),
-        BarChartGroupData(
-          x: 3,
-          barRods: [
-            BarChartRodData(
-              toY: 15,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 4,
-          barRods: [
-            BarChartRodData(
-              toY: 13,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 5,
-          barRods: [
-            BarChartRodData(
-              toY: 10,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 6,
-          barRods: [
-            BarChartRodData(
-              toY: 16,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-      ];
+      ],
+    );
+  }
 }

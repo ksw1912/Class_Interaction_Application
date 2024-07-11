@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:spaghetti/classroom/instructor/classCreatePage.dart';
 import 'package:spaghetti/classroom/student/classEnterPage.dart';
 import 'package:spaghetti/login/AuthService.dart';
+import '../main/startPage.dart';
+
 
 class LoginPage extends StatelessWidget {
   final String role;
@@ -24,7 +26,12 @@ class LoginPage extends StatelessWidget {
         backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => StartPage(),
+              ),
+            );
           },
           icon: Icon(Icons.arrow_back_rounded),
         ),
