@@ -457,9 +457,15 @@ class PieChart2State extends State<PieChartExample> {
         return List.generate(opinionList.length, (i) {
           ClassOpinionData classOpinionData = opinionList[i];
           //터치했을때 이벤트
-          final isTouched = i == touchedIndex;
-          final fontSize = isTouched ? screenWidth * 0.07 : screenWidth * 0.04;
-          final radius = isTouched ? screenWidth * 0.15 : screenWidth * 0.12;
+          //  final isTouched = i == touchedIndex;
+          // final fontSize = isTouched ? screenWidth * 0.07 : screenWidth * 0.04;
+          //  final radius = isTouched ? screenWidth * 0.15 : screenWidth * 0.12;
+          //  const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+
+          int maxIndex = classService.maxCount(opinionList);
+          final isMaxValue = i == maxIndex;
+          final fontSize = isMaxValue ? screenWidth * 0.07 : screenWidth * 0.04;
+          final radius = isMaxValue ? screenWidth * 0.15 : screenWidth * 0.12;
           const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
 
           return PieChartSectionData(
