@@ -50,7 +50,7 @@ class LoginPage extends StatelessWidget {
                   child: Text('에코(Echo) 클래스룸', style: TextStyle(fontSize: 20)),
                 ),
                 Align(
-                  alignment: Alignment(-0.78, -0.51),
+                  alignment: Alignment(-0.75, -0.51),
                   child: Text('$name, 반가워요!', style: TextStyle(fontSize: 15,color: Color(0xff696868))),
                 ),
                 Align(
