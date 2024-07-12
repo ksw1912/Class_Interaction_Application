@@ -57,10 +57,10 @@ class ClassService extends ChangeNotifier {
         classnumber: '123452'), // 더미(dummy) 데이터
   ];
   List<ClassOpinionData> opinionList = [
-    ClassOpinionData(content: '1', count: 10),
-    ClassOpinionData(content: '2', count: 20),
-    ClassOpinionData(content: '3', count: 30),
-    ClassOpinionData(content: '4', count: 40),
+    ClassOpinionData(content: '20', count: 20),
+    ClassOpinionData(content: '30', count: 30),
+    ClassOpinionData(content: '10', count: 10),
+    ClassOpinionData(content: '40', count: 40),
   ];
 
   createOpinion({required String content, required int count}) {
@@ -73,5 +73,20 @@ class ClassService extends ChangeNotifier {
     ClassOpinionData opinion = opinionList[index];
     opinion.content = content;
     notifyListeners();
+  }
+
+  deleteOpinion({required int index}) {
+    opinionList.removeAt(index);
+    notifyListeners();
+  }
+
+  int maxCount(List<ClassOpinionData> opinion) {
+    int maxIndex = 0;
+    for (int i = 1; i < opinion.length; i++) {
+      if (opinion[i].count > opinion[maxIndex].count) {
+        maxIndex = i;
+      }
+    }
+    return maxIndex;
   }
 }
