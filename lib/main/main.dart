@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart'; // kReleaseMode 사용을 위해 추가
 import 'package:spaghetti/classroom/class_Service.dart';
+import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/main/startPage.dart';
 
 void main() {
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => ClassroomService()),
         ChangeNotifierProvider(create: (context) => ClassService()),
       ],
       child: MaterialApp(

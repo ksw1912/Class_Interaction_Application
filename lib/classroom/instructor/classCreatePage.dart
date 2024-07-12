@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
+import 'package:intl/intl.dart';
 import 'classRoomPage.dart';
 import '../class_Service.dart';
 import '../../login/LoginPage.dart';
@@ -30,7 +32,8 @@ class _MyWidgetState extends State<ClassCreatePage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ClassService>(builder: (context, classService, child) {
-      List<ClassData> classList = classService.classList;
+      // List<ClassData> classList = classService.classList;
+      List<Classroom> classList = ClassroomService().classroomList;
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
@@ -123,7 +126,9 @@ class _MyWidgetState extends State<ClassCreatePage> {
                         padding: EdgeInsets.zero, // ListView의 패딩을 없앰
                         itemCount: classList.length,
                         itemBuilder: (context, index) {
-                          ClassData classData = classList[index];
+                          Classroom classData = classList[index];
+                          String dateFormat = DateFormat('yyyy-MM-dd')
+                              .format(classData.date); // 날짜 변환
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: ElevatedButton(
@@ -163,7 +168,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          classData.content,
+                                          classData.className,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: 16.0, // 텍스트 크기 설정
@@ -177,7 +182,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                           height: 1,
                                         ), // content와 date 사이의 간격
                                         Text(
-                                          classData.date,
+                                          dateFormat,
                                           style: TextStyle(
                                             fontSize: 12.0, // 텍스트 크기 설정
                                             fontWeight:
@@ -510,12 +515,9 @@ class _AddClassDialogState extends State<AddClassDialog> {
                               ),
                             ),
                             onPressed: () async {
-                              var classroom =
-                                  await classroomService.classroomCreate(
-                                      context,
-                                      className,
-                                      ops ?? []); //??:의견 추가안했을 때는 빈 배열
-                              // 이전 수업에다가 배열 값 을 추가
+                              await classroomService.classroomCreate(context,
+                                  className, ops ?? []); //??:의견 추가안했을 때는 빈 배열
+                              Navigator.pop(context);
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

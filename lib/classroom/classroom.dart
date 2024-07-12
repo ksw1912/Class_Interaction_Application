@@ -14,7 +14,7 @@ class Classroom {
     required this.date,
   });
 
-  // JSON 직렬화
+
   Map<String, dynamic> toJson() => {
         'classId': classId,
         'className': className,
@@ -22,7 +22,7 @@ class Classroom {
         'date': DateFormat('yyyy-MM-dd').format(date), // 날짜를 yyyy-MM-dd 형식으로 변환
       };
 
-  // JSON 역직렬화
+
   Classroom.fromJson(Map<String, dynamic> json)
       : classId = json['classId'],
         className = json['className'],
