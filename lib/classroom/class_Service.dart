@@ -21,9 +21,11 @@ class ClassOpinionData {
   // 수업 생성시 옵션 데이터
   ClassOpinionData({
     required this.content,
+    required this.count,
   });
 
   String content;
+  int count;
 }
 
 class ClassService extends ChangeNotifier {
@@ -55,11 +57,14 @@ class ClassService extends ChangeNotifier {
         classnumber: '123452'), // 더미(dummy) 데이터
   ];
   List<ClassOpinionData> opinionList = [
-    ClassOpinionData(content: ''),
+    ClassOpinionData(content: '1', count: 10),
+    ClassOpinionData(content: '2', count: 20),
+    ClassOpinionData(content: '3', count: 30),
+    ClassOpinionData(content: '4', count: 40),
   ];
 
-  createOpinion({required String content}) {
-    ClassOpinionData opinion = ClassOpinionData(content: content);
+  createOpinion({required String content, required int count}) {
+    ClassOpinionData opinion = ClassOpinionData(content: content, count: count);
     opinionList.add(opinion);
     notifyListeners();
   }

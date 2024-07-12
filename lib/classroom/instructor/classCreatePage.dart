@@ -147,7 +147,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) => classRoomPage(
+                                    builder: (_) => ClassRoomPage(
                                       index: index,
                                     ),
                                   ),
@@ -274,7 +274,8 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (_) => LoginPage(role: "studen"),
+                                                builder: (_) =>
+                                                    LoginPage(role: "studen"),
                                               ),
                                             );
                                           },
@@ -436,7 +437,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                         child: IconButton(
                           icon: Icon(Icons.add_circle_outline),
                           onPressed: () {
-                            classService.createOpinion(content: '');
+                            classService.createOpinion(content: '', count: 0);
                           },
                         ),
                       ),

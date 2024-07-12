@@ -246,10 +246,10 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                 ),
                 Positioned(
                   left: screenWidth * 0.1,
-                  top: screenHeight * 0.33,
+                  top: screenHeight * 0.2,
                   child: Container(
                     width: screenWidth * 0.8,
-                    height: screenHeight * 0.3,
+                    height: screenHeight * 0.7,
                     child: PieChartExample(),
                   ),
                 ),
@@ -426,12 +426,16 @@ void showQRCodeModal(BuildContext context, String classNumber) {
   );
 }
 
-const Color contentColorBlue = Colors.blue;
-const Color contentColorYellow = Colors.yellow;
-const Color contentColorPurple = Colors.purple;
-const Color contentColorGreen = Colors.green;
-const Color mainTextColor1 = Colors.white;
+final List<Color> contentColors = [
+  // 차트 컬러 리스트
+  Colors.blue,
+  Colors.yellow,
+  Colors.purple,
+  Colors.green,
+  Colors.white // mainTextcolor
+];
 
+// 차트
 class PieChartExample extends StatefulWidget {
   @override
   PieChart2State createState() => PieChart2State();
@@ -442,148 +446,96 @@ class PieChart2State extends State<PieChartExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: AspectRatio(
-            aspectRatio: 1.3,
-            child: PieChart(
-              PieChartData(
-                pieTouchData: PieTouchData(
-                  touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                    setState(() {
-                      if (!event.isInterestedForInteractions ||
-                          pieTouchResponse == null ||
-                          pieTouchResponse.touchedSection == null) {
-                        touchedIndex = -1;
-                        return;
-                      }
-                      touchedIndex =
-                          pieTouchResponse.touchedSection!.touchedSectionIndex;
-                    });
-                  },
+    return Consumer<ClassService>(builder: (context, classService, child) {
+      List<ClassOpinionData> opinionList = classService.opinionList;
+
+      final screenHeight = MediaQuery.of(context).size.height;
+      final screenWidth = MediaQuery.of(context).size.width;
+      List<PieChartSectionData> showingSections() {
+        final screenWidth = MediaQuery.of(context).size.width;
+
+        return List.generate(opinionList.length, (i) {
+          ClassOpinionData classOpinionData = opinionList[i];
+          //터치했을때 이벤트
+          final isTouched = i == touchedIndex;
+          final fontSize = isTouched ? screenWidth * 0.07 : screenWidth * 0.04;
+          final radius = isTouched ? screenWidth * 0.15 : screenWidth * 0.12;
+          const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+
+          return PieChartSectionData(
+            color: contentColors[i],
+            value: opinionList[i].count.toDouble(),
+            title: opinionList[i].content + '%',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: contentColors[4],
+              shadows: shadows,
+            ),
+          );
+        });
+      }
+
+      return SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            AspectRatio(
+              aspectRatio: 1.3,
+              child: PieChart(
+                PieChartData(
+                  pieTouchData: PieTouchData(
+                    touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                      setState(() {
+                        if (!event.isInterestedForInteractions ||
+                            pieTouchResponse == null ||
+                            pieTouchResponse.touchedSection == null) {
+                          touchedIndex = -1;
+                          return;
+                        }
+                        touchedIndex = pieTouchResponse
+                            .touchedSection!.touchedSectionIndex;
+                      });
+                    },
+                  ),
+                  borderData: FlBorderData(show: false),
+                  sectionsSpace: 0,
+                  centerSpaceRadius: screenWidth * 0.15,
+                  sections: showingSections(),
                 ),
-                borderData: FlBorderData(show: false),
-                sectionsSpace: 0,
-                centerSpaceRadius: 70,
-                sections: showingSections(),
               ),
             ),
-          ),
+            const SizedBox(
+              height: 15, //차트랑 컬러 박스 위치
+            ),
+            Container(
+              width: screenWidth * 0.8,
+              height: screenHeight * 0.22, // 하단위치
+              color: Colors.grey[200],
+              child: ListView.builder(
+                itemCount: opinionList.length,
+                itemBuilder: (context, index) {
+                  ClassOpinionData classOpinionData = opinionList[index];
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Indicator(
+                        color: contentColors[index],
+                        text: opinionList[index].content,
+                        isSquare: true,
+                      ),
+                      SizedBox(
+                        height: 15, //간격
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
         ),
-        const SizedBox(
-          height: 140,
-        ),
-        Container(
-          height: 240,
-          color: Colors.grey[200],
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Indicator(
-                  color: contentColorBlue,
-                  text: 'First',
-                  isSquare: true,
-                ),
-                SizedBox(
-                  height: 12,
-                ),
-                Indicator(
-                  color: contentColorYellow,
-                  text: 'Second',
-                  isSquare: true,
-                ),
-                SizedBox(
-                  height: 12,
-                ),
-                Indicator(
-                  color: contentColorPurple,
-                  text: 'Third',
-                  isSquare: true,
-                ),
-                SizedBox(
-                  height: 12,
-                ),
-                Indicator(
-                  color: contentColorGreen,
-                  text: 'Fourth',
-                  isSquare: true,
-                ),
-                SizedBox(
-                  height: 18,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  List<PieChartSectionData> showingSections() {
-    return List.generate(4, (i) {
-      final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 50.0;
-      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: contentColorBlue,
-            value: 40,
-            title: '40%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        case 1:
-          return PieChartSectionData(
-            color: contentColorYellow,
-            value: 30,
-            title: '30%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        case 2:
-          return PieChartSectionData(
-            color: contentColorPurple,
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        case 3:
-          return PieChartSectionData(
-            color: contentColorGreen,
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        default:
-          throw Error();
-      }
+      );
     });
   }
 }
@@ -606,12 +558,13 @@ class Indicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
-          width: size,
-          height: size,
+          width: screenWidth * 0.04,
+          height: screenWidth * 0.04,
           decoration: BoxDecoration(
             shape: isSquare ? BoxShape.rectangle : BoxShape.circle,
             color: color,
@@ -624,7 +577,7 @@ class Indicator extends StatelessWidget {
           child: Text(
             text,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: screenWidth * 0.04,
               color: textColor,
             ),
             textAlign: TextAlign.center,
