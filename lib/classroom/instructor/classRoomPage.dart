@@ -522,6 +522,7 @@ class PieChart2State extends State<PieChartExample> {
                 itemCount: opinionList.length,
                 itemBuilder: (context, index) {
                   ClassOpinionData classOpinionData = opinionList[index];
+                  opinionList.sort((b, a) => a.count.compareTo(b.count));
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
