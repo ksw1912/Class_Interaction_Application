@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:spaghetti/classroom/class_Service.dart';
+import 'package:spaghetti/classroom/classroom.dart';
+import 'package:spaghetti/classroom/instructor/classroomService.dart';
 
 class classDetailPage extends StatefulWidget {
   final int index;
@@ -17,18 +18,19 @@ class _ClassDetailPageState extends State<classDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ClassService>(builder: (context, classService, child) {
-      List<ClassData> classList = classService.classList;
+    return Consumer<ClassroomService>(builder: (context, classService, child) {
+      List<Classroom> classList = classService.classroomList;
       List<ClassOpinionData> opinionList = classService.opinionList;
 
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
       print(opinionList[0].content);
-      ClassData classData = classList[widget.index];
-      String className = classData.content;
-      String numberOfStudents = classData.numberStudents;
-
+      Classroom? classData = classList[widget.index];
+      String className = classData.className;
+      //참여인원
+      // String numberOfStudents = classData.numberStudents;
+      String numberOfStudents = '10';
       return Scaffold(
         resizeToAvoidBottomInset: false, // 키보드 오버플로우 방지
         body: PageView(
@@ -49,7 +51,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
                   Positioned(
                     left: screenWidth * 0.11,
                     top: screenHeight * 0.15,
-                    child: Text('참여인원: ' + numberOfStudents + '명',
+                    child: Text('참여인원: ${numberOfStudents} 명',
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           fontWeight: FontWeight.w100,
@@ -136,8 +138,6 @@ class _ClassDetailPageState extends State<classDetailPage> {
                       ),
                     ),
                   ),
-
-
                   Positioned(
                     left: screenWidth * 0.1,
                     top: screenHeight * 0.85,
@@ -215,7 +215,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ClassService>(builder: (context, classService, child) {
+    return Consumer<ClassroomService>(builder: (context, classService, child) {
       List<ClassOpinionData> opinionList = classService.opinionList;
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;

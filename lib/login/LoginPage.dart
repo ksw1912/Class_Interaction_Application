@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:spaghetti/classroom/instructor/classCreatePage.dart';
 import 'package:spaghetti/classroom/student/classEnterPage.dart';
+import 'package:spaghetti/classroom/instructor/classCreatePage.dart';
 import 'package:spaghetti/login/AuthService.dart';
 import '../main/startPage.dart';
-
 
 class LoginPage extends StatelessWidget {
   final String role;
@@ -43,7 +42,8 @@ class LoginPage extends StatelessWidget {
               children: [
                 Align(
                   alignment: Alignment(-0.78, -0.68),
-                  child: Text('수업은 언제나', style: TextStyle(fontSize: 15,color: Color(0xff696868))),
+                  child: Text('수업은 언제나',
+                      style: TextStyle(fontSize: 15, color: Color(0xff696868))),
                 ),
                 Align(
                   alignment: Alignment(-0.7, -0.6),
@@ -51,7 +51,8 @@ class LoginPage extends StatelessWidget {
                 ),
                 Align(
                   alignment: Alignment(-0.75, -0.51),
-                  child: Text('$name, 반가워요!', style: TextStyle(fontSize: 15,color: Color(0xff696868))),
+                  child: Text('$name, 반가워요!',
+                      style: TextStyle(fontSize: 15, color: Color(0xff696868))),
                 ),
                 Align(
                   alignment: Alignment(0, 0.4),

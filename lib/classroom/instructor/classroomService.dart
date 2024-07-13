@@ -2,14 +2,60 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:spaghetti/ApiUrl.dart';
 import 'package:spaghetti/classroom/classroom.dart';
+
+class ClassOpinionData {
+  // 수업 생성시 옵션 데이터
+  ClassOpinionData({
+    required this.content,
+    required this.count,
+  });
+
+  String content;
+  int count;
+}
 
 class ClassroomService extends ChangeNotifier {
   final String apiUrl = Apiurl().url;
   final storage = FlutterSecureStorage();
 
   List<Classroom> classroomList = [];
+
+  List<ClassOpinionData> opinionList = [
+    ClassOpinionData(content: '20', count: 20),
+    ClassOpinionData(content: '30', count: 30),
+    ClassOpinionData(content: '10', count: 10),
+    ClassOpinionData(content: '40', count: 40),
+  ];
+
+  createOpinion({required String content, required int count}) {
+    ClassOpinionData opinion = ClassOpinionData(content: content, count: count);
+    opinionList.add(opinion);
+    notifyListeners();
+  }
+
+  updateOpinion({required int index, required String content}) {
+    ClassOpinionData opinion = opinionList[index];
+    opinion.content = content;
+    notifyListeners();
+  }
+
+  deleteOpinion({required int index}) {
+    opinionList.removeAt(index);
+    notifyListeners();
+  }
+
+  int maxCount(List<ClassOpinionData> opinion) {
+    int maxIndex = 0;
+    for (int i = 1; i < opinion.length; i++) {
+      if (opinion[i].count > opinion[maxIndex].count) {
+        maxIndex = i;
+      }
+    }
+    return maxIndex;
+  }
 
   //@controller("/classrooms")
   Future<void> classroomCreate(
@@ -73,5 +119,10 @@ class ClassroomService extends ChangeNotifier {
         );
       },
     );
+  }
+
+  //날짜 string 타입으로변환
+  String formatDate(DateTime date) {
+    return DateFormat('yyyy-MM-dd').format(date);
   }
 }

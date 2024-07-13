@@ -4,7 +4,6 @@ import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:intl/intl.dart';
 import 'classRoomPage.dart';
-import '../class_Service.dart';
 import '../../login/LoginPage.dart';
 
 class ClassCreatePage extends StatefulWidget {
@@ -31,9 +30,9 @@ class _MyWidgetState extends State<ClassCreatePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ClassService>(builder: (context, classService, child) {
+    return Consumer<ClassroomService>(builder: (context, classService, child) {
       // List<ClassData> classList = classService.classList;
-      List<Classroom> classList = ClassroomService().classroomList;
+      List<Classroom> classList = classService.classroomList;
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
@@ -353,14 +352,16 @@ class _AddClassDialogState extends State<AddClassDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ClassService>(builder: (context, classService, child) {
+    return Consumer<ClassroomService>(builder: (context, classService, child) {
       List<ClassOpinionData> opinionList = classService.opinionList;
+
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
       var className = "";
       List<String>? ops;
-      ClassroomService classroomService = new ClassroomService();
+
+      // ClassroomService classroomService = new ClassroomService();
       return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         controller: _scrollController, // ScrollController 추가
@@ -437,28 +438,13 @@ class _AddClassDialogState extends State<AddClassDialog> {
                         ),
                       ),
                       Positioned(
-                        left: screenWidth * 0.675,
+                        left: screenWidth * 0.75,
                         top: screenHeight * 0.21,
                         child: IconButton(
                           icon: Icon(Icons.add_circle_outline),
                           onPressed: () {
                             classService.createOpinion(content: '', count: 0);
                           },
-                          iconSize: 40,
-                          color: Colors.green,
-                        ),
-                      ),
-                      Positioned(
-                        left: screenWidth * 0.8,
-                        top: screenHeight * 0.21,
-                        child: IconButton(
-                          icon: Icon(Icons.remove_circle_outline),
-                          onPressed: () {
-                            classService.deleteOpinion(
-                                index: opinionList.length - 1);
-                          },
-                          iconSize: 40,
-                          color: Colors.red,
                         ),
                       ),
                       Positioned(
@@ -530,7 +516,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                               ),
                             ),
                             onPressed: () async {
-                              await classroomService.classroomCreate(context,
+                              await classService.classroomCreate(context,
                                   className, ops ?? []); //??:의견 추가안했을 때는 빈 배열
                               Navigator.pop(context);
                             },
