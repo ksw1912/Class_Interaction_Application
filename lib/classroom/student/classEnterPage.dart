@@ -4,7 +4,6 @@ import 'package:spaghetti/classroom/classDetailPage.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/classroom/student/qr_scan_page.dart';
-import '../class_Service.dart';
 import '../../login/LoginPage.dart';
 
 class ClassEnterPage extends StatefulWidget {
