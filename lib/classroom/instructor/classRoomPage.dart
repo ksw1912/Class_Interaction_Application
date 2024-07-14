@@ -463,7 +463,7 @@ class PieChart2State extends State<PieChartExample> {
           // final fontSize = isTouched ? screenWidth * 0.07 : screenWidth * 0.04;
           //  final radius = isTouched ? screenWidth * 0.15 : screenWidth * 0.12;
           //  const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-
+          opinionList.sort((b, a) => a.count.compareTo(b.count));
           int maxIndex = classService.maxCount(opinionList);
           final isMaxValue = i == maxIndex;
           final fontSize = isMaxValue ? screenWidth * 0.07 : screenWidth * 0.04;
@@ -524,7 +524,7 @@ class PieChart2State extends State<PieChartExample> {
                 itemCount: opinionList.length,
                 itemBuilder: (context, index) {
                   ClassOpinionData classOpinionData = opinionList[index];
-                  opinionList.sort((b, a) => a.count.compareTo(b.count));
+
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
