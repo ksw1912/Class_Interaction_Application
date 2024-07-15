@@ -11,7 +11,13 @@ import 'package:spaghetti/member/User.dart';
 
 class AuthService {
   //url 주소
+<<<<<<< HEAD
   final String apiUrl = Apiurl().url;
+=======
+  final String apiUrl = "http://192.168.123.184:8080/login";
+  //url 회원가입 주소
+  final String joinApiUrl = "http://192.168.123.184:8080/join";
+>>>>>>> b2e8577bc8204b235a61f9a1d4abef842ed354cb
   final storage = new FlutterSecureStorage();
 
   Future<http.Response> login(
@@ -77,5 +83,47 @@ class AuthService {
     List<Classroom> classrooms =
         classroomsJson.map((json) => Classroom.fromJson(json)).toList();
     return classrooms;
+  }
+
+  // 회원가입
+  Future<http.Response> join(
+    String username,
+    String email,
+    String password,
+    String role,
+    String departmant,
+  ) async {
+    try {
+      var response = await http.post(
+        Uri.parse(joinApiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          <String, String>{
+            'username': username,
+            'email': email,
+            'password': password,
+            'role': role,
+            'depertment': departmant
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        // response.body를 JSON으로 파싱하여 토큰 추출
+        var token = response.headers['Authorization'];
+        // FlutterSecureStorage에 토큰 저장
+
+        await storage.write(key: 'Authorization', value: token);
+      } else {
+        print(response.statusCode);
+      }
+      print(response.body);
+      return response;
+    } catch (e) {
+      print("$e");
+      return http.Response('Error 발생', 500);
+    }
   }
 }
