@@ -168,7 +168,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                                   classService.classroomList[widget.index];
                               // classid UUID로 변경함 수정해야함
                               // String classNumber = classData.classnumber;
-                              String classNumber = "123456";
+                              String classNumber = "12345678"; // 8자리로 수정
                               return Container(
                                 height: 300,
                                 margin: const EdgeInsets.only(
@@ -200,8 +200,8 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                                             i < classNumber.length;
                                             i++) ...[
                                           Container(
-                                            width: 40,
-                                            height: 40,
+                                            width: 30, // 숫자 박스 너비
+                                            height: 40, // 숫자 박스 높이
                                             decoration: BoxDecoration(
                                               border: Border.all(
                                                   color: Colors.black),
@@ -211,12 +211,17 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                                             child: Center(
                                               child: Text(
                                                 classNumber[i],
-                                                style: TextStyle(fontSize: 24),
+                                                style: TextStyle(
+                                                  fontSize: 30, // 숫자 크기
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                          if (i < classNumber.length - 1)
-                                            SizedBox(width: i == 2 ? 20 : 5),
+                                          if (i == 3)
+                                            SizedBox(width: 20) // 4번과 5번 사이 간격
+                                          else if (i < classNumber.length - 1)
+                                            SizedBox(width: 5), // 다른 숫자 사이 간격
                                         ],
                                       ],
                                     ),
@@ -247,6 +252,8 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                     },
                   ),
                 ),
+
+
                 Positioned(
                   left: screenWidth * 0.1,
                   top: screenHeight * 0.2,
@@ -464,7 +471,7 @@ class PieChart2State extends State<PieChartExample> {
           // final fontSize = isTouched ? screenWidth * 0.07 : screenWidth * 0.04;
           //  final radius = isTouched ? screenWidth * 0.15 : screenWidth * 0.12;
           //  const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-
+          opinionList.sort((b, a) => a.count.compareTo(b.count));
           int maxIndex = classService.maxCount(opinionList);
           final isMaxValue = i == maxIndex;
           final fontSize = isMaxValue ? screenWidth * 0.07 : screenWidth * 0.04;
@@ -520,12 +527,11 @@ class PieChart2State extends State<PieChartExample> {
             Container(
               width: screenWidth * 0.8,
               height: screenHeight * 0.22, // 하단위치
-              color: Colors.grey[200],
               child: ListView.builder(
                 itemCount: opinionList.length,
                 itemBuilder: (context, index) {
                   ClassOpinionData classOpinionData = opinionList[index];
-                  opinionList.sort((b, a) => a.count.compareTo(b.count));
+
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,

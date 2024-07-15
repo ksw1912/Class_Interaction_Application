@@ -26,7 +26,7 @@ class ClassroomService extends ChangeNotifier {
   List<ClassOpinionData> opinionList = [
     ClassOpinionData(content: '20', count: 20),
     ClassOpinionData(content: '30', count: 30),
-    ClassOpinionData(content: '10', count: 10),
+    ClassOpinionData(content: '100', count: 100),
     ClassOpinionData(content: '40', count: 40),
   ];
 

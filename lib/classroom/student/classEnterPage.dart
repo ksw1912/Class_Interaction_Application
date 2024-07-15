@@ -162,8 +162,9 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                           Text(
                                             "수업 참여코드",
                                             style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold),
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                           SizedBox(height: 20),
                                           Padding(
@@ -171,38 +172,48 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                                 horizontal: 20),
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children:
-                                                  List.generate(6, (index) {
-                                                return Container(
-                                                  width: 40,
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: Colors.black),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                  ),
-                                                  child: Center(
-                                                    child: Text(
-                                                      _controller.text.length >
-                                                              index
-                                                          ? _controller
-                                                              .text[index]
-                                                          : '',
-                                                      style: TextStyle(
-                                                          fontSize: 24),
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                for (int i = 0; i < 8; i++) ...[
+                                                  Container(
+                                                    width: 30, // 숫자 박스 너비
+                                                    height: 40, // 숫자 박스 높이
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: Colors.black),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        _controller.text
+                                                                    .length >
+                                                                i
+                                                            ? _controller
+                                                                .text[i]
+                                                            : '',
+                                                        style: TextStyle(
+                                                            fontSize: 24),
+                                                      ),
                                                     ),
                                                   ),
-                                                );
-                                              }),
+                                                  if (i == 3)
+                                                    SizedBox(
+                                                        width:
+                                                            20) // 4번과 5번 사이 간격
+                                                  else if (i < 7)
+                                                    SizedBox(
+                                                        width:
+                                                            5), // 다른 숫자 사이 간격
+                                                ],
+                                              ],
                                             ),
                                           ),
                                           SizedBox(height: 10),
                                           TextField(
                                             controller: _controller,
-                                            maxLength: 6,
+                                            maxLength: 8,
                                             keyboardType: TextInputType.number,
                                             decoration: InputDecoration(
                                               counterText: '',
@@ -245,11 +256,14 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                             backgroundColor: Colors.transparent,
                           );
                         },
-                        child: Text("번호로 입장하기",
-                            style: TextStyle(fontSize: screenWidth * 0.04)),
+                        child: Text(
+                          "번호로 입장하기",
+                          style: TextStyle(fontSize: screenWidth * 0.04),
+                        ),
                       ),
                     ),
                   ),
+
                   Positioned(
                     left: screenWidth * 0.1,
                     top: screenHeight * 0.45,
