@@ -66,10 +66,14 @@ class ClassroomService extends ChangeNotifier {
   //@controller("/classrooms")
   Future<void> classroomCreate(
       BuildContext context, String className, List<String> ops) async {
+    if (className.isEmpty || className == null) {
+      await _showErrorDialog(context, '수업명을 입력해주세요.');
+      return;
+    }
+
     // JWT 토큰을 저장소에서 읽어오기
     String? jwt = await storage.read(key: 'Authorization');
-    print(jwt);
-    print('$apiUrl/classrooms');
+
     // ★★★★★★★통합테스트시 주석처리 풀어야함(+토큰 주석풀어줘야함) ★★★★★★★★
     // if (jwt == null) {
     //   //토큰이 존재하지 않을 때 첫페이지로 이동
@@ -92,19 +96,18 @@ class ClassroomService extends ChangeNotifier {
         headers: headers,
         body: body,
       );
-
+      print(response.statusCode);
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
-        Classroom classroom = Classroom.fromJson(responseBody);
-        print(
-            "classId: ${classroom.classId},className: ${classroom.className}, ${classroom.updatedAt}");
+        print(responseBody);
+        Classroom classroom = Classroom.fromJson_notArray(responseBody);
         classroomList.add(classroom);
         notifyListeners();
       } else {
-        _showErrorDialog(context, '기존 수업이 존재합니다.');
+        await _showErrorDialog(context, '기존 수업이 존재합니다.');
       }
     } catch (exception) {
-      _showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
+      await _showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
     }
   }
 

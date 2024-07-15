@@ -11,13 +11,7 @@ import 'package:spaghetti/member/User.dart';
 
 class AuthService {
   //url 주소
-<<<<<<< HEAD
   final String apiUrl = Apiurl().url;
-=======
-  final String apiUrl = "http://192.168.123.184:8080/login";
-  //url 회원가입 주소
-  final String joinApiUrl = "http://192.168.123.184:8080/join";
->>>>>>> b2e8577bc8204b235a61f9a1d4abef842ed354cb
   final storage = new FlutterSecureStorage();
 
   Future<http.Response> login(
@@ -95,7 +89,7 @@ class AuthService {
   ) async {
     try {
       var response = await http.post(
-        Uri.parse(joinApiUrl),
+        Uri.parse('$apiUrl/join'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

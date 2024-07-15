@@ -346,7 +346,8 @@ class AddClassDialog extends StatefulWidget {
 
 class _AddClassDialogState extends State<AddClassDialog> {
   ScrollController? _scrollController;
-
+  var className = "";
+  List<String>? ops;
   @override
   void initState() {
     super.initState();
@@ -367,8 +368,6 @@ class _AddClassDialogState extends State<AddClassDialog> {
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
-      var className = "";
-      List<String>? ops;
 
       // ClassroomService classroomService = new ClassroomService();
       return SingleChildScrollView(
@@ -473,7 +472,6 @@ class _AddClassDialogState extends State<AddClassDialog> {
                               itemBuilder: (context, index) {
                                 ClassOpinionData classOpinionData =
                                     opinionList[index];
-
                                 return Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 4.0),

@@ -40,13 +40,22 @@ class Classroom {
       updatedAtList[1], // month
       updatedAtList[2], // day
     );
-    
+
     return Classroom(
       classId: json['classId'],
       className: json['className'],
       instructor: Instructor.fromJson(json['instructor']),
       createdAt: createdAt,
       updatedAt: updatedAt,
+    );
+  }
+  factory Classroom.fromJson_notArray(Map<String, dynamic> json) {
+    return Classroom(
+      classId: json['classId'],
+      className: json['className'],
+      instructor: Instructor.fromJson(json['instructor']),
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
     );
   }
 }
