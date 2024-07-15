@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:intl/intl.dart';
+import 'package:spaghetti/member/User.dart';
+import 'package:spaghetti/member/UserProvider.dart';
 import 'classRoomPage.dart';
 import '../../login/LoginPage.dart';
 
@@ -32,10 +34,11 @@ class _MyWidgetState extends State<ClassCreatePage> {
   Widget build(BuildContext context) {
     return Consumer<ClassroomService>(builder: (context, classService, child) {
       // List<ClassData> classList = classService.classList;
-      List<Classroom> classList = classService.classroomList;
+      List<Classroom> classList = classService.classroomLists;
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
+      final user = Provider.of<UserProvider>(context).user;
 
       return Scaffold(
         resizeToAvoidBottomInset: false, // 키보드 오버플로우 방지
@@ -62,7 +65,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
                   Positioned(
                     left: screenWidth * 0.31,
                     top: screenHeight * 0.15,
-                    child: Text('김서원 대학원생님',
+                    child: Text('${user?.username}님',
                         style: TextStyle(
                             fontSize: screenWidth * 0.03,
                             color: Color(0xff424141))),

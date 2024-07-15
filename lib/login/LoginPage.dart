@@ -1,7 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:spaghetti/classroom/classroom.dart';
+import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/classroom/student/classEnterPage.dart';
 import 'package:spaghetti/classroom/instructor/classCreatePage.dart';
 import 'package:spaghetti/login/AuthService.dart';
+import 'package:spaghetti/member/User.dart';
+import 'package:spaghetti/member/UserProvider.dart';
 import '../main/startPage.dart';
 
 class LoginPage extends StatelessWidget {
@@ -96,13 +103,13 @@ class LoginPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const ClassEnterPage()),
+                              builder: (context) => ClassEnterPage()),
                         );
                       } else {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const ClassCreatePage()),
+                              builder: (context) => ClassCreatePage()),
                         );
                       }
                     },
@@ -170,17 +177,24 @@ class LoginPage extends StatelessWidget {
                 // 로그인 요청
                 var response = await AuthService().login(email, password, role);
                 if (response.statusCode == 200) {
+                  User user =
+                      AuthService().parseUser(json.decode(response.body));
+                  Provider.of<UserProvider>(context, listen: false)
+                      .setUser(user);
                   if (role == "student") {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const ClassEnterPage()),
+                      MaterialPageRoute(builder: (context) => ClassEnterPage()),
                     );
                   } else {
+                    List<Classroom> classrooms = AuthService()
+                            .parseClassrooms(json.decode(response.body)) ?? 
+                        [];
+                    ClassroomService().setClassrooms(classrooms);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ClassCreatePage()),
+                          builder: (context) => ClassCreatePage()),
                     );
                   }
                 } else {

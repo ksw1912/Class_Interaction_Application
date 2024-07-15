@@ -4,6 +4,8 @@ import 'package:spaghetti/classroom/classDetailPage.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/classroom/student/qr_scan_page.dart';
+import 'package:spaghetti/member/User.dart';
+import 'package:spaghetti/member/UserProvider.dart';
 import '../../login/LoginPage.dart';
 
 class ClassEnterPage extends StatefulWidget {
@@ -38,7 +40,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
-
+      final user = Provider.of<UserProvider>(context).user;
       return Scaffold(
         resizeToAvoidBottomInset: false, // 키보드 오버플로우 방지
         body: PageView(
@@ -64,7 +66,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                   Positioned(
                     left: screenWidth * 0.31,
                     top: screenHeight * 0.15,
-                    child: Text('김서원 대학원생님',
+                    child: Text('${user?.username}님',
                         style: TextStyle(fontSize: screenWidth * 0.03)),
                   ),
                   Positioned(

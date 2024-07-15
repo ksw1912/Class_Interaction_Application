@@ -57,6 +57,13 @@ class ClassroomService extends ChangeNotifier {
     return maxIndex;
   }
 
+   List<Classroom> get classroomLists => classroomList;
+
+  void setClassrooms(List<Classroom> classrooms) {
+    classroomList = classrooms;
+    notifyListeners();
+  }
+
   //@controller("/classrooms")
   Future<void> classroomCreate(
       BuildContext context, String className, List<String> ops) async {
