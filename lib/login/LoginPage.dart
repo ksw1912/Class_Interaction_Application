@@ -188,9 +188,10 @@ class LoginPage extends StatelessWidget {
                     );
                   } else {
                     List<Classroom> classrooms = AuthService()
-                            .parseClassrooms(json.decode(response.body)) ?? 
+                            .parseClassrooms(json.decode(response.body)) ??
                         [];
-                    ClassroomService().setClassrooms(classrooms);
+                    Provider.of<ClassroomService>(context, listen: false)
+                        .setClassrooms(classrooms);
                     Navigator.push(
                       context,
                       MaterialPageRoute(

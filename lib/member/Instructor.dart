@@ -24,7 +24,7 @@ class Instructor extends User {
       id: json['id'],
       username: json['username'],
       email: json['email'],
-      password: json['password'] ?? "",
+      password: json['password']?? "",
       role: json['role'],
       department: json['department'],
     );

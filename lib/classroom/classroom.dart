@@ -5,27 +5,48 @@ class Classroom {
   String classId;
   String className;
   Instructor instructor;
-  DateTime date;
+  DateTime createdAt;
+  DateTime updatedAt;
 
   Classroom({
     required this.classId,
     required this.className,
     required this.instructor,
-    required this.date,
+    required this.createdAt,
+    required this.updatedAt,
   });
-
 
   Map<String, dynamic> toJson() => {
         'classId': classId,
         'className': className,
         'instructor': instructor.toJson(),
-        'date': DateFormat('yyyy-MM-dd').format(date), // 날짜를 yyyy-MM-dd 형식으로 변환
+        'createdAt': DateFormat('yyyy-MM-dd')
+            .format(createdAt), // 날짜를 yyyy-MM-dd 형식으로 변환
+        'updatedAt': DateFormat('yyyy-MM-dd').format(createdAt),
       };
 
+  factory Classroom.fromJson(Map<String, dynamic> json) {
+    // JSON 배열 형식의 날짜를 파싱하여 DateTime 객체로 변환
+    List<int> createdAtList = List<int>.from(json['createdAt']);
+    DateTime createdAt = DateTime(
+      createdAtList[0], // year
+      createdAtList[1], // month
+      createdAtList[2], // day
+    );
 
-  Classroom.fromJson(Map<String, dynamic> json)
-      : classId = json['classId'],
-        className = json['className'],
-        instructor = Instructor.fromJson(json['instructor']),
-        date = DateTime.parse(json['date']);
+    List<int> updatedAtList = List<int>.from(json['updatedAt']);
+    DateTime updatedAt = DateTime(
+      updatedAtList[0], // year
+      updatedAtList[1], // month
+      updatedAtList[2], // day
+    );
+    
+    return Classroom(
+      classId: json['classId'],
+      className: json['className'],
+      instructor: Instructor.fromJson(json['instructor']),
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    );
+  }
 }

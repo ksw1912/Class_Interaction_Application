@@ -263,7 +263,6 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                       ),
                     ),
                   ),
-
                   Positioned(
                     left: screenWidth * 0.1,
                     top: screenHeight * 0.45,
@@ -339,7 +338,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                           ), // content와 date 사이의 간격
                                           Text(
                                             classService
-                                                .formatDate(classData.date),
+                                                .formatDate(classData.updatedAt),
                                             style: TextStyle(
                                               fontSize: 12.0, // 텍스트 크기 설정
                                               fontWeight:

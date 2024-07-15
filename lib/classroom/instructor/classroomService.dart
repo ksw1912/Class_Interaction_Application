@@ -20,7 +20,6 @@ class ClassOpinionData {
 class ClassroomService extends ChangeNotifier {
   final String apiUrl = Apiurl().url;
   final storage = FlutterSecureStorage();
-
   List<Classroom> classroomList = [];
 
   List<ClassOpinionData> opinionList = [
@@ -57,7 +56,7 @@ class ClassroomService extends ChangeNotifier {
     return maxIndex;
   }
 
-   List<Classroom> get classroomLists => classroomList;
+  List<Classroom> get classroomLists => classroomList;
 
   void setClassrooms(List<Classroom> classrooms) {
     classroomList = classrooms;
@@ -69,7 +68,8 @@ class ClassroomService extends ChangeNotifier {
       BuildContext context, String className, List<String> ops) async {
     // JWT 토큰을 저장소에서 읽어오기
     String? jwt = await storage.read(key: 'Authorization');
-
+    print(jwt);
+    print('$apiUrl/classrooms');
     // ★★★★★★★통합테스트시 주석처리 풀어야함(+토큰 주석풀어줘야함) ★★★★★★★★
     // if (jwt == null) {
     //   //토큰이 존재하지 않을 때 첫페이지로 이동
@@ -79,7 +79,7 @@ class ClassroomService extends ChangeNotifier {
     // 헤더에 JWT 토큰 추가
     var headers = {
       'Content-Type': 'application/json; charset=UTF-8',
-      // 'Authorization': 'Bearer $jwt',
+      'Authorization': '${jwt}',
     };
 
     var body = jsonEncode({
@@ -88,7 +88,7 @@ class ClassroomService extends ChangeNotifier {
     });
     try {
       var response = await http.post(
-        Uri.parse('${apiUrl}/classrooms'),
+        Uri.parse('$apiUrl/classrooms'),
         headers: headers,
         body: body,
       );
@@ -97,7 +97,7 @@ class ClassroomService extends ChangeNotifier {
         var responseBody = jsonDecode(response.body);
         Classroom classroom = Classroom.fromJson(responseBody);
         print(
-            "classId: ${classroom.classId},className: ${classroom.className}, ${classroom.date}");
+            "classId: ${classroom.classId},className: ${classroom.className}, ${classroom.updatedAt}");
         classroomList.add(classroom);
         notifyListeners();
       } else {

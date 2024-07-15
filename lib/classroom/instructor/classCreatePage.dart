@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:intl/intl.dart';
+import 'package:spaghetti/login/AuthService.dart';
+import 'package:spaghetti/main/startPage.dart';
 import 'package:spaghetti/member/User.dart';
 import 'package:spaghetti/member/UserProvider.dart';
 import 'classRoomPage.dart';
@@ -38,7 +42,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
-      final user = Provider.of<UserProvider>(context).user;
+      var user = Provider.of<UserProvider>(context).user;
 
       return Scaffold(
         resizeToAvoidBottomInset: false, // 키보드 오버플로우 방지
@@ -122,7 +126,6 @@ class _MyWidgetState extends State<ClassCreatePage> {
                       width: screenWidth * 0.8,
                       height: screenHeight * 0.95 -
                           (screenHeight * 0.375 + 30), // 화면 높이의 90% - top 위치
-
                       child: ListView.builder(
                         controller: _scrollController, // ScrollController 추가
                         padding: EdgeInsets.zero, // ListView의 패딩을 없앰
@@ -130,7 +133,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
                         itemBuilder: (context, index) {
                           Classroom classData = classList[index];
                           String dateFormat = DateFormat('yyyy-MM-dd')
-                              .format(classData.date); // 날짜 변환
+                              .format(classData.updatedAt); // 날짜 변환
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: ElevatedButton(
@@ -276,13 +279,16 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                         child: ElevatedButton(
                                           onPressed: () {
                                             // 로그아웃 기능을 여기에 추가
+                                            //토큰, 수업정보,유저 정보삭제
+                                            AuthService().logout();
+                                            user = null;
+                                            classList = [];
                                             Navigator.of(context)
                                                 .pop(); // 모달 닫기
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (_) =>
-                                                    LoginPage(role: "studen"),
+                                                builder: (_) => StartPage(),
                                               ),
                                             );
                                           },
