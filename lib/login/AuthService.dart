@@ -85,7 +85,7 @@ class AuthService {
     String email,
     String password,
     String role,
-    String departmant,
+    String department,
   ) async {
     try {
       var response = await http.post(
@@ -99,7 +99,7 @@ class AuthService {
             'email': email,
             'password': password,
             'role': role,
-            'depertment': departmant
+            'department': department,
           },
         ),
       );
