@@ -4,7 +4,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:spaghetti/ApiUrl.dart';
+import 'package:spaghetti/Dialog/Dialogs.dart';
 import 'package:spaghetti/classroom/classroom.dart';
+import 'package:spaghetti/opinion/Opinion.dart';
 
 class ClassOpinionData {
   // 수업 생성시 옵션 데이터
@@ -21,7 +23,8 @@ class ClassroomService extends ChangeNotifier {
   final String apiUrl = Apiurl().url;
   final storage = FlutterSecureStorage();
   List<Classroom> classroomList = [];
-
+  List<Opinion> opinions = [];
+  
   List<ClassOpinionData> opinionList = [
     ClassOpinionData(content: '20', count: 20),
     ClassOpinionData(content: '30', count: 30),
@@ -67,18 +70,19 @@ class ClassroomService extends ChangeNotifier {
   Future<void> classroomCreate(
       BuildContext context, String className, List<String> ops) async {
     if (className.isEmpty || className == null) {
-      await _showErrorDialog(context, '수업명을 입력해주세요.');
+      await Dialogs.showErrorDialog(context, '수업명을 입력해주세요.');
       return;
     }
 
     // JWT 토큰을 저장소에서 읽어오기
     String? jwt = await storage.read(key: 'Authorization');
 
-    // ★★★★★★★통합테스트시 주석처리 풀어야함(+토큰 주석풀어줘야함) ★★★★★★★★
-    // if (jwt == null) {
-    //   //토큰이 존재하지 않을 때 첫페이지로 이동
-    //   Navigator.of(context).pushReplacementNamed('/Loginpage');
-    // }
+    if (jwt == null) {
+      //토큰이 존재하지 않을 때 첫페이지로 이동
+      await Dialogs.showErrorDialog(context, '로그인시간이 만료되었습니다.');
+      Navigator.of(context).pushReplacementNamed('/Loginpage');
+      return;
+    }
 
     // 헤더에 JWT 토큰 추가
     var headers = {
@@ -100,35 +104,20 @@ class ClassroomService extends ChangeNotifier {
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
         print(responseBody);
-        Classroom classroom = Classroom.fromJson_notArray(responseBody);
+        Classroom classroom =
+            Classroom.fromJson_notArray(responseBody['classroom']);
+        List<Opinion> opinions = (responseBody['opinions'] as List)
+            .map((opinionJson) => Opinion.fromJson(opinionJson))
+            .toList();
+
         classroomList.add(classroom);
         notifyListeners();
       } else {
-        await _showErrorDialog(context, '기존 수업이 존재합니다.');
+        await Dialogs.showErrorDialog(context, '기존 수업이 존재합니다.');
       }
     } catch (exception) {
-      await _showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
+      await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
     }
-  }
-
-  Future<dynamic> _showErrorDialog(BuildContext context, String message) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Error'),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   //날짜 string 타입으로변환

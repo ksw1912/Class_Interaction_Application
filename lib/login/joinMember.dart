@@ -222,7 +222,7 @@ class _JoinmemberState extends State<Joinmember> {
                   child: Column(
                     children: <Widget>[
                       TextFormField(
-                        decoration: InputDecoration(labelText: 'Department'),
+                        decoration: InputDecoration(labelText: 'D epartment'),
                         validator: (value) {
                           department = value!; // 학과저장
                           if (value == null || value.isEmpty) {
