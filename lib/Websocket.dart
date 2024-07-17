@@ -1,47 +1,58 @@
-/*
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'ApiUrl.dart';
+import 'dart:async';
+
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:stomp_dart_client/stomp_dart_client.dart';
+import 'package:http/http.dart' as http;
+import 'package:spaghetti/ApiUrl.dart';
+import 'dart:convert';
 
 class Websocket {
-  final IO.Socket socket = IO.io(
-      'ex)$Apiurl', IO.OptionBuilder().setTransports(['websocket']).build());
+  late StompClient stompClient;
+  late String classId;
+  final storage = FlutterSecureStorage();
+  String jwt = '';
 
-  List<String> messages = []; // 메시지 목록을 저장할 리스트
-
-  @override
-  //Widget build(BuildContext context) {
-  //  return Scaffold(
-  //    body: Center(
-  //      child: Text('Chat will go here'),
-  //    ),
-  );
- }
-
-  void sokectEventSetting() {
-    socket.onConnect((_) {
-      print('Connected to server');
-    });
-    socket.onDisconnect((_) {
-      print('Disconnected from server');
-    });
-    socket.onError((error) {
-      print('Error: $error');
-      // 에러를 감지하고 그에 따라 핸들링을 추가합니다.
-    });
-
-    socket.connect();
-    socket.on('message', (data) {
-      print('Received message: $data');
-      // 메세지를 감지하고 UI에 표시하거나 처리합니다.
-      setState(() {
-        messages.add(data);
-      });
-    });
+  Websocket(this.classId) {
+    stompClient = StompClient(
+      config: StompConfig(
+        url: 'ws://${Apiurl().websocketUrl}/classroomEnter',
+        onConnect: onConnect,
+        beforeConnect: () async {
+          jwt = (await storage.read(key: 'Authorization')) ?? '';
+          print('waiting to connect...');
+          //print(jwt);
+          await Future.delayed(const Duration(milliseconds: 200));
+          print('connecting...');
+        },
+        onWebSocketError: (dynamic error) => print(error.toString()),
+        stompConnectHeaders: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': '${jwt}',
+        },
+        webSocketConnectHeaders: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': '${jwt}',
+        },
+      ),
+    );
   }
 
-  void sendMessage(String message) {
-    socket.emit('chatMessage', message);
-    // 메시지를 서버로 보내는 코드입니다.
+  void onConnect(StompFrame frame) {
+    //도착
+    stompClient.subscribe(
+      destination: '${Apiurl().websocketUrl}/topic/classroom/$classId/',
+      callback: (frame) {
+        List<dynamic>? result = json.decode(frame.body!);
+        print('Received message: $result');
+      },
+    );
+
+    Timer.periodic(const Duration(seconds: 10), (_) {
+      //메세지 보냄10초마다
+      stompClient.send(
+        destination: '/app/classroom/$classId/message',
+        body: json.encode({'content': "text"}),
+      );
+    });
   }
 }
-*/

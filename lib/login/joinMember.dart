@@ -28,6 +28,8 @@ class _JoinmemberState extends State<Joinmember> {
   final _formKey4 = GlobalKey<FormState>();
   final _formKey5 = GlobalKey<FormState>();
 
+  final TextEditingController _emailController = TextEditingController();
+
   void tapped(int step) {
     setState(() => _currentStep = step);
   }
@@ -58,9 +60,11 @@ class _JoinmemberState extends State<Joinmember> {
   @override
   Widget build(BuildContext context) {
     final List<String> selectjob = ["교수", "학생"];
+    var response;
     final mediaQuery = MediaQuery.of(context);
     final screenHeight = mediaQuery.size.height;
     final screenWidth = mediaQuery.size.width;
+
     return Scaffold(
       appBar: AppBar(title: Text('회원가입')),
       body: Padding(
@@ -138,20 +142,21 @@ class _JoinmemberState extends State<Joinmember> {
                     ],
                   ),
                 ),
-                isActive: _currentStep >= 0,
+                isActive: _currentStep >= 1,
                 state:
-                    _currentStep >= 0 ? StepState.complete : StepState.disabled,
+                    _currentStep >= 1 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('ID'),
-                subtitle: Text('아이디를 입력해주세요'),
+                title: Text('Email'),
+                subtitle: Text('이메일을 입력해주세요'),
                 content: Form(
                   key: _formKey2,
                   child: Column(
                     children: <Widget>[
                       TextFormField(
+                        controller: _emailController,
                         decoration: InputDecoration(
-                          labelText: 'ID',
+                          labelText: 'Email',
                           errorBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.red),
                           ),
@@ -161,19 +166,68 @@ class _JoinmemberState extends State<Joinmember> {
                           ),
                         ),
                         validator: (value) {
-                          username = value!; // 유저네임 저장
+                          email = value!; // 이메일 저장
+
                           if (value == null || value.isEmpty) {
-                            return '아이디를 입력해주세요';
+                            return '이메일 입력해주세요';
                           }
                           return null;
                         },
                       ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          email = _emailController.text;
+                          response = await AuthService().checkEmail(email);
+                          if (response.statusCode != 200) {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  content: Text("사용가능한 이메일 입니다"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        setState(() {
+                                          _currentStep += 1;
+                                        });
+                                        //continued();
+                                      },
+                                      child: Text("확인"),
+                                    )
+                                  ],
+                                );
+                              },
+                            );
+                          } else {
+                            // 이메일 중복
+
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  content: Text("중복된 이메일 입니다"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text("닫기"),
+                                    )
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                        child: Text('중복확인'),
+                      ),
                     ],
                   ),
                 ),
-                isActive: _currentStep >= 1,
+                isActive: _currentStep >= 2,
                 state:
-                    _currentStep >= 1 ? StepState.complete : StepState.disabled,
+                    _currentStep >= 2 ? StepState.complete : StepState.disabled,
               ),
               Step(
                 title: Text('PassWord'),
@@ -210,33 +264,33 @@ class _JoinmemberState extends State<Joinmember> {
                     ],
                   ),
                 ),
-                isActive: _currentStep >= 2,
+                isActive: _currentStep >= 3,
                 state:
-                    _currentStep >= 2 ? StepState.complete : StepState.disabled,
+                    _currentStep >= 3 ? StepState.complete : StepState.disabled,
               ),
               Step(
-                title: Text('Department or email'),
-                subtitle: Text('학과와 이메일을 입력해주세요'),
+                title: Text('Username or Department'),
+                subtitle: Text('이름과 학과을 입력해주세요'),
                 content: Form(
                   key: _formKey4,
                   child: Column(
                     children: <Widget>[
                       TextFormField(
-                        decoration: InputDecoration(labelText: 'Department'),
+                        decoration: InputDecoration(labelText: 'Username'),
                         validator: (value) {
-                          department = value!; // 학과저장
+                          username = value!; // 이름
                           if (value == null || value.isEmpty) {
-                            return '학과를 입력해주세요';
+                            return '이름을 입력해주세요';
                           }
                           return null;
                         },
                       ),
                       TextFormField(
-                        decoration: InputDecoration(labelText: 'Email'),
+                        decoration: InputDecoration(labelText: 'Department'),
                         validator: (value) {
-                          email = value!; // 이메일저장
+                          department = value!; // 학과
                           if (value == null || value.isEmpty) {
-                            return '이메일을 입력해주세요';
+                            return '학과를 입력해주세요';
                           }
                           return null;
                         },
@@ -244,9 +298,9 @@ class _JoinmemberState extends State<Joinmember> {
                     ],
                   ),
                 ),
-                isActive: _currentStep >= 3,
+                isActive: _currentStep >= 4,
                 state:
-                    _currentStep >= 3 ? StepState.complete : StepState.disabled,
+                    _currentStep >= 4 ? StepState.complete : StepState.disabled,
               ),
               Step(
                 title: Text('Join'),
@@ -308,6 +362,8 @@ class _JoinmemberState extends State<Joinmember> {
             ],
             controlsBuilder: (BuildContext context, ControlsDetails details) {
               if (_currentStep == 4) {
+                return Container();
+              } else if (_currentStep == 1) {
                 return Container();
               } else {
                 return Row(
