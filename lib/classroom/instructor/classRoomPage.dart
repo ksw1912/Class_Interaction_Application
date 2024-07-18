@@ -3,9 +3,12 @@ import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:spaghetti/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/member/User.dart';
+import 'package:spaghetti/opinion/Opinion.dart';
+import 'package:spaghetti/opinion/OpinionService.dart';
 
 import 'classCreatePage.dart';
 
@@ -25,14 +28,18 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
   Widget build(BuildContext context) {
     return Consumer<ClassroomService>(builder: (context, classService, child) {
       List<Classroom> classList = classService.classroomList;
-      List<ClassOpinionData> opinionList = classService.opinionList;
 
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
-      print(opinionList[0].content);
+
       Classroom classData = classList[widget.index];
       String className = classData.className;
+      String classId = classData.classId;
+
+      //연결시작
+      Websocket websocket = Websocket(classId);
+      websocket.stompClient.activate();
       // String numberOfStudents = classData.numberStudents;
 
       return Scaffold(
@@ -252,8 +259,6 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                     },
                   ),
                 ),
-
-
                 Positioned(
                   left: screenWidth * 0.1,
                   top: screenHeight * 0.2,
@@ -284,17 +289,17 @@ void addDialog(BuildContext context) {
       ),
     ),
     builder: (BuildContext context) {
-      return AddClassDialog();
+      return QuizClassDialog();
     },
   );
 }
 
-class AddClassDialog extends StatefulWidget {
+class QuizClassDialog extends StatefulWidget {
   @override
   _AddClassDialogState createState() => _AddClassDialogState();
 }
 
-class _AddClassDialogState extends State<AddClassDialog> {
+class _AddClassDialogState extends State<QuizClassDialog> {
   ScrollController? _scrollController;
 
   @override
@@ -311,8 +316,10 @@ class _AddClassDialogState extends State<AddClassDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ClassroomService>(builder: (context, classService, child) {
-      List<ClassOpinionData> opinionList = classService.opinionList;
+    return Consumer2<ClassroomService, OpinionService>(
+        builder: (context, classService, opinionService, child) {
+      List<Opinion> opinionList = opinionService.opinionList;
+
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;

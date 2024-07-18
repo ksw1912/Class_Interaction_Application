@@ -36,6 +36,7 @@ class AuthService {
         var token = response.headers['authorization'];
         // FlutterSecureStorage에 토큰 저장
         print("토큰 발급테스트: ${token}");
+
         await storage.write(key: 'Authorization', value: token);
       } else {
         print(response.statusCode);
@@ -79,7 +80,7 @@ class AuthService {
     return classrooms;
   }
 
-  // 회원가입
+//회원가입
   Future<http.Response> join(
     String username,
     String email,
@@ -99,7 +100,41 @@ class AuthService {
             'email': email,
             'password': password,
             'role': role,
-            'department': department
+            'department': department,
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        // response.body를 JSON으로 파싱하여 토큰 추출
+        var token = response.headers['Authorization'];
+        // FlutterSecureStorage에 토큰 저장
+
+        await storage.write(key: 'Authorization', value: token);
+      } else {
+        print(response.statusCode);
+      }
+      print(response.body);
+      return response;
+    } catch (e) {
+      print("$e");
+      return http.Response('Error 발생', 500);
+    }
+  }
+
+  // 아이디체크
+  Future<http.Response> checkEmail(
+    String email,
+  ) async {
+    try {
+      var response = await http.post(
+        Uri.parse('$apiUrl/checkEmail'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          <String, String>{
+            'email': email,
           },
         ),
       );

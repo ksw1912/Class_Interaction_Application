@@ -3,25 +3,19 @@ import 'package:spaghetti/classroom/classroom.dart';
 class Opinion {
   String opinionId;
   String opinion;
-  Classroom classroom;
+  Classroom? classroom;
 
   Opinion({
-    required this.opinionId,
+    this.opinionId = "",
     required this.opinion,
-    required this.classroom,
+    this.classroom,
   });
-
-  Map<String, dynamic> toJson() => {
-        'opinionId': opinionId,
-        'opinion': opinion,
-        'classroom': classroom.toJson(),
-      };
 
   factory Opinion.fromJson(Map<String, dynamic> json) {
     return Opinion(
       opinionId: json['opinionId'],
       opinion: json['opinion'],
-      classroom: Classroom.fromJson(json['classroom']),
+      classroom: Classroom.fromJson_notArray(json['classroom']),
     );
   }
 }

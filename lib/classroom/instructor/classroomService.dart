@@ -7,6 +7,7 @@ import 'package:spaghetti/ApiUrl.dart';
 import 'package:spaghetti/Dialog/Dialogs.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
+import 'package:spaghetti/opinion/OpinionService.dart';
 
 class ClassOpinionData {
   // 수업 생성시 옵션 데이터
@@ -24,7 +25,6 @@ class ClassroomService extends ChangeNotifier {
   final storage = FlutterSecureStorage();
   List<Classroom> classroomList = [];
   List<Opinion> opinions = [];
-  
   List<ClassOpinionData> opinionList = [
     ClassOpinionData(content: '20', count: 20),
     ClassOpinionData(content: '30', count: 30),
@@ -67,8 +67,14 @@ class ClassroomService extends ChangeNotifier {
   }
 
   //@controller("/classrooms")
-  Future<void> classroomCreate(
-      BuildContext context, String className, List<String> ops) async {
+  Future<void> classroomCreate(BuildContext context, String className,
+      List<Opinion> opinionList, OpinionService opinionService) async {
+    List<String> ops = [];
+
+    for (var op in opinionList) {
+      ops.add(op.opinion);
+    }
+
     if (className.isEmpty || className == null) {
       await Dialogs.showErrorDialog(context, '수업명을 입력해주세요.');
       return;
@@ -102,20 +108,25 @@ class ClassroomService extends ChangeNotifier {
       );
       print(response.statusCode);
       if (response.statusCode == 200) {
-        var responseBody = jsonDecode(response.body);
-        print(responseBody);
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        print("응답성공 ");
         Classroom classroom =
             Classroom.fromJson_notArray(responseBody['classroom']);
+
         List<Opinion> opinions = (responseBody['opinions'] as List)
             .map((opinionJson) => Opinion.fromJson(opinionJson))
             .toList();
 
         classroomList.add(classroom);
+        for (int i = 0; i < opinions.length; i++) {
+          opinionService.updateOpinion(i, opinions[i]);
+        }
         notifyListeners();
       } else {
         await Dialogs.showErrorDialog(context, '기존 수업이 존재합니다.');
       }
     } catch (exception) {
+      print(exception);
       await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
     }
   }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
+import 'package:spaghetti/opinion/Opinion.dart';
+import 'package:spaghetti/opinion/OpinionService.dart';
 
 class classDetailPage extends StatefulWidget {
   final int index;
@@ -18,14 +20,15 @@ class _ClassDetailPageState extends State<classDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ClassroomService>(builder: (context, classService, child) {
+    return Consumer2<ClassroomService, OpinionService>(
+        builder: (context, classService, opinionService, child) {
       List<Classroom> classList = classService.classroomList;
-      List<ClassOpinionData> opinionList = classService.opinionList;
+      List<Opinion> opinionList = opinionService.opinionList;
 
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
-      print(opinionList[0].content);
+      print(opinionList[0].opinion);
       Classroom? classData = classList[widget.index];
       String className = classData.className;
       //참여인원
@@ -97,8 +100,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
                           padding: EdgeInsets.zero, // ListView의 패딩을 없앰
                           itemCount: opinionList.length,
                           itemBuilder: (context, index) {
-                            ClassOpinionData classOpinionData =
-                                opinionList[index];
+                            Opinion classOpinionData = opinionList[index];
                             return Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 8.0),
@@ -119,7 +121,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 16.0),
-                                        child: Text(classOpinionData.content),
+                                        child: Text(classOpinionData.opinion),
                                       ),
                                       Radio<int>(
                                         value: index,
@@ -215,8 +217,9 @@ class _AddClassDialogState extends State<AddClassDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ClassroomService>(builder: (context, classService, child) {
-      List<ClassOpinionData> opinionList = classService.opinionList;
+    return Consumer2<ClassroomService, OpinionService>(
+        builder: (context, classService, opinionService, child) {
+      List<Opinion> opinionList = opinionService.opinionList;
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
