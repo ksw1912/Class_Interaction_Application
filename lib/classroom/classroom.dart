@@ -25,6 +25,7 @@ class Classroom {
         'updatedAt': DateFormat('yyyy-MM-dd').format(createdAt),
       };
 
+  //classroom 생성 response할때  생성한 정보(날짜)들이 배열로 받기 때문에 생성할때만 사용하고 이외에는 아래 Classroom.fromJson_notArray 메소드를 사용
   factory Classroom.fromJson(Map<String, dynamic> json) {
     // JSON 배열 형식의 날짜를 파싱하여 DateTime 객체로 변환
     List<int> createdAtList = List<int>.from(json['createdAt']);
@@ -41,7 +42,7 @@ class Classroom {
       updatedAtList[2], // day
     );
 
-    return Classroom(
+    return Classroom(   
       classId: json['classId'],
       className: json['className'],
       instructor: Instructor.fromJson(json['instructor']),
@@ -49,7 +50,7 @@ class Classroom {
       updatedAt: updatedAt,
     );
   }
-  factory Classroom.fromJson_notArray(Map<String, dynamic> json) {
+  factory Classroom.fromJson_notArray(Map<String, dynamic> json) { 
     return Classroom(
       classId: json['classId'],
       className: json['className'],

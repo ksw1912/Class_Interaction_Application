@@ -1,25 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
+import 'package:spaghetti/opinion/OpinionVote.dart';
 
 class OpinionService extends ChangeNotifier {
   List<Opinion> opinionList = [];
-  List<int> countList = []; //투표 인원 수
+  List<OpinionVote> countList = []; //투표 인원 수
 
   OpinionService() {
-    this.countList = List.filled(opinionList.length, 0);
+    updateCountList();
   }
 
+  // 투표 수량 초기화
+  void updateCountList() {
+    countList = opinionList
+        .map((opinion) => OpinionVote(opinionId: opinion.opinionId, count: 0))
+        .toList();
+    notifyListeners();
+  }
 
   void addOpinion({required Opinion opinion}) {
     this.opinionList.add(opinion);
-    countList = List.filled(
-        this.opinionList.length, 0); // opinion 리스트의 길이에 맞춰 count 리스트 재초기화
+    countList.add(OpinionVote(opinionId: opinion.opinionId, count: 0));
     notifyListeners();
   }
 
   void updateOpinion(int index, Opinion op) {
     opinionList[index] = op;
-    countList = List.filled(this.opinionList.length, 0);
+    countList[index] = OpinionVote(opinionId: op.opinionId, count: 0);
     notifyListeners();
   }
 
@@ -27,10 +34,5 @@ class OpinionService extends ChangeNotifier {
     opinionList.removeAt(index);
     countList.removeAt(index);
     notifyListeners();
-  }
-
-  //투표 수량 초기화
-  void updateCountList() {
-    countList = List.filled(opinionList.length, 0);
   }
 }

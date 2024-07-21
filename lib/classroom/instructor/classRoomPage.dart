@@ -6,6 +6,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:spaghetti/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
+import 'package:spaghetti/login/AuthService.dart';
 import 'package:spaghetti/member/User.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
@@ -39,7 +40,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
 
       //연결시작
       Websocket websocket = Websocket(classId);
-      websocket.stompClient.activate();
+      websocket.stompClient?.activate();
       // String numberOfStudents = classData.numberStudents;
 
       return Scaffold(
