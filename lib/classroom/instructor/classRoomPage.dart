@@ -39,7 +39,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
 
       //연결시작
       Websocket websocket = Websocket(classId);
-      websocket.stompClient.activate();
+      websocket.stompClient?.activate();
       // String numberOfStudents = classData.numberStudents;
 
       return Scaffold(
@@ -71,7 +71,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                 ),
                 Positioned(
                   left: screenWidth * 0.1,
-                  top: screenHeight * 0.87 - 60,
+                  top: screenHeight * 0.87 - 70,
                   child: Container(
                     width: screenWidth * 0.8,
                     child: Row(
@@ -264,7 +264,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                   top: screenHeight * 0.2,
                   child: Container(
                     width: screenWidth * 0.8,
-                    height: screenHeight * 0.7,
+                    height: screenHeight * 0.6, // 시바새끼 찾았다
                     child: PieChartExample(),
                   ),
                 ),
@@ -296,10 +296,10 @@ void addDialog(BuildContext context) {
 
 class QuizClassDialog extends StatefulWidget {
   @override
-  _AddClassDialogState createState() => _AddClassDialogState();
+  _QuizClassDialogState createState() => _QuizClassDialogState();
 }
 
-class _AddClassDialogState extends State<QuizClassDialog> {
+class _QuizClassDialogState extends State<QuizClassDialog> {
   ScrollController? _scrollController;
 
   @override
@@ -528,10 +528,10 @@ class PieChart2State extends State<PieChartExample> {
                 ),
               ),
             ),
-            const SizedBox(
+            SizedBox(
               height: 15, //차트랑 컬러 박스 위치
             ),
-            Container(
+            SizedBox(
               width: screenWidth * 0.8,
               height: screenHeight * 0.22, // 하단위치
               child: ListView.builder(
