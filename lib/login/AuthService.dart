@@ -13,6 +13,7 @@ class AuthService {
   //url 주소
   final String apiUrl = Apiurl().url;
   final storage = new FlutterSecureStorage();
+  AuthService() {}
 
   Future<http.Response> login(
       String email, String password, String role) async {

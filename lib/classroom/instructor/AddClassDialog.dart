@@ -30,7 +30,6 @@ class _AddClassDialogState extends State<AddClassDialog> {
     return Consumer2<ClassroomService, OpinionService>(
         builder: (context, classService, opinionService, child) {
       List<Opinion> opinionList = opinionService.opinionList;
-      List<int> countList = opinionService.countList;
 
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;

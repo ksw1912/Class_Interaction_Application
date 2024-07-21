@@ -1,10 +1,20 @@
 import 'dart:async';
-
+import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:spaghetti/login/AuthService.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 import 'package:http/http.dart' as http;
 import 'package:spaghetti/ApiUrl.dart';
 import 'dart:convert';
+
+// class NoCheckCertificateHttpOverrides extends HttpOverrides {
+//   @override
+//   HttpClient createHttpClient(SecurityContext? context) {
+//     return super.createHttpClient(context)
+//       ..badCertificateCallback =
+//           (X509Certificate cert, String host, int port) => true;
+//   }
+// }
 
 class Websocket {
   StompClient? stompClient;
@@ -24,7 +34,7 @@ class Websocket {
 
     stompClient = StompClient(
       config: StompConfig.sockJS(
-        url: 'http://${Apiurl().websocketUrl}/classroomEnter',
+        url: '${Apiurl().url}/classroomEnter',
         onConnect: onConnect,
         beforeConnect: () async {
           print('waiting to connect..');
