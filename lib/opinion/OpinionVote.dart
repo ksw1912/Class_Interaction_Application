@@ -5,5 +5,4 @@ class OpinionVote {
   int count = 0;
 
   OpinionVote({required String this.opinionId, int this.count = 0});
-
 }

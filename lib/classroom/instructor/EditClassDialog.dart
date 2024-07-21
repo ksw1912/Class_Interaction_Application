@@ -4,7 +4,13 @@ import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 
+import 'classCreatePage.dart';
+
 class EditClassDialog extends StatefulWidget {
+  final int index;
+  final String classId;
+
+  EditClassDialog({required this.index, required this.classId});
   @override
   _EditClassDialogState createState() => _EditClassDialogState();
 }
@@ -246,8 +252,19 @@ class _EditClassDialogState extends State<EditClassDialog> {
                                             child: ElevatedButton(
                                               onPressed: () {
                                                 // 수업 삭제 기능을 여기에 추가
+                                                classService.classroomDelete(
+                                                    context,
+                                                    widget.classId,
+                                                    widget.index);
                                                 Navigator.of(context)
                                                     .pop(); // 모달 닫기
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        ClassCreatePage(),
+                                                  ),
+                                                );
                                               },
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: Colors.red,
