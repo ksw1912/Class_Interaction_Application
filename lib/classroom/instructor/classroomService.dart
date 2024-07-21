@@ -187,8 +187,15 @@ class ClassroomService extends ChangeNotifier {
         for (int i = 0; i < opinions.length; i++) {
           opinionService.addOpinion(opinion: opinions[i]);
           print(opinions[i].opinion);
-          notifyListeners();
         }
+
+        // 중복된 수업이 목록에 추가되지 않도록 검사
+        bool classExists =
+            classroomList.any((c) => c.classId == classroom.classId);
+        if (!classExists) {
+          classroomList.add(classroom);
+        }
+
         notifyListeners();
       } else {
         await Dialogs.showErrorDialog(context, '오류발생');

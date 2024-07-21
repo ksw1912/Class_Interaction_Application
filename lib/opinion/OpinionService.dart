@@ -30,8 +30,9 @@ class OpinionService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteOpinion({required int index}) {
+  void deleteOpinion(int index) {
     opinionList.removeAt(index);
+    countList.removeAt(index); // countList에서도 해당 항목을 제거
     notifyListeners();
   }
 

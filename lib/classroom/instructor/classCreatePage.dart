@@ -1,15 +1,14 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:spaghetti/classroom/classroom.dart';
-import 'package:spaghetti/classroom/instructor/AddClassDialog.dart';
+import 'package:spaghetti/classroom/classroom.dart'; // Classroom 클래스 임포트
+import 'package:spaghetti/classroom/instructor/AddClassDialog.dart'; // AddClassDialog 임포트
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
-import 'package:intl/intl.dart';
-import 'package:spaghetti/login/AuthService.dart';
-import 'package:spaghetti/main/startPage.dart';
-import 'package:spaghetti/member/User.dart';
-import 'package:spaghetti/member/UserProvider.dart';
+import 'package:intl/intl.dart'; // DateFormat 임포트
+import 'package:spaghetti/login/AuthService.dart'; // AuthService 임포트
+import 'package:spaghetti/main/startPage.dart'; // StartPage 임포트
+import 'package:spaghetti/member/User.dart'; // User 임포트
+import 'package:spaghetti/member/UserProvider.dart'; // UserProvider 임포트
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 import 'classRoomPage.dart';
@@ -42,12 +41,13 @@ class _MyWidgetState extends State<ClassCreatePage> {
     return Consumer2<ClassroomService, OpinionService>(
         builder: (context, classService, opinionService, child) {
       // List<ClassData> classList = classService.classList;
-      List<Classroom> classList = classService.classroomLists;
+      List<Classroom> classList =
+          classService.classroomLists; // Classroom 클래스 사용
 
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
-      var user = Provider.of<UserProvider>(context).user;
+      var user = Provider.of<UserProvider>(context).user; // UserProvider 사용
 
       return Scaffold(
         resizeToAvoidBottomInset: false, // 키보드 오버플로우 방지
@@ -158,10 +158,10 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                 shadowColor: Colors.transparent, // 그림자 색상 제거
                                 // overlayColor 속성 제거
                               ),
-                              onPressed: () {
+                              onPressed: () async {
                                 Classroom classData = classList[index];
                                 String classId = classData.classId;
-                                classService.classroomOpinions(
+                                await classService.classroomOpinions(
                                     context, classId);
                                 Navigator.push(
                                   context,

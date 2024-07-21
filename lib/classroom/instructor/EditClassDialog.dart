@@ -150,7 +150,7 @@ class _EditClassDialogState extends State<EditClassDialog> {
                                       IconButton(
                                         icon: Icon(Icons.delete),
                                         onPressed: () {
-                                          // 삭제 기능 추가 예정
+                                          opinionService.deleteOpinion(index);
                                         },
                                       ),
                                     ],
