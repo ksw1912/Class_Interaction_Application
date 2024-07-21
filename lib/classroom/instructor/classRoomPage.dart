@@ -11,6 +11,7 @@ import 'package:spaghetti/login/AuthService.dart';
 import 'package:spaghetti/member/User.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
+import 'package:spaghetti/opinion/OpinionVote.dart';
 
 import 'classCreatePage.dart';
 
@@ -28,7 +29,8 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ClassroomService>(builder: (context, classService, child) {
+    return Consumer2<ClassroomService, OpinionService>(
+        builder: (context, classService, opinionService, child) {
       List<Classroom> classList = classService.classroomList;
 
       final mediaQuery = MediaQuery.of(context);
@@ -272,7 +274,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                     ),
                     iconSize: screenWidth * 0.08,
                     onPressed: () {
-                      showEditClassDialog(context);
+                      showEditClassDialog(context, widget.index, classId);
                     },
                   ),
                 ),
@@ -291,6 +293,26 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
         ),
       );
     });
+  }
+
+  void showEditClassDialog(BuildContext context, int index, String classId) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.0),
+          topRight: Radius.circular(20.0),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return EditClassDialog(
+          index: index,
+          classId: classId,
+        );
+      },
+    );
   }
 }
 
@@ -462,11 +484,13 @@ void showQRCodeModal(BuildContext context, String classNumber) {
 
 final List<Color> contentColors = [
   // 차트 컬러 리스트
+  Colors.white, // mainTextcolor
   Colors.blue,
   Colors.yellow,
   Colors.purple,
   Colors.green,
-  Colors.white // mainTextcolor
+  Colors.red,
+  Colors.pink,
 ];
 
 // 차트
@@ -480,8 +504,10 @@ class PieChart2State extends State<PieChartExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ClassroomService>(builder: (context, classService, child) {
-      List<ClassOpinionData> opinionList = classService.opinionList;
+    return Consumer2<ClassroomService, OpinionService>(
+        builder: (context, classService, opinionService, child) {
+      List<Opinion> opinionList = opinionService.opinionList; // 옵션 배열
+      List<OpinionVote> opinionCount = opinionService.countList; // 옵션 선택 개수 배열
 
       final screenHeight = MediaQuery.of(context).size.height;
       final screenWidth = MediaQuery.of(context).size.width;
@@ -489,28 +515,28 @@ class PieChart2State extends State<PieChartExample> {
         final screenWidth = MediaQuery.of(context).size.width;
 
         return List.generate(opinionList.length, (i) {
-          ClassOpinionData classOpinionData = opinionList[i];
           //터치했을때 이벤트
           //  final isTouched = i == touchedIndex;
           // final fontSize = isTouched ? screenWidth * 0.07 : screenWidth * 0.04;
           //  final radius = isTouched ? screenWidth * 0.15 : screenWidth * 0.12;
           //  const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-          opinionList.sort((b, a) => a.count.compareTo(b.count));
-          int maxIndex = classService.maxCount(opinionList);
+          opinionCount.sort((b, a) => a.count.compareTo(b.count));
+          opinionService.sortOpinion();
+          int maxIndex = opinionService.maxCount(opinionCount);
           final isMaxValue = i == maxIndex;
           final fontSize = isMaxValue ? screenWidth * 0.07 : screenWidth * 0.04;
           final radius = isMaxValue ? screenWidth * 0.15 : screenWidth * 0.12;
           const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
 
           return PieChartSectionData(
-            color: contentColors[i],
-            value: opinionList[i].count.toDouble(),
-            title: opinionList[i].content + '%',
+            color: contentColors[i + 1],
+            value: opinionCount[i].count.toDouble(),
+            title: '${opinionCount[i].count}개',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: contentColors[4],
+              color: contentColors[0],
               shadows: shadows,
             ),
           );
@@ -554,15 +580,13 @@ class PieChart2State extends State<PieChartExample> {
               child: ListView.builder(
                 itemCount: opinionList.length,
                 itemBuilder: (context, index) {
-                  ClassOpinionData classOpinionData = opinionList[index];
-
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Indicator(
-                        color: contentColors[index],
-                        text: opinionList[index].content,
+                        color: contentColors[index + 1],
+                        text: opinionList[index].opinion,
                         isSquare: true,
                       ),
                       SizedBox(
@@ -626,21 +650,4 @@ class Indicator extends StatelessWidget {
       ],
     );
   }
-}
-
-void showEditClassDialog(BuildContext context) {
-  showModalBottomSheet(
-    context: context,
-    backgroundColor: Colors.white,
-    isScrollControlled: true,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(20.0),
-        topRight: Radius.circular(20.0),
-      ),
-    ),
-    builder: (BuildContext context) {
-      return EditClassDialog();
-    },
-  );
 }

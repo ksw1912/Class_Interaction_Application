@@ -39,9 +39,11 @@ class _MyWidgetState extends State<ClassCreatePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ClassroomService>(builder: (context, classService, child) {
+    return Consumer2<ClassroomService, OpinionService>(
+        builder: (context, classService, opinionService, child) {
       // List<ClassData> classList = classService.classList;
       List<Classroom> classList = classService.classroomLists;
+
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
@@ -157,6 +159,10 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                 // overlayColor 속성 제거
                               ),
                               onPressed: () {
+                                Classroom classData = classList[index];
+                                String classId = classData.classId;
+                                classService.classroomOpinions(
+                                    context, classId);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

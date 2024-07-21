@@ -112,7 +112,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                         ),
                       ),
                       Positioned(
-                        left: screenWidth * 0.75,
+                        left: screenWidth * 0.675,
                         top: screenHeight * 0.21,
                         child: IconButton(
                           icon: Icon(Icons.add_circle_outline),
@@ -120,6 +120,21 @@ class _AddClassDialogState extends State<AddClassDialog> {
                             opinionService.addOpinion(
                                 opinion: Opinion(opinion: ""));
                           },
+                          iconSize: 35,
+                          color: Colors.green,
+                        ),
+                      ),
+                      Positioned(
+                        left: screenWidth * 0.8,
+                        top: screenHeight * 0.21,
+                        child: IconButton(
+                          icon: Icon(Icons.remove_circle_outline),
+                          onPressed: () {
+                            opinionService.deleteOpinion(
+                                index: opinionList.length - 1);
+                          },
+                          iconSize: 35,
+                          color: Colors.red,
                         ),
                       ),
                       Positioned(

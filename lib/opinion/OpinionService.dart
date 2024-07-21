@@ -20,7 +20,7 @@ class OpinionService extends ChangeNotifier {
 
   void addOpinion({required Opinion opinion}) {
     this.opinionList.add(opinion);
-    countList.add(OpinionVote(opinionId: opinion.opinionId, count: 0));
+    countList.add(OpinionVote(opinionId: opinion.opinionId, count: 10));
     notifyListeners();
   }
 
@@ -30,9 +30,39 @@ class OpinionService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteOpinion(int index) {
+  void deleteOpinion({required int index}) {
     opinionList.removeAt(index);
-    countList.removeAt(index);
     notifyListeners();
+  }
+
+  void initializeOpinionList() {
+    opinionList.clear();
+    countList.clear();
+    notifyListeners();
+  }
+
+  int maxCount(List<OpinionVote> opinion) {
+    int maxIndex = 0;
+    for (int i = 1; i < opinion.length; i++) {
+      if (opinion[i].count > opinion[maxIndex].count) {
+        maxIndex = i;
+      }
+    }
+    return maxIndex;
+  }
+
+  void sortOpinion() {
+    // 두 리스트를 연결하여 정렬하는 방법을 사용합니다.
+    List<MapEntry<Opinion, OpinionVote>> combinedList = [];
+    for (int i = 0; i < opinionList.length; i++) {
+      combinedList.add(MapEntry(opinionList[i], countList[i]));
+    }
+
+    // count 값을 기준으로 내림차순으로 정렬합니다.
+    combinedList.sort((a, b) => b.value.count.compareTo(a.value.count));
+
+    // 정렬된 결과를 다시 각각의 리스트에 반영합니다.
+    opinionList = combinedList.map((entry) => entry.key).toList();
+    countList = combinedList.map((entry) => entry.value).toList();
   }
 }

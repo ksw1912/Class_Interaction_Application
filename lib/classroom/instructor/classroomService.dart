@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:spaghetti/ApiUrl.dart';
 import 'package:spaghetti/Dialog/Dialogs.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
+import 'package:spaghetti/opinion/OpinionVote.dart';
 
 class ClassOpinionData {
   // 수업 생성시 옵션 데이터
@@ -49,7 +51,11 @@ class ClassroomService extends ChangeNotifier {
     notifyListeners();
   }
 
-  int maxCount(List<ClassOpinionData> opinion) {
+  deleteClassRoom() {
+    notifyListeners();
+  }
+
+  int maxCount(List<OpinionVote> opinion) {
     int maxIndex = 0;
     for (int i = 1; i < opinion.length; i++) {
       if (opinion[i].count > opinion[maxIndex].count) {
@@ -134,5 +140,104 @@ class ClassroomService extends ChangeNotifier {
   //날짜 string 타입으로변환
   String formatDate(DateTime date) {
     return DateFormat('yyyy-MM-dd').format(date);
+  }
+
+//클래스 입장
+  Future<void> classroomOpinions(
+    BuildContext context,
+    String classId,
+  ) async {
+    // JWT 토큰을 저장소에서 읽어오기
+    String? jwt = await storage.read(key: 'Authorization');
+
+    if (jwt == null) {
+      //토큰이 존재하지 않을 때 첫페이지로 이동
+      await Dialogs.showErrorDialog(context, '로그인시간이 만료되었습니다.');
+      Navigator.of(context).pushReplacementNamed('/Loginpage');
+      return;
+    }
+
+    // 헤더에 JWT 토큰 추가
+    var headers = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': '${jwt}',
+    };
+
+    try {
+      var response = await http.post(
+        Uri.parse('$apiUrl/classrooms/classroomEnter/$classId'),
+        headers: headers,
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        print("응답성공 ");
+        Classroom classroom =
+            Classroom.fromJson_notArray(responseBody['classroom']);
+
+        List<Opinion> opinions = (responseBody['opinions'] as List)
+            .map((opinionJson) => Opinion.fromJson(opinionJson))
+            .toList();
+
+        var opinionService =
+            Provider.of<OpinionService>(context, listen: false);
+        if (opinions.length > 0) {
+          opinionService.initializeOpinionList();
+        }
+        for (int i = 0; i < opinions.length; i++) {
+          opinionService.addOpinion(opinion: opinions[i]);
+          print(opinions[i].opinion);
+          notifyListeners();
+        }
+        notifyListeners();
+      } else {
+        await Dialogs.showErrorDialog(context, '오류발생');
+      }
+    } catch (exception) {
+      print(exception);
+      await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
+    }
+  }
+
+  Future<void> classroomDelete(
+    BuildContext context,
+    String classId,
+    int index,
+  ) async {
+    // JWT 토큰을 저장소에서 읽어오기
+    String? jwt = await storage.read(key: 'Authorization');
+
+    if (jwt == null) {
+      //토큰이 존재하지 않을 때 첫페이지로 이동
+      await Dialogs.showErrorDialog(context, '로그인시간이 만료되었습니다.');
+      Navigator.of(context).pushReplacementNamed('/Loginpage');
+      return;
+    }
+
+    // 헤더에 JWT 토큰 추가
+    var headers = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': '${jwt}',
+    };
+
+    try {
+      var response = await http.delete(
+        Uri.parse('$apiUrl/classrooms/classDelete/$classId'),
+        headers: headers,
+      );
+      
+      notifyListeners();
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print("응답성공 ");
+        deleteClassRoom();
+        notifyListeners();
+      } else {
+        await Dialogs.showErrorDialog(context, '오류발생');
+      }
+    } catch (exception) {
+      print(exception);
+      await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
+    }
   }
 }
