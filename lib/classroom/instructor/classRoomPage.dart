@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:spaghetti/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
+import 'package:spaghetti/classroom/instructor/EditClassDialog.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/login/AuthService.dart';
 import 'package:spaghetti/member/User.dart';
@@ -257,6 +258,21 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                         },
                         backgroundColor: Colors.transparent,
                       );
+                    },
+                  ),
+                ),
+                Positioned(
+                  right: screenWidth * 0.23, // 적절히 조정
+                  top: screenHeight * 0.1,
+                  child: IconButton(
+                    icon: Image.asset(
+                      'assets/images/edit.png', // 수정 아이콘 경로
+                      width: screenWidth * 0.08,
+                      height: screenWidth * 0.08,
+                    ),
+                    iconSize: screenWidth * 0.08,
+                    onPressed: () {
+                      showEditClassDialog(context);
                     },
                   ),
                 ),
@@ -610,4 +626,21 @@ class Indicator extends StatelessWidget {
       ],
     );
   }
+}
+
+void showEditClassDialog(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.white,
+    isScrollControlled: true,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20.0),
+        topRight: Radius.circular(20.0),
+      ),
+    ),
+    builder: (BuildContext context) {
+      return EditClassDialog();
+    },
+  );
 }
