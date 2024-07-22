@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
+import 'package:spaghetti/classroom/student/Enrollment.dart';
+import 'package:spaghetti/classroom/student/EnrollmentService.dart';
 import 'package:spaghetti/classroom/student/classEnterPage.dart';
 import 'package:spaghetti/classroom/instructor/classCreatePage.dart';
 import 'package:spaghetti/login/AuthService.dart';
@@ -182,6 +184,11 @@ class LoginPage extends StatelessWidget {
                   Provider.of<UserProvider>(context, listen: false)
                       .setUser(user);
                   if (role == "student") {
+                    List<Enrollment> enrollments = AuthService()
+                            .parseEnrollments(json.decode(response.body)) ??
+                        [];
+                    Provider.of<EnrollmentService>(context, listen: false)
+                        .setEnrollList(enrollments);
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => ClassEnterPage()),

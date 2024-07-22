@@ -6,6 +6,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart'; // kReleaseMode 사용을 위해 추가
 import 'package:spaghetti/Websocket.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
+import 'package:spaghetti/classroom/student/EnrollmentService.dart';
 import 'package:spaghetti/main/startPage.dart';
 import 'package:spaghetti/member/UserProvider.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
@@ -16,7 +17,7 @@ void main() {
     DevicePreview(
       enabled: !kReleaseMode, // 릴리즈 모드가 아닌 경우에만 활성화
       builder: (context) => MyApp(),
-    ),  
+    ),
   );
 }
 
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ClassroomService()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => OpinionService()),
+        ChangeNotifierProvider(create: (context) => EnrollmentService()),
       ],
       child: MaterialApp(
         builder: DevicePreview.appBuilder, // DevicePreview.appBuilder 사용

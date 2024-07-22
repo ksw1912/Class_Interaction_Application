@@ -327,6 +327,7 @@ class _JoinmemberState extends State<Joinmember> {
                                 TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
+                                    Navigator.of(context).pop();
                                   },
                                   child: Text("확인"),
                                 )

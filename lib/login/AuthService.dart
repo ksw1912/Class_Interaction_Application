@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:spaghetti/ApiUrl.dart';
 import 'package:spaghetti/classroom/classroom.dart';
+import 'package:spaghetti/classroom/student/Enrollment.dart';
 import 'package:spaghetti/member/Instructor.dart';
 import 'package:spaghetti/member/Student.dart';
 import 'package:spaghetti/member/User.dart';
@@ -61,7 +62,7 @@ class AuthService {
   }
 
   User parseUser(Map<String, dynamic> json) {
-    var info = json['user'];
+    var info = json['user'] ?? json;
     if (info['role'] == 'student') {
       return Student.fromJson(info);
     } else if (info['role'] == 'instructor') {
@@ -79,6 +80,16 @@ class AuthService {
     List<Classroom> classrooms =
         classroomsJson.map((json) => Classroom.fromJson(json)).toList();
     return classrooms;
+  }
+
+  List<Enrollment>? parseEnrollments(Map<String, dynamic> json) {
+    var enrollmentJson = json['enrollments'] as List?;
+    if (enrollmentJson == null) {
+      return null;
+    }
+    List<Enrollment> enrollments =
+        enrollmentJson.map((json) => Enrollment.fromJson(json)).toList();
+    return enrollments;
   }
 
 //회원가입

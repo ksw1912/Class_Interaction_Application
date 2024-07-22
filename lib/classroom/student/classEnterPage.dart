@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:spaghetti/classroom/classDetailPage.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
+import 'package:spaghetti/classroom/student/Enrollment.dart';
+import 'package:spaghetti/classroom/student/EnrollmentService.dart';
 import 'package:spaghetti/classroom/student/qr_scan_page.dart';
 import 'package:spaghetti/member/User.dart';
 import 'package:spaghetti/member/UserProvider.dart';
@@ -35,12 +38,14 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ClassroomService>(builder: (context, classService, child) {
-      List<Classroom> classList = classService.classroomList;
+    return Consumer2<EnrollmentService, ClassroomService>(
+        builder: (context, enrollmentService, classroomService, child) {
+      List<Enrollment> enrollList = enrollmentService.enrollList;
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
       final user = Provider.of<UserProvider>(context).user;
+      String classNumber = "";
       return Scaffold(
         resizeToAvoidBottomInset: false, // 키보드 오버플로우 방지
         body: PageView(
@@ -223,7 +228,11 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                                 color: Colors.transparent),
                                             cursorColor: Colors.transparent,
                                             onChanged: (value) {
-                                              setState(() {}); // 입력 변경 시 상태 갱신
+                                              setState(() {
+                                                classNumber = value;
+                                              });
+                                              print(
+                                                  classNumber); // 입력 변경 시 상태 갱신
                                             },
                                             autofocus: true, // 자동으로 키보드 띄우기
                                           ),
@@ -238,6 +247,9 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                               ),
                                             ),
                                             onPressed: () {
+                                              classroomService
+                                                  .studentEnterClassPin(
+                                                      context, classNumber);
                                               Navigator.pop(
                                                   context); // 기존 모달 닫기
                                               // 입력된 코드로 수업 입장 기능 추가
@@ -266,7 +278,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                   Positioned(
                     left: screenWidth * 0.1,
                     top: screenHeight * 0.45,
-                    child: Text('이전 수업',
+                    child: Text('수강 목록',
                         style: TextStyle(fontSize: screenWidth * 0.04)),
                   ),
                   Positioned(
@@ -280,9 +292,9 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                         child: ListView.builder(
                           controller: _scrollController, // ScrollController 추가
                           padding: EdgeInsets.zero, // ListView의 패딩을 없앰
-                          itemCount: classList.length,
+                          itemCount: enrollList.length,
                           itemBuilder: (context, index) {
-                            Classroom classData = classList[index];
+                            Enrollment EnrollmentData = enrollList[index];
                             return Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 8.0),
@@ -323,7 +335,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            classData.className,
+                                            EnrollmentData.classroom.className,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontSize: 16.0, // 텍스트 크기 설정
@@ -337,8 +349,8 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                             height: 1,
                                           ), // content와 date 사이의 간격
                                           Text(
-                                            classService
-                                                .formatDate(classData.updatedAt),
+                                            DateFormat('yyyy-MM-dd').format(
+                                                EnrollmentData.updatedAt),
                                             style: TextStyle(
                                               fontSize: 12.0, // 텍스트 크기 설정
                                               fontWeight:

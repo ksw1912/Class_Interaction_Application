@@ -4,5 +4,6 @@ class Apiurl {
   final String url = "http://192.168.123.193:8080";
   final String websocketUrl = "192.168.123.193:8080";
 }
-//15.165.81.157:8082  지성님?
+//15.165.81.157:8082  aws
 //192.168.123.193 -> 서원
+//http://localhost:8082 지성

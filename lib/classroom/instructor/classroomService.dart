@@ -147,7 +147,7 @@ class ClassroomService extends ChangeNotifier {
     return DateFormat('yyyy-MM-dd').format(date);
   }
 
-//클래스 입장
+//교수클래스 입장
   Future<void> classroomOpinions(
     BuildContext context,
     String classId,
@@ -173,6 +173,72 @@ class ClassroomService extends ChangeNotifier {
         Uri.parse('$apiUrl/classrooms/classroomEnter/$classId'),
         headers: headers,
       );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        print("응답성공 ");
+        Classroom classroom =
+            Classroom.fromJson_notArray(responseBody['classroom']);
+
+        List<Opinion> opinions = (responseBody['opinions'] as List)
+            .map((opinionJson) => Opinion.fromJson(opinionJson))
+            .toList();
+
+        var opinionService =
+            Provider.of<OpinionService>(context, listen: false);
+        if (opinions.length > 0) {
+          opinionService.initializeOpinionList();
+        }
+        for (int i = 0; i < opinions.length; i++) {
+          opinionService.addOpinion(opinion: opinions[i]);
+          print(opinions[i].opinion);
+        }
+
+        // 중복된 수업이 목록에 추가되지 않도록 검사
+        bool classExists =
+            classroomList.any((c) => c.classId == classroom.classId);
+        if (!classExists) {
+          classroomList.add(classroom);
+        }
+
+        notifyListeners();
+      } else {
+        await Dialogs.showErrorDialog(context, '오류발생');
+      }
+    } catch (exception) {
+      print(exception);
+      await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
+    }
+  }
+
+  //학생 특정수업입장(pin번호 입력으로)
+
+  Future<void> studentEnterClassPin(
+    BuildContext context,
+    String classNumber,
+  ) async {
+    // JWT 토큰을 저장소에서 읽어오기
+    String? jwt = await storage.read(key: 'Authorization');
+
+    if (jwt == null) {
+      //토큰이 존재하지 않을 때 첫페이지로 이동
+      await Dialogs.showErrorDialog(context, '로그인시간이 만료되었습니다.');
+      Navigator.of(context).pushReplacementNamed('/Loginpage');
+      return;
+    }
+
+    // 헤더에 JWT 토큰 추가
+    var headers = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': '${jwt}',
+    };
+
+    try {
+      var response = await http.get(
+        Uri.parse('$apiUrl/classrooms/classroomEnter/pin/$classNumber'),
+        headers: headers,
+      );
+      print(classNumber);
       print(response.statusCode);
       if (response.statusCode == 200) {
         Map<String, dynamic> responseBody = jsonDecode(response.body);
@@ -256,6 +322,41 @@ class ClassroomService extends ChangeNotifier {
         notifyListeners();
       } else {
         await Dialogs.showErrorDialog(context, '오류발생');
+      }
+    } catch (exception) {
+      print(exception);
+      await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
+    }
+  }
+
+  Future<void> classroomMakePin(
+      BuildContext context, String classId, String classNumber) async {
+    // JWT 토큰을 저장소에서 읽어오기
+    String? jwt = await storage.read(key: 'Authorization');
+
+    if (jwt == null) {
+      // 토큰이 존재하지 않을 때 첫 페이지로 이동
+      await Dialogs.showErrorDialog(context, '로그인 시간이 만료되었습니다.');
+      Navigator.of(context).pushReplacementNamed('/Loginpage');
+      return;
+    }
+
+    // 헤더에 JWT 토큰 추가
+    var headers = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': jwt,
+    };
+
+    try {
+      var response = await http.get(
+        Uri.parse('$apiUrl/classrooms/classroomMakePin/$classId/$classNumber'),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        print("응답 성공");
+      } else {
+        await Dialogs.showErrorDialog(context, '오류 발생');
       }
     } catch (exception) {
       print(exception);

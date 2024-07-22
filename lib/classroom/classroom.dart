@@ -22,7 +22,7 @@ class Classroom {
         'instructor': instructor.toJson(),
         'createdAt': DateFormat('yyyy-MM-dd')
             .format(createdAt), // 날짜를 yyyy-MM-dd 형식으로 변환
-        'updatedAt': DateFormat('yyyy-MM-dd').format(createdAt),
+        'updatedAt': DateFormat('yyyy-MM-dd').format(updatedAt),
       };
 
   //classroom 생성 response할때  생성한 정보(날짜)들이 배열로 받기 때문에 생성할때만 사용하고 이외에는 아래 Classroom.fromJson_notArray 메소드를 사용
