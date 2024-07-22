@@ -178,8 +178,9 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                               Classroom classData =
                                   classService.classroomList[widget.index];
                               // classid UUID로 변경함 수정해야함
-                              // String classNumber = classData.classnumber;
-                              String classNumber = "12345678"; // 8자리로 수정
+                              String classNumber =
+                                  (classData.classId.hashCode.abs() % 100000000)
+                                      .toString();
                               return Container(
                                 height: 300,
                                 margin: const EdgeInsets.only(
