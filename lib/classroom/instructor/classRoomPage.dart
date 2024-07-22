@@ -12,7 +12,6 @@ import 'package:spaghetti/member/User.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/opinion/OpinionVote.dart';
-
 import 'classCreatePage.dart';
 
 class ClassRoomPage extends StatefulWidget {
@@ -41,10 +40,13 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
       String className = classData.className;
       String classId = classData.classId;
 
-      //연결시작
+      // 연결 시작
       Websocket websocket = Websocket(classId);
       websocket.stompClient?.activate();
-      // String numberOfStudents = classData.numberStudents;
+
+      // classNumber 생성
+      String classNumber =
+          (classData.classId.hashCode.abs() % 100000000).toString();
 
       return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -170,16 +172,13 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                     ),
                     iconSize: screenWidth * 0.08,
                     onPressed: () {
+                      classService.classroomMakePin(
+                          context, classId, classNumber);
                       showModalBottomSheet(
                         context: context,
                         builder: (BuildContext context) {
                           return Consumer<ClassroomService>(
                             builder: (context, classService, child) {
-                              Classroom classData =
-                                  classService.classroomList[widget.index];
-                              // classid UUID로 변경함 수정해야함
-                              // String classNumber = classData.classnumber;
-                              String classNumber = "12345678"; // 8자리로 수정
                               return Container(
                                 height: 300,
                                 margin: const EdgeInsets.only(
@@ -283,7 +282,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                   top: screenHeight * 0.2,
                   child: Container(
                     width: screenWidth * 0.8,
-                    height: screenHeight * 0.6, // 시바새끼 찾았다
+                    height: screenHeight * 0.6, // 차트 높이 조정
                     child: PieChartExample(),
                   ),
                 ),
@@ -515,11 +514,6 @@ class PieChart2State extends State<PieChartExample> {
         final screenWidth = MediaQuery.of(context).size.width;
 
         return List.generate(opinionList.length, (i) {
-          //터치했을때 이벤트
-          //  final isTouched = i == touchedIndex;
-          // final fontSize = isTouched ? screenWidth * 0.07 : screenWidth * 0.04;
-          //  final radius = isTouched ? screenWidth * 0.15 : screenWidth * 0.12;
-          //  const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
           opinionCount.sort((b, a) => a.count.compareTo(b.count));
           opinionService.sortOpinion();
           int maxIndex = opinionService.maxCount(opinionCount);
