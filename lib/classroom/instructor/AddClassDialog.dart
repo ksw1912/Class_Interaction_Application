@@ -13,6 +13,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
   ScrollController? _scrollController;
   var className = "";
   List<String>? ops;
+
   @override
   void initState() {
     super.initState();
@@ -130,8 +131,10 @@ class _AddClassDialogState extends State<AddClassDialog> {
                         child: IconButton(
                           icon: Icon(Icons.remove_circle_outline),
                           onPressed: () {
-                            opinionService.deleteOpinion(
-                                index: opinionList.length - 1);
+                            if (opinionList.isNotEmpty) {
+                              opinionService
+                                  .deleteOpinion(opinionList.length - 1);
+                            }
                           },
                           iconSize: 35,
                           color: Colors.red,
