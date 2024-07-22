@@ -36,6 +36,12 @@ class OpinionService extends ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteAll() {
+    opinionList.clear();
+    countList.clear();
+    notifyListeners();
+  }
+
   void initializeOpinionList() {
     opinionList.clear();
     countList.clear();

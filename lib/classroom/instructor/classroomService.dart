@@ -12,7 +12,7 @@ import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/opinion/OpinionVote.dart';
 
 class ClassOpinionData {
-  // 수업 생성시 옵션 데이터
+  // 수업 생성시 옵션 데이터 삭제해야함
   ClassOpinionData({
     required this.content,
     required this.count,
@@ -27,6 +27,7 @@ class ClassroomService extends ChangeNotifier {
   final storage = FlutterSecureStorage();
   List<Classroom> classroomList = [];
   List<Opinion> opinions = [];
+
   List<ClassOpinionData> opinionList = [
     ClassOpinionData(content: '20', count: 20),
     ClassOpinionData(content: '30', count: 30),
@@ -34,23 +35,27 @@ class ClassroomService extends ChangeNotifier {
     ClassOpinionData(content: '40', count: 40),
   ];
 
+  //필요없는기능 삭제해야함
   createOpinion({required String content, required int count}) {
     ClassOpinionData opinion = ClassOpinionData(content: content, count: count);
     opinionList.add(opinion);
     notifyListeners();
   }
 
+//필요없는기능 삭제해야함
   updateOpinion({required int index, required String content}) {
     ClassOpinionData opinion = opinionList[index];
     opinion.content = content;
     notifyListeners();
   }
 
+//필요없는기능 삭제해야함
   deleteOpinion({required int index}) {
     opinionList.removeAt(index);
     notifyListeners();
   }
 
+//필요없는기능 삭제해야함
   deleteClassRoom() {
     notifyListeners();
   }
@@ -206,6 +211,7 @@ class ClassroomService extends ChangeNotifier {
     }
   }
 
+  //수업삭제
   Future<void> classroomDelete(
     BuildContext context,
     String classId,
@@ -232,12 +238,21 @@ class ClassroomService extends ChangeNotifier {
         Uri.parse('$apiUrl/classrooms/classDelete/$classId'),
         headers: headers,
       );
-      
-      notifyListeners();
+
       print(response.statusCode);
       if (response.statusCode == 200) {
         print("응답성공 ");
-        deleteClassRoom();
+        for (int i = 0; i < classroomList.length; i++) {
+          print(i);
+          if (classroomList[i].classId == classId) {
+            classroomList.removeAt(i);
+            notifyListeners();
+          }
+        }
+
+        var opinionService =
+            Provider.of<OpinionService>(context, listen: false);
+        opinionService.deleteAll();
         notifyListeners();
       } else {
         await Dialogs.showErrorDialog(context, '오류발생');
