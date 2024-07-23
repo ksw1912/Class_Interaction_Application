@@ -36,6 +36,14 @@ class _ClassDetailPageState extends State<classDetailPage> {
       String numberOfStudents = '10';
       return Scaffold(
         resizeToAvoidBottomInset: false, // 키보드 오버플로우 방지
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(Icons.arrow_back_rounded),
+          ),
+        ),
         body: PageView(
           children: [
             Container(

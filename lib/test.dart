@@ -8,7 +8,8 @@ import 'package:stomp_dart_client/stomp_dart_client.dart';
 class Test {
   String classId = "test";
   final storage = FlutterSecureStorage();
-  String jwt = '';
+  String jwt =
+      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFkbWluIiwicm9sZSI6Imluc3RydWN0b3IiLCJpYXQiOjE3MjE3NDg0MDksImV4cCI6MTcyMTc1NTYwOX0.c36JkvSOghUrNejCWEqklAEM4266VcumQ60XypAG-DM';
   late StompClient stompClient;
 
   Test() {
@@ -24,11 +25,11 @@ class Test {
         onWebSocketError: (dynamic error) => print(error.toString()),
         stompConnectHeaders: {
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': '${jwt}',
+          'Authorization': jwt,
         },
         webSocketConnectHeaders: {
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': '${jwt}',
+          'Authorization': jwt,
         },
       ),
     );
@@ -39,8 +40,6 @@ class Test {
       destination: '/topic/classroom/$classId',
       callback: (frame) {
         print("메세지결과: $frame");
-        List<dynamic>? result = json.decode(frame.body!);
-        print(result);
       },
     );
 
@@ -57,7 +56,3 @@ class Test {
   }
 }
 
-void main() {
-  Test testInstance = Test();
-  testInstance.main();
-}
