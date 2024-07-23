@@ -40,6 +40,8 @@ class _EditClassDialogState extends State<EditClassDialog> {
             TextEditingController(text: widget.classRoomData!.className);
 
         List<Opinion> opinionList = opinionService.opinionList;
+        List<String> opinion =
+            opinionList.map((opinion) => opinion.opinion).toList();
         final mediaQuery = MediaQuery.of(context);
         final screenHeight = mediaQuery.size.height;
         final screenWidth = mediaQuery.size.width;
@@ -188,8 +190,8 @@ class _EditClassDialogState extends State<EditClassDialog> {
                             ),
                           ),
                           onPressed: () async {
-                            await classService.classroomCreate(context,
-                                className, opinionList ?? [], opinionService);
+                            await classService.editOpinions(
+                                context, widget.classRoomData!, opinion);
                             Navigator.pop(context);
                           },
                           child: Row(
