@@ -22,6 +22,8 @@ class _JoinmemberState extends State<Joinmember> {
   var department = ""; // 부서??
   var PWCheck1 = '1';
   var PWCheck2 = '2';
+  bool _obscureText1 = true;
+  bool _obscureText2 = true;
   final _formKey1 = GlobalKey<FormState>();
   final _formKey2 = GlobalKey<FormState>();
   final _formKey3 = GlobalKey<FormState>();
@@ -64,7 +66,6 @@ class _JoinmemberState extends State<Joinmember> {
     final mediaQuery = MediaQuery.of(context);
     final screenHeight = mediaQuery.size.height;
     final screenWidth = mediaQuery.size.width;
-
     return Scaffold(
       appBar: AppBar(title: Text('회원가입')),
       body: Padding(
@@ -237,7 +238,21 @@ class _JoinmemberState extends State<Joinmember> {
                   child: Column(
                     children: <Widget>[
                       TextFormField(
-                        decoration: InputDecoration(labelText: 'PassWord'),
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText1
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText1 = !_obscureText1;
+                              });
+                            },
+                          ),
+                        ),
                         validator: (value) {
                           password = value!; // 비밀번호 저장
                           PWCheck1 = value;
@@ -246,9 +261,24 @@ class _JoinmemberState extends State<Joinmember> {
                           }
                           return null;
                         },
+                        obscureText: _obscureText1,
                       ),
                       TextFormField(
-                        decoration: InputDecoration(labelText: 'Password'),
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText2
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText2 = !_obscureText2;
+                              });
+                            },
+                          ),
+                        ),
                         validator: (value) {
                           PWCheck2 = value!;
                           if (value == null || value.isEmpty) {
@@ -260,6 +290,7 @@ class _JoinmemberState extends State<Joinmember> {
                           }
                           return null;
                         },
+                        obscureText: _obscureText2,
                       ),
                     ],
                   ),

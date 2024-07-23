@@ -127,13 +127,20 @@ class LoginPage extends StatelessWidget {
         var email = "";
         var password = "";
         return AlertDialog(
-          title: Text("로그인"),
+          backgroundColor: Colors.white,
+          title: Text("로그인",
+              style: TextStyle(
+                fontFamily: 'NanumB',
+              )),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
                   decoration: InputDecoration(labelText: '아이디'),
+                  style: TextStyle(
+                    fontFamily: 'NanumB',
+                  ),
                   onChanged: (value) {
                     email = value;
                   },
@@ -143,6 +150,9 @@ class LoginPage extends StatelessWidget {
                 ),
                 TextField(
                   decoration: InputDecoration(labelText: '비밀번호'),
+                  style: TextStyle(
+                    fontFamily: 'NanumB',
+                  ),
                   onChanged: (value) {
                     password = value;
                   },
@@ -156,7 +166,10 @@ class LoginPage extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('취소'),
+              child: Text('취소',
+                  style: TextStyle(
+                    fontFamily: 'NanumB',
+                  )),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -194,13 +207,19 @@ class LoginPage extends StatelessWidget {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        content: Text("아이디 또는 비밀번호가 잘못되었습니다."),
+                        content: Text("아이디 또는 비밀번호가 잘못되었습니다.",
+                            style: TextStyle(
+                              fontFamily: 'NanumB',
+                            )),
                         actions: [
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text("취소"),
+                            child: Text("취소",
+                                style: TextStyle(
+                                  fontFamily: 'NanumB',
+                                )),
                           )
                         ],
                       );
@@ -208,7 +227,10 @@ class LoginPage extends StatelessWidget {
                   );
                 }
               },
-              child: Text('로그인'),
+              child: Text('로그인',
+                  style: TextStyle(
+                    fontFamily: 'NanumB',
+                  )),
             ),
           ],
         );
