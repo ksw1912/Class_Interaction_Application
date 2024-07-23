@@ -11,6 +11,12 @@ class Opinion {
     this.classroom,
   });
 
+  Map<String, dynamic> toJson() => {
+        'opinionId': opinionId,
+        'opinion': opinion,
+        'classroom': classroom?.toJson(),
+      };
+
   factory Opinion.fromJson(Map<String, dynamic> json) {
     return Opinion(
       opinionId: json['opinionId'],

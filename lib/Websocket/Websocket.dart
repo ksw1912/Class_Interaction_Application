@@ -51,6 +51,8 @@ class Websocket {
     stompClient?.subscribe(
       destination: '/sub/classroom/$classId',
       callback: (frame) {
+
+        
         print("메세지결과: $frame");
       },
     );
