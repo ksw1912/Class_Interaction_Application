@@ -128,36 +128,7 @@ class StartPageState extends State<StartPage> {
                     ),
                   ),
                 ),
-                Positioned(
-                  left: screenWidth * 0.1,
-                  top: screenHeight * 0.9,
-                  child: Container(
-                    width: screenWidth * 0.375,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(192, 5, 165, 0),
-                        surfaceTintColor: Color.fromARGB(192, 5, 165, 0),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Joinmember(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        "회원가입 테스트",
-                        style: TextStyle(
-                            color: Colors.white, fontSize: screenWidth * 0.035),
-                      ),
-                    ),
-                  ),
-                ),
+                
                 Positioned(
                   left: screenWidth * 0.525,
                   top: screenHeight * 0.85,
