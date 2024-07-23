@@ -272,7 +272,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                     ),
                     iconSize: screenWidth * 0.08,
                     onPressed: () {
-                      showEditClassDialog(context, classId);
+                      showEditClassDialog(context);
                     },
                   ),
                 ),
@@ -293,7 +293,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
     });
   }
 
-  void showEditClassDialog(BuildContext context, String classId) {
+  void showEditClassDialog(BuildContext context) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
@@ -306,7 +306,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
       ),
       builder: (BuildContext context) {
         return EditClassDialog(
-          classId: classId,
+          classRoomData: widget.classRoomData,
         );
       },
     );

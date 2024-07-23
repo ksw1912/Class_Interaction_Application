@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
@@ -7,9 +8,9 @@ import 'package:spaghetti/opinion/OpinionService.dart';
 import 'classCreatePage.dart';
 
 class EditClassDialog extends StatefulWidget {
-  final String classId;
+  final Classroom? classRoomData;
 
-  EditClassDialog({required this.classId});
+  EditClassDialog({super.key, required this.classRoomData});
   @override
   _EditClassDialogState createState() => _EditClassDialogState();
 }
@@ -35,8 +36,10 @@ class _EditClassDialogState extends State<EditClassDialog> {
   Widget build(BuildContext context) {
     return Consumer2<ClassroomService, OpinionService>(
       builder: (context, classService, opinionService, child) {
-        List<Opinion> opinionList = opinionService.opinionList;
+        TextEditingController titleValue =
+            TextEditingController(text: widget.classRoomData!.className);
 
+        List<Opinion> opinionList = opinionService.opinionList;
         final mediaQuery = MediaQuery.of(context);
         final screenHeight = mediaQuery.size.height;
         final screenWidth = mediaQuery.size.width;
@@ -65,7 +68,8 @@ class _EditClassDialogState extends State<EditClassDialog> {
                           style: TextStyle(fontSize: screenWidth * 0.05),
                         ),
                         SizedBox(height: screenHeight * 0.02),
-                        TextField(
+                        TextFormField(
+                          controller: titleValue,
                           decoration: InputDecoration(
                             fillColor: Color.fromARGB(255, 214, 214, 214),
                             filled: true,
@@ -77,7 +81,6 @@ class _EditClassDialogState extends State<EditClassDialog> {
                               borderRadius: BorderRadius.circular(10),
                               borderSide: BorderSide.none,
                             ),
-                            hintText: '수업명을 입력해주세요',
                           ),
                           onChanged: (value) {
                             className = value;
@@ -121,12 +124,15 @@ class _EditClassDialogState extends State<EditClassDialog> {
                                         child: Container(
                                           alignment: Alignment.centerLeft,
                                           height: screenHeight * 0.07,
-                                          child: TextField(
+                                          child: TextFormField(
                                             onChanged: (value) {
                                               opinionService.updateOpinion(
                                                   index,
                                                   Opinion(opinion: value));
                                             },
+                                            controller: TextEditingController(
+                                                text:
+                                                    opinionList[index].opinion),
                                             decoration: InputDecoration(
                                               fillColor: Color.fromARGB(
                                                   255, 214, 214, 214),
@@ -256,7 +262,9 @@ class _EditClassDialogState extends State<EditClassDialog> {
                                               onPressed: () {
                                                 // 수업 삭제 기능을 여기에 추가
                                                 classService.classroomDelete(
-                                                    context, widget.classId);
+                                                    context,
+                                                    widget.classRoomData!
+                                                        .classId);
                                                 Navigator.of(context)
                                                     .pop(); // 모달 닫기
                                                 Navigator.pushReplacement(
