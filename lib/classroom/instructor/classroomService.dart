@@ -148,7 +148,7 @@ class ClassroomService extends ChangeNotifier {
   }
 
 //교수클래스 입장
-  Future<void> classroomOpinions(
+  Future<Classroom?> classroomOpinions(
     BuildContext context,
     String classId,
   ) async {
@@ -159,7 +159,7 @@ class ClassroomService extends ChangeNotifier {
       //토큰이 존재하지 않을 때 첫페이지로 이동
       await Dialogs.showErrorDialog(context, '로그인시간이 만료되었습니다.');
       Navigator.of(context).pushReplacementNamed('/Loginpage');
-      return;
+      return null;
     }
 
     // 헤더에 JWT 토큰 추가
@@ -194,16 +194,10 @@ class ClassroomService extends ChangeNotifier {
           print(opinions[i].opinion);
         }
 
-        // 중복된 수업이 목록에 추가되지 않도록 검사
-        bool classExists =
-            classroomList.any((c) => c.classId == classroom.classId);
-        if (!classExists) {
-          classroomList.add(classroom);
-        }
-
         notifyListeners();
+        return classroom;
       } else {
-        await Dialogs.showErrorDialog(context, '오류발생');
+        await Dialogs.showErrorDialog(context, ' 수업 입장 중 오류 발생');
       }
     } catch (exception) {
       print(exception);
@@ -213,7 +207,7 @@ class ClassroomService extends ChangeNotifier {
 
   //학생 특정수업입장(pin번호 입력으로)
 
-  Future<void> studentEnterClassPin(
+  Future<Classroom?> studentEnterClassPin(
     BuildContext context,
     String classNumber,
   ) async {
@@ -224,7 +218,7 @@ class ClassroomService extends ChangeNotifier {
       //토큰이 존재하지 않을 때 첫페이지로 이동
       await Dialogs.showErrorDialog(context, '로그인시간이 만료되었습니다.');
       Navigator.of(context).pushReplacementNamed('/Loginpage');
-      return;
+      return null;
     }
 
     // 헤더에 JWT 토큰 추가
@@ -260,14 +254,8 @@ class ClassroomService extends ChangeNotifier {
           print(opinions[i].opinion);
         }
 
-        // 중복된 수업이 목록에 추가되지 않도록 검사
-        bool classExists =
-            classroomList.any((c) => c.classId == classroom.classId);
-        if (!classExists) {
-          classroomList.add(classroom);
-        }
-
         notifyListeners();
+        return classroom;
       } else {
         await Dialogs.showErrorDialog(context, '오류발생');
       }
@@ -281,7 +269,6 @@ class ClassroomService extends ChangeNotifier {
   Future<void> classroomDelete(
     BuildContext context,
     String classId,
-    int index,
   ) async {
     // JWT 토큰을 저장소에서 읽어오기
     String? jwt = await storage.read(key: 'Authorization');

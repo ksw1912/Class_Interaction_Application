@@ -15,9 +15,9 @@ import 'package:spaghetti/opinion/OpinionVote.dart';
 import 'classCreatePage.dart';
 
 class ClassRoomPage extends StatefulWidget {
-  final int index;
+  final Classroom? classRoomData;
 
-  ClassRoomPage({super.key, required this.index});
+  ClassRoomPage({super.key, required this.classRoomData});
 
   @override
   _ClassRoomPageState createState() => _ClassRoomPageState();
@@ -36,9 +36,8 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
 
-      Classroom classData = classList[widget.index];
-      String className = classData.className;
-      String classId = classData.classId;
+      String className = widget.classRoomData!.className;
+      String classId = widget.classRoomData!.classId;
 
       // 연결 시작
       Websocket websocket = Websocket(classId);
@@ -46,7 +45,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
 
       // classNumber 생성
       String classNumber =
-          (classData.classId.hashCode.abs() % 100000000).toString();
+          (widget.classRoomData!.classId.hashCode.abs() % 100000000).toString();
 
       return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -273,7 +272,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                     ),
                     iconSize: screenWidth * 0.08,
                     onPressed: () {
-                      showEditClassDialog(context, widget.index, classId);
+                      showEditClassDialog(context, classId);
                     },
                   ),
                 ),
@@ -282,7 +281,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                   top: screenHeight * 0.2,
                   child: Container(
                     width: screenWidth * 0.8,
-                    height: screenHeight * 0.6, // 차트 높이 조정
+                    height: screenHeight * 0.55, // 차트 높이 조정
                     child: PieChartExample(),
                   ),
                 ),
@@ -294,7 +293,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
     });
   }
 
-  void showEditClassDialog(BuildContext context, int index, String classId) {
+  void showEditClassDialog(BuildContext context, String classId) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
@@ -307,7 +306,6 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
       ),
       builder: (BuildContext context) {
         return EditClassDialog(
-          index: index,
           classId: classId,
         );
       },

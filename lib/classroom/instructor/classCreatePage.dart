@@ -161,13 +161,13 @@ class _MyWidgetState extends State<ClassCreatePage> {
                               onPressed: () async {
                                 Classroom classData = classList[index];
                                 String classId = classData.classId;
-                                await classService.classroomOpinions(
-                                    context, classId);
+                                Classroom? classRoomData = await classService
+                                    .classroomOpinions(context, classId);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (_) => ClassRoomPage(
-                                      index: index,
+                                      classRoomData: classRoomData,
                                     ),
                                   ),
                                 );
