@@ -246,6 +246,7 @@ class ClassroomService extends ChangeNotifier {
 
         var opinionService =
             Provider.of<OpinionService>(context, listen: false);
+
         if (opinions.length > 0) {
           opinionService.initializeOpinionList();
         }
@@ -253,7 +254,6 @@ class ClassroomService extends ChangeNotifier {
           opinionService.addOpinion(opinion: opinions[i]);
           print(opinions[i].opinion);
         }
-
         notifyListeners();
         return classroom;
       } else {

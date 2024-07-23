@@ -6,9 +6,9 @@ import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 
 class classDetailPage extends StatefulWidget {
-  final int index;
+  final Classroom classroom;
 
-  classDetailPage({super.key, required this.index});
+  classDetailPage({super.key, required this.classroom});
 
   @override
   _ClassDetailPageState createState() => _ClassDetailPageState();
@@ -29,7 +29,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
       print(opinionList[0].opinion);
-      Classroom? classData = classList[widget.index];
+      Classroom? classData = widget.classroom;
       String className = classData.className;
       //참여인원
       // String numberOfStudents = classData.numberStudents;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:spaghetti/Dialog/Dialogs.dart';
 import 'package:spaghetti/classroom/classDetailPage.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
@@ -246,12 +247,25 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                                     BorderRadius.circular(12),
                                               ),
                                             ),
-                                            onPressed: () {
-                                              classroomService
-                                                  .studentEnterClassPin(
-                                                      context, classNumber);
-                                              Navigator.pop(
-                                                  context); // 기존 모달 닫기
+                                            onPressed: () async {
+                                              var classroom =
+                                                  await classroomService
+                                                      .studentEnterClassPin(
+                                                          context, classNumber);
+                                              if (classroom == null) {
+                                                Navigator.pop(context);
+                                              } // 기존 모달 닫기
+                                              else {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        classDetailPage(
+                                                      classroom: classroom,
+                                                    ),
+                                                  ),
+                                                );
+                                              }
                                               // 입력된 코드로 수업 입장 기능 추가
                                             },
                                             child: Text("수업 입장하기"),
@@ -294,7 +308,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                           padding: EdgeInsets.zero, // ListView의 패딩을 없앰
                           itemCount: enrollList.length,
                           itemBuilder: (context, index) {
-                            Enrollment EnrollmentData = enrollList[index];
+                            Enrollment enrollmentData = enrollList[index];
                             return Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 8.0),
@@ -315,15 +329,23 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                   shadowColor: Colors.transparent, // 그림자 색상 제거
                                   // overlayColor 속성 제거
                                 ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => classDetailPage(
-                                        index: index,
+                                onPressed: () async {
+                                  var classroom =
+                                      await classroomService.classroomOpinions(
+                                          context,
+                                          enrollmentData.classroom.classId);
+                                  if (classroom == null) {
+                                    Navigator.pop(context);
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => classDetailPage(
+                                          classroom: classroom,
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  }
                                 },
                                 child: Row(
                                   mainAxisAlignment:
@@ -335,7 +357,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            EnrollmentData.classroom.className,
+                                            enrollmentData.classroom.className,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontSize: 16.0, // 텍스트 크기 설정
@@ -350,7 +372,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                           ), // content와 date 사이의 간격
                                           Text(
                                             DateFormat('yyyy-MM-dd').format(
-                                                EnrollmentData.updatedAt),
+                                                enrollmentData.updatedAt),
                                             style: TextStyle(
                                               fontSize: 12.0, // 텍스트 크기 설정
                                               fontWeight:
