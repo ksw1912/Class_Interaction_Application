@@ -12,6 +12,7 @@ import 'package:spaghetti/login/AuthService.dart';
 import 'package:spaghetti/member/User.dart';
 import 'package:spaghetti/member/UserProvider.dart';
 import '../main/startPage.dart';
+import '../login/joinMember.dart';
 
 class LoginPage extends StatelessWidget {
   final String role;
@@ -67,9 +68,8 @@ class LoginPage extends StatelessWidget {
                   alignment: Alignment(0, 0.4),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.yellow,
-                      surfaceTintColor: Colors.yellow,
-                      foregroundColor: Colors.black,
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -77,54 +77,38 @@ class LoginPage extends StatelessWidget {
                     onPressed: () {
                       loginModal(context);
                     },
-                    child:
-                        Text("                   카카오로 시작하기                   "),
+                    child: Text(
+                        "                         로그인                         "),
                   ),
                 ),
+                // 회원가입 텍스트 위치 조정을 위한 주석
                 Align(
-                  alignment: Alignment(-0.4, 0.39),
-                  child: Image.asset(
-                    'assets/images/icon_Kakao.png',
-                    width: 27,
-                    height: 27,
-                  ),
-                ),
-                Align(
-                  alignment: Alignment(0, 0.6),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(192, 175, 173, 172),
-                      surfaceTintColor: Color.fromARGB(192, 175, 173, 172),
-                      foregroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                  alignment: Alignment(0, 0.52), // 위치를 조정하고 싶으면 이 값을 변경하세요
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Joinmember(),
+                        ),
+                      );
+                    },
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: RichText(
+                        text: TextSpan(
+                          text: "계정이 없으신가요? ",
+                          style: TextStyle(fontSize: 13, color: Colors.black),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: "가입하기",
+                              style:
+                                  TextStyle(fontSize: 13, color: Colors.blue),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    onPressed: () {
-                      if (role == "student") {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ClassEnterPage()),
-                        );
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ClassCreatePage()),
-                        );
-                      }
-                    },
-                    child: Text(
-                        "                     구글로 시작하기                     "),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment(-0.4, 0.6),
-                  child: Image.asset(
-                    'assets/images/icon_Google.png',
-                    width: 50,
-                    height: 50,
                   ),
                 ),
               ],
