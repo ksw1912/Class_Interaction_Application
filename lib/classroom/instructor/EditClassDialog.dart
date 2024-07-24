@@ -107,8 +107,9 @@ class _EditClassDialogState extends State<EditClassDialog> {
                             IconButton(
                               icon: Icon(Icons.add_circle_outline),
                               onPressed: () {
-                                opinionService.addOpinion(
-                                    opinion: Opinion(opinion: ""));
+                                setState(() {
+                                  opinion?.add("");
+                                });
                               },
                             ),
                           ],
@@ -123,7 +124,7 @@ class _EditClassDialogState extends State<EditClassDialog> {
                             child: ListView.builder(
                               scrollDirection: Axis.vertical,
                               padding: EdgeInsets.zero,
-                              itemCount: opinionList?.length ?? 0,
+                              itemCount: opinion?.length ?? 0,
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding:
@@ -164,10 +165,9 @@ class _EditClassDialogState extends State<EditClassDialog> {
                                       IconButton(
                                         icon: Icon(Icons.delete),
                                         onPressed: () {
-                                          Navigator.popUntil(
-                                              context,
-                                              ModalRoute.withName(
-                                                  '/classCreatePage'));
+                                          setState(() {
+                                            opinion?.removeAt(index);
+                                          });
                                         },
                                       ),
                                     ],
@@ -196,9 +196,62 @@ class _EditClassDialogState extends State<EditClassDialog> {
                             ),
                           ),
                           onPressed: () async {
-                            await classService.editOpinions(
-                                context, widget.classRoomData!, opinion!);
-                            Navigator.pop(context);
+                            if (widget.classRoomData!.className == "") {
+                              // AlertDialog 표시
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("제목을 입력해주세요"),
+                                    actions: [
+                                      // 가운데 정렬을 위한 Row 위젯 사용
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pop(); // 다이얼로그 닫기
+                                            },
+                                            child: Text("확인"),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            } else if (opinion!
+                                .any((item) => item == null || item!.isEmpty)) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("의견을 적어주세요"),
+                                    actions: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pop(); // 다이얼로그 닫기
+                                            },
+                                            child: Text("확인"),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            } else {
+                              await classService.editOpinions(
+                                  context, widget.classRoomData!, opinion!);
+                              Navigator.pop(context);
+                            }
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

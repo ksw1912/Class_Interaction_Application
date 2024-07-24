@@ -209,7 +209,7 @@ class ClassroomService extends ChangeNotifier {
   Future<Classroom?> editOpinions(
     BuildContext context,
     Classroom classroom,
-    List<String> opinions,
+    List<String> opinion,
   ) async {
     // JWT 토큰을 저장소에서 읽어오기
     String? jwt = await storage.read(key: 'Authorization');
@@ -228,11 +228,11 @@ class ClassroomService extends ChangeNotifier {
     };
     var body = jsonEncode({
       'classroom': classroom,
-      'opinions': opinions,
+      'opinion': opinion,
     });
 
     try {
-      var response = await http.post(
+      var response = await http.put(
         Uri.parse('$apiUrl/classrooms/classroom/update'),
         headers: headers,
         body: body,

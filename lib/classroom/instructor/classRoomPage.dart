@@ -40,8 +40,8 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
       String classId = widget.classRoomData!.classId;
 
       // 연결 시작
-      Websocket websocket = Websocket(classId);
-      websocket.stompClient?.activate();
+      // Websocket websocket = Websocket(classId);
+      //websocket.stompClient?.activate();
 
       // classNumber 생성
       String classNumber =
@@ -143,7 +143,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                         ),
                       ),
                       onPressed: () {
-                        websocket.disconnect();
+                        // websocket.disconnect();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
