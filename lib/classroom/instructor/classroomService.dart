@@ -209,11 +209,10 @@ class ClassroomService extends ChangeNotifier {
   Future<Classroom?> editOpinions(
     BuildContext context,
     Classroom classroom,
-    List<String> opinion,
+    List<String> opinions,
   ) async {
     // JWT 토큰을 저장소에서 읽어오기
     String? jwt = await storage.read(key: 'Authorization');
-
     if (jwt == null) {
       //토큰이 존재하지 않을 때 첫페이지로 이동
       await Dialogs.showErrorDialog(context, '로그인시간이 만료되었습니다.');
@@ -227,7 +226,7 @@ class ClassroomService extends ChangeNotifier {
       'Authorization': '${jwt}',
     };
     var body = jsonEncode({
-      'classrooms': classroom,
+      'classroom': classroom,
       'opinions': opinions,
     });
 
@@ -261,6 +260,7 @@ class ClassroomService extends ChangeNotifier {
         return classroom;
       } else {
         await Dialogs.showErrorDialog(context, '의견 수정중 오류 발생');
+        print(body);
       }
     } catch (exception) {
       print(exception);

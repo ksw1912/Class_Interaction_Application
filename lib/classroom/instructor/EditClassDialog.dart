@@ -17,13 +17,24 @@ class EditClassDialog extends StatefulWidget {
 
 class _EditClassDialogState extends State<EditClassDialog> {
   ScrollController? _scrollController;
-  var className = "";
+
   List<String>? ops;
+  List<String>? opinion;
+  List<Opinion>? opinionList;
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final opinionService =
+          Provider.of<OpinionService>(context, listen: false);
+      setState(() {
+        opinionList = opinionService.opinionList;
+        opinion = opinionList?.map((opinion) => opinion.opinion).toList();
+      });
+    });
   }
 
   @override
@@ -39,9 +50,6 @@ class _EditClassDialogState extends State<EditClassDialog> {
         TextEditingController titleValue =
             TextEditingController(text: widget.classRoomData!.className);
 
-        List<Opinion> opinionList = opinionService.opinionList;
-        List<String> opinion =
-            opinionList.map((opinion) => opinion.opinion).toList();
         final mediaQuery = MediaQuery.of(context);
         final screenHeight = mediaQuery.size.height;
         final screenWidth = mediaQuery.size.width;
@@ -85,7 +93,7 @@ class _EditClassDialogState extends State<EditClassDialog> {
                             ),
                           ),
                           onChanged: (value) {
-                            className = value;
+                            widget.classRoomData!.className = value;
                           },
                         ),
                         SizedBox(height: screenHeight * 0.02),
@@ -115,7 +123,7 @@ class _EditClassDialogState extends State<EditClassDialog> {
                             child: ListView.builder(
                               scrollDirection: Axis.vertical,
                               padding: EdgeInsets.zero,
-                              itemCount: opinionList.length,
+                              itemCount: opinionList?.length ?? 0,
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding:
@@ -128,13 +136,12 @@ class _EditClassDialogState extends State<EditClassDialog> {
                                           height: screenHeight * 0.07,
                                           child: TextFormField(
                                             onChanged: (value) {
-                                              opinionService.updateOpinion(
-                                                  index,
-                                                  Opinion(opinion: value));
+                                              if (opinion != null) {
+                                                opinion![index] = value;
+                                              }
                                             },
                                             controller: TextEditingController(
-                                                text:
-                                                    opinionList[index].opinion),
+                                                text: opinion?[index]),
                                             decoration: InputDecoration(
                                               fillColor: Color.fromARGB(
                                                   255, 214, 214, 214),
@@ -157,7 +164,6 @@ class _EditClassDialogState extends State<EditClassDialog> {
                                       IconButton(
                                         icon: Icon(Icons.delete),
                                         onPressed: () {
-                                          opinionService.deleteOpinion(index);
                                           Navigator.popUntil(
                                               context,
                                               ModalRoute.withName(
@@ -191,7 +197,7 @@ class _EditClassDialogState extends State<EditClassDialog> {
                           ),
                           onPressed: () async {
                             await classService.editOpinions(
-                                context, widget.classRoomData!, opinion);
+                                context, widget.classRoomData!, opinion!);
                             Navigator.pop(context);
                           },
                           child: Row(

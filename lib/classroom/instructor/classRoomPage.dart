@@ -39,10 +39,10 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
 
       String className = widget.classRoomData!.className;
       String classId = widget.classRoomData!.classId;
-      User? user = Provider.of<UserProvider>(context).user; 
+      User? user = Provider.of<UserProvider>(context).user;
       // 연결 시작
-      Websocket websocket = Websocket(classId,user);
-      websocket.stompClient?.activate();
+      // Websocket websocket = Websocket(classId, user);
+      // websocket.stompClient?.activate();
 
       // classNumber 생성
       String classNumber =
@@ -144,6 +144,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                         ),
                       ),
                       onPressed: () {
+                        // websocket.disconnect();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
