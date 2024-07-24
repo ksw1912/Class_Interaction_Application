@@ -143,6 +143,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                         ),
                       ),
                       onPressed: () {
+                        websocket.disconnect();
                         Navigator.push(
                           context,
                           MaterialPageRoute(

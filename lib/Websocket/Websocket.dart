@@ -13,6 +13,7 @@ class Websocket {
   final storage = FlutterSecureStorage();
   String? jwt;
   StompClient? stompClient;
+  dynamic unsubscribe;
 
   Websocket(this.classId) {
     stompOn();
@@ -48,11 +49,9 @@ class Websocket {
   }
 
   void onConnect(StompFrame frame) {
-    stompClient?.subscribe(
+    unsubscribe = stompClient?.subscribe(
       destination: '/sub/classroom/$classId',
       callback: (frame) {
-
-        
         print("메세지결과: $frame");
       },
     );
@@ -66,7 +65,14 @@ class Websocket {
   }
 
   //연결끊기
+  void disconnect() {
+    if (unsubscribe != null) {
+      unsubscribe!.call();
+    }
+    stompClient?.deactivate();
+    print('연결 끊기 완료');
+  }
+
+// unsubscribeFn(unsubscribeHeaders: {});
+// client.deactivate();
 }
-
-
-
