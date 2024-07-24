@@ -227,13 +227,14 @@ class ClassroomService extends ChangeNotifier {
       'Authorization': '${jwt}',
     };
     var body = jsonEncode({
-      'classroom': classroom,
-      'opinion': opinion,
+      'classrooms': classroom,
+      'opinions': opinions,
     });
 
     try {
+      print(body);
       var response = await http.put(
-        Uri.parse('$apiUrl/classroom/update'),
+        Uri.parse('$apiUrl/classrooms/classroom/update'),
         headers: headers,
         body: body,
       );

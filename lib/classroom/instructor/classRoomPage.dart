@@ -9,6 +9,7 @@ import 'package:spaghetti/classroom/instructor/EditClassDialog.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/login/AuthService.dart';
 import 'package:spaghetti/member/User.dart';
+import 'package:spaghetti/member/UserProvider.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/opinion/OpinionVote.dart';
@@ -38,9 +39,9 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
 
       String className = widget.classRoomData!.className;
       String classId = widget.classRoomData!.classId;
-
+      User? user = Provider.of<UserProvider>(context).user; 
       // 연결 시작
-      Websocket websocket = Websocket(classId);
+      Websocket websocket = Websocket(classId,user);
       websocket.stompClient?.activate();
 
       // classNumber 생성

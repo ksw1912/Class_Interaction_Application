@@ -47,13 +47,21 @@ class MessageDTO {
   Map<String, dynamic> toJson() => {
         'status': status,
         'classId': classId,
-        'opinion': opinion,
-        'quiz': quiz,
-        'evaluation': evaluation,
-        'userEmails': userEmails
+        'opinion': opinion?.toJson() ??null,
+        'quiz': quiz?.toJson() ?? null,
+        'evaluation': evaluation?? null,
       };
   factory MessageDTO.fromJson(Map<String, dynamic> json) {
-    return MessageDTO(json['status'], json['classId'], json['opinion'],
-        json['quiz'], json['evaluation']);
+    Status status = json['status'];
+    String? classId = json['classId'];
+    Opinion? opinion =
+        json['opinion'] != null ? Opinion.fromJson(json['opinion']) : null;
+    Quiz? quiz = json['quiz'] != null ? Quiz.fromJson(json['quiz']) : null;
+    int? evaluation = json['evaluation'];
+    
+    MessageDTO dto = MessageDTO(status, classId, opinion, quiz, evaluation);
+    dto.userEmails = (json['userEmails'] != null? List<String>.from(json['userEmails']) : <String>[]).toSet();
+
+    return dto;
   }
 }
