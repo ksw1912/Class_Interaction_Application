@@ -43,7 +43,7 @@ class AuthService {
       } else {
         print(response.statusCode);
       }
-      print(response.body);
+      print(utf8.decode(response.bodyBytes));
       return response;
     } catch (e) {
       print("$e");
@@ -126,7 +126,7 @@ class AuthService {
       } else {
         print(response.statusCode);
       }
-      print(response.body);
+      print(utf8.decode(response.bodyBytes));
       return response;
     } catch (e) {
       print("$e");
@@ -160,7 +160,7 @@ class AuthService {
       } else {
         print(response.statusCode);
       }
-      print(response.body);
+      print(utf8.decode(response.bodyBytes));
       return response;
     } catch (e) {
       print("$e");

@@ -119,7 +119,8 @@ class ClassroomService extends ChangeNotifier {
       );
       print(response.statusCode);
       if (response.statusCode == 200) {
-        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        Map<String, dynamic> responseBody =
+            jsonDecode(utf8.decode(response.bodyBytes));
         print("응답성공 ");
         Classroom classroom =
             Classroom.fromJson_notArray(responseBody['classroom']);
@@ -175,7 +176,8 @@ class ClassroomService extends ChangeNotifier {
       );
       print(response.statusCode);
       if (response.statusCode == 200) {
-        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        Map<String, dynamic> responseBody =
+            jsonDecode(utf8.decode(response.bodyBytes));
         print("응답성공 ");
         Classroom classroom =
             Classroom.fromJson_notArray(responseBody['classroom']);
@@ -239,7 +241,8 @@ class ClassroomService extends ChangeNotifier {
       );
       print(response.statusCode);
       if (response.statusCode == 200) {
-        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        Map<String, dynamic> responseBody =
+            jsonDecode(utf8.decode(response.bodyBytes));
         print("수정 성공 ");
 
         List<Opinion> opinions = (responseBody['opinions'] as List)
@@ -298,7 +301,8 @@ class ClassroomService extends ChangeNotifier {
       print(classNumber);
       print(response.statusCode);
       if (response.statusCode == 200) {
-        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        Map<String, dynamic> responseBody =
+            jsonDecode(utf8.decode(response.bodyBytes));
         print("응답성공 ");
         Classroom classroom =
             Classroom.fromJson_notArray(responseBody['classroom']);
