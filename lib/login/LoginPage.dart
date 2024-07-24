@@ -14,16 +14,26 @@ import 'package:spaghetti/member/UserProvider.dart';
 import '../main/startPage.dart';
 import '../login/joinMember.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   final String role;
 
   const LoginPage({Key? key, required this.role}) : super(key: key);
 
   @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool _isObscure = true;
+  String errorMessage = "";
+
+  @override
   Widget build(BuildContext context) {
     String name;
 
-    if (role == "student") {
+    if (widget.role == "student") {
       name = "학생님";
     } else {
       name = "교수님";
@@ -45,196 +55,176 @@ class LoginPage extends StatelessWidget {
           icon: Icon(Icons.arrow_back_rounded),
         ),
       ),
-      body: PageView(
+      body: Stack(
         children: [
-          Container(
-            child: Stack(
+          Positioned(
+            top: 50,
+            left: 30,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Align(
-                  alignment: Alignment(-0.78, -0.68),
-                  child: Text('수업은 언제나',
-                      style: TextStyle(fontSize: 15, color: Color(0xff696868))),
-                ),
-                Align(
-                  alignment: Alignment(-0.7, -0.6),
-                  child: Text('에코(Echo) 클래스룸', style: TextStyle(fontSize: 20)),
-                ),
-                Align(
-                  alignment: Alignment(-0.75, -0.51),
-                  child: Text('$name, 반가워요!',
-                      style: TextStyle(fontSize: 15, color: Color(0xff696868))),
-                ),
-                Align(
-                  alignment: Alignment(0, 0.4),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    onPressed: () {
-                      loginModal(context);
-                    },
-                    child: Text(
-                        "                         로그인                         "),
-                  ),
-                ),
-                // 회원가입 텍스트 위치 조정을 위한 주석
-                Align(
-                  alignment: Alignment(0, 0.52), // 위치를 조정하고 싶으면 이 값을 변경하세요
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Joinmember(),
-                        ),
-                      );
-                    },
-                    child: MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: RichText(
-                        text: TextSpan(
-                          text: "계정이 없으신가요? ",
-                          style: TextStyle(fontSize: 13, color: Colors.black),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: "가입하기",
-                              style:
-                                  TextStyle(fontSize: 13, color: Colors.blue),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                Text('수업은 언제나',
+                    style: TextStyle(fontSize: 20, color: Color(0xff696868))),
+                Text('에코(Echo) 클래스룸', style: TextStyle(fontSize: 25)),
+                Text('$name, 반가워요!',
+                    style: TextStyle(fontSize: 17, color: Color(0xff696868))),
               ],
+            ),
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.only(top: 130.0), // 이 값을 조정하여 높이를 내릴 수 있습니다.
+            child: Center(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        labelText: '아이디',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      style: TextStyle(
+                        fontFamily: 'NanumB',
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    TextField(
+                      controller: passwordController,
+                      obscureText: _isObscure,
+                      decoration: InputDecoration(
+                        labelText: '비밀번호',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isObscure
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isObscure = !_isObscure;
+                            });
+                          },
+                        ),
+                      ),
+                      style: TextStyle(
+                        fontFamily: 'NanumB',
+                      ),
+                    ),
+                    if (errorMessage.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          errorMessage,
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    SizedBox(height: 30),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xfffbaf01),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () async {
+                          var email = emailController.text;
+                          var password = passwordController.text;
+
+                          // 로그인 요청
+                          var response = await AuthService()
+                              .login(email, password, widget.role);
+                          if (response.statusCode == 200) {
+                            User user = AuthService()
+                                .parseUser(json.decode(response.body));
+                            Provider.of<UserProvider>(context, listen: false)
+                                .setUser(user);
+                            if (widget.role == "student") {
+                              List<Enrollment> enrollments = AuthService()
+                                      .parseEnrollments(
+                                          json.decode(response.body)) ??
+                                  [];
+                              Provider.of<EnrollmentService>(context,
+                                      listen: false)
+                                  .setEnrollList(enrollments);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ClassEnterPage()),
+                              );
+                            } else {
+                              List<Classroom> classrooms = AuthService()
+                                      .parseClassrooms(
+                                          json.decode(response.body)) ??
+                                  [];
+                              Provider.of<ClassroomService>(context,
+                                      listen: false)
+                                  .setClassrooms(classrooms);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ClassCreatePage()),
+                              );
+                            }
+                          } else {
+                            setState(() {
+                              errorMessage = "이메일 또는 비밀번호를 확인하세요";
+                            });
+                          }
+                        },
+                        child: Text(
+                          '로그인',
+                          style: TextStyle(
+                            fontFamily: 'NanumB',
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Joinmember(),
+                          ),
+                        );
+                      },
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: RichText(
+                          text: TextSpan(
+                            text: "계정이 없으신가요? ",
+                            style: TextStyle(fontSize: 13, color: Colors.black),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: "가입하기",
+                                style:
+                                    TextStyle(fontSize: 13, color: Colors.blue),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
       ),
-    );
-  }
-
-  //로그인모달 메소드
-  Future<dynamic> loginModal(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        var email = "";
-        var password = "";
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Text("로그인",
-              style: TextStyle(
-                fontFamily: 'NanumB',
-              )),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  decoration: InputDecoration(labelText: '아이디'),
-                  style: TextStyle(
-                    fontFamily: 'NanumB',
-                  ),
-                  onChanged: (value) {
-                    email = value;
-                  },
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                TextField(
-                  decoration: InputDecoration(labelText: '비밀번호'),
-                  style: TextStyle(
-                    fontFamily: 'NanumB',
-                  ),
-                  onChanged: (value) {
-                    password = value;
-                  },
-                  obscureText: true, // 비밀번호 입력
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('취소',
-                  style: TextStyle(
-                    fontFamily: 'NanumB',
-                  )),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                // 로그인 요청
-                var response = await AuthService().login(email, password, role);
-                if (response.statusCode == 200) {
-                  User user =
-                      AuthService().parseUser(json.decode(response.body));
-                  Provider.of<UserProvider>(context, listen: false)
-                      .setUser(user);
-                  if (role == "student") {
-                    List<Enrollment> enrollments = AuthService()
-                            .parseEnrollments(json.decode(response.body)) ??
-                        [];
-                    Provider.of<EnrollmentService>(context, listen: false)
-                        .setEnrollList(enrollments);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ClassEnterPage()),
-                    );
-                  } else {
-                    List<Classroom> classrooms = AuthService()
-                            .parseClassrooms(json.decode(response.body)) ??
-                        [];
-                    Provider.of<ClassroomService>(context, listen: false)
-                        .setClassrooms(classrooms);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ClassCreatePage()),
-                    );
-                  }
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        content: Text("아이디 또는 비밀번호가 잘못되었습니다.",
-                            style: TextStyle(
-                              fontFamily: 'NanumB',
-                            )),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text("취소",
-                                style: TextStyle(
-                                  fontFamily: 'NanumB',
-                                )),
-                          )
-                        ],
-                      );
-                    },
-                  );
-                }
-              },
-              child: Text('로그인',
-                  style: TextStyle(
-                    fontFamily: 'NanumB',
-                  )),
-            ),
-          ],
-        );
-      },
     );
   }
 }
