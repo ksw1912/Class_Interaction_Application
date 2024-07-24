@@ -11,7 +11,7 @@ enum Status {
   QUIZ,
   QUIZUPDATE,
   EVALUATION,
-  PERSIONSTATUS
+  PEOPLESTATUS
   // open 사용자입장
   // close 사용자퇴장
   // opinion 의견제출하기
@@ -47,20 +47,24 @@ class MessageDTO {
   Map<String, dynamic> toJson() => {
         'status': status,
         'classId': classId,
-        'opinion': opinion?.toJson() ??null,
+        'opinion': opinion?.toJson() ?? null,
         'quiz': quiz?.toJson() ?? null,
-        'evaluation': evaluation?? null,
+        'evaluation': evaluation ?? null,
       };
   factory MessageDTO.fromJson(Map<String, dynamic> json) {
-    Status status = json['status'];
+    Status status = Status.values
+        .firstWhere((e) => e.toString() == 'Status.${json['status']}');
     String? classId = json['classId'];
     Opinion? opinion =
         json['opinion'] != null ? Opinion.fromJson(json['opinion']) : null;
     Quiz? quiz = json['quiz'] != null ? Quiz.fromJson(json['quiz']) : null;
     int? evaluation = json['evaluation'];
-    
+
     MessageDTO dto = MessageDTO(status, classId, opinion, quiz, evaluation);
-    dto.userEmails = (json['userEmails'] != null? List<String>.from(json['userEmails']) : <String>[]).toSet();
+    dto.userEmails = (json['userEmails'] != null
+            ? List<String>.from(json['userEmails'])
+            : <String>[])
+        .toSet();
 
     return dto;
   }

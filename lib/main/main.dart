@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart'; // kReleaseMode 사용을 위해 추가
+import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/classroom/student/EnrollmentService.dart';
 import 'package:spaghetti/main/startPage.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => OpinionService()),
         ChangeNotifierProvider(create: (context) => EnrollmentService()),
+        ChangeNotifierProvider(create: (context) => UserCount()),
       ],
       child: MaterialApp(
         builder: DevicePreview.appBuilder, // DevicePreview.appBuilder 사용

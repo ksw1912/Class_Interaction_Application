@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/EditClassDialog.dart';
@@ -13,6 +15,7 @@ import 'package:spaghetti/member/UserProvider.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/opinion/OpinionVote.dart';
+import 'package:stomp_dart_client/stomp_dart_client.dart';
 import 'classCreatePage.dart';
 
 class ClassRoomPage extends StatefulWidget {
@@ -26,11 +29,36 @@ class ClassRoomPage extends StatefulWidget {
 
 class _ClassRoomPageState extends State<ClassRoomPage> {
   int? selectedRadio = 0;
+  Websocket? websocket;
+  String? jwt;
+  final storage = FlutterSecureStorage();
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeWebsocket();
+  }
+
+  Future<void> _initializeWebsocket() async {
+    String classId = widget.classRoomData!.classId;
+    User? user = Provider.of<UserProvider>(context, listen: false).user;
+    UserCount userCount = Provider.of<UserCount>(context, listen: false);
+    jwt = await storage.read(key: "Authorization") ?? "";
+    websocket = Websocket(classId, user, userCount, jwt);
+    websocket?.stomClient(jwt).activate(); // websocket 활성화
+  }
+
+  @override
+  void dispose() {
+    websocket?.unsubscribe();
+    websocket?.stomClient(jwt).deactivate(); // websocket 연결 해제
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<ClassroomService, OpinionService>(
-        builder: (context, classService, opinionService, child) {
+    return Consumer3<ClassroomService, OpinionService, UserCount>(
+        builder: (context, classService, opinionService, userCount, child) {
       List<Classroom> classList = classService.classroomList;
 
       final mediaQuery = MediaQuery.of(context);
@@ -39,10 +67,6 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
 
       String className = widget.classRoomData!.className;
       String classId = widget.classRoomData!.classId;
-      User? user = Provider.of<UserProvider>(context).user;
-      // 연결 시작
-      Websocket websocket = Websocket(classId, user);
-      websocket.stompClient?.activate();
 
       // classNumber 생성
       String classNumber =
@@ -68,7 +92,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                 Positioned(
                   left: screenWidth * 0.11,
                   top: screenHeight * 0.15,
-                  child: Text('참여인원: (숫자)명',
+                  child: Text('참여인원: ${userCount.userList[classId] ?? 0}명',
                       style: TextStyle(
                         fontSize: screenWidth * 0.035,
                         fontWeight: FontWeight.w100,
@@ -144,7 +168,8 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                         ),
                       ),
                       onPressed: () {
-                        websocket.disconnect();
+                        // websocket!.unsubscribe!();
+                        // websocket?.stomClient(jwt).deactivate();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
