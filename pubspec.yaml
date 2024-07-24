@@ -38,6 +38,7 @@ dependencies:
   path_provider: ^2.0.1
   share: ^2.0.4
   qr_code_scanner: ^1.0.1
+  gallery_saver: ^2.3.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -45,7 +46,7 @@ dependencies:
   carousel_slider: ^4.2.1
   smooth_page_indicator: ^1.0.0+2
   provider: ^6.1.2
-  http: ^1.2.1
+  http: ^0.13.3
   flutter_secure_storage: ^9.2.2
   fl_chart: ^0.68.0
   email_validator: ^3.0.0
@@ -88,6 +89,8 @@ flutter:
   - assets/images/logout.png
   - assets/images/exit.png
   - assets/images/edit.png
+  - assets/images/check.png
+
   
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

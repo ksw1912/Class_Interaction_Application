@@ -27,11 +27,11 @@ class StartPageState extends State<StartPage> {
             child: Stack(
               children: [
                 Positioned(
-                  left: screenWidth * 0.09,
+                  left: screenWidth * 0.16,
                   top: screenHeight * 0.01,
                   child: Container(
-                    width: screenWidth * 0.9,
-                    height: screenHeight * 0.9,
+                    width: screenWidth * 0.8,
+                    height: screenHeight * 0.8,
                     child: Image.asset('assets/images/1.png'),
                   ),
                 ),
@@ -56,7 +56,7 @@ class StartPageState extends State<StartPage> {
               children: [
                 Positioned(
                   left: screenWidth * 0.05,
-                  top: screenHeight * 0.01,
+                  top: screenHeight * -0.04,
                   child: Container(
                     width: screenWidth * 0.9,
                     height: screenHeight * 0.9,
@@ -84,7 +84,7 @@ class StartPageState extends State<StartPage> {
               children: [
                 Positioned(
                   left: screenWidth * 0.1,
-                  top: screenHeight * 0.01,
+                  top: screenHeight * -0.04,
                   child: Container(
                     width: screenWidth * 0.8,
                     height: screenHeight * 0.95,
@@ -102,10 +102,11 @@ class StartPageState extends State<StartPage> {
                   top: screenHeight * 0.85,
                   child: Container(
                     width: screenWidth * 0.375,
+                    height: screenWidth * 0.12,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(192, 5, 165, 0),
-                        surfaceTintColor: Color.fromARGB(192, 5, 165, 0),
+                        backgroundColor: Color(0xff71cdcb),
+                        surfaceTintColor: Color(0xff71cdcb),
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -123,21 +124,23 @@ class StartPageState extends State<StartPage> {
                       child: Text(
                         "교수님으로 시작",
                         style: TextStyle(
-                            color: Colors.white, fontSize: screenWidth * 0.035),
+                            color: Colors.white, 
+                            fontSize: screenWidth * 0.035,
+                            fontFamily: 'NanumEB',),              
                       ),
                     ),
                   ),
                 ),
-                
                 Positioned(
                   left: screenWidth * 0.525,
                   top: screenHeight * 0.85,
                   child: Container(
                     width: screenWidth * 0.375,
+                    height: screenWidth * 0.12,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 5, 179, 214),
-                        surfaceTintColor: Color.fromARGB(255, 5, 179, 214),
+                        backgroundColor: Color(0xfff7c678),
+                        surfaceTintColor: Color(0xfff7c678),
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -155,7 +158,9 @@ class StartPageState extends State<StartPage> {
                       child: Text(
                         "학생으로 시작",
                         style: TextStyle(
-                            color: Colors.white, fontSize: screenWidth * 0.035),
+                            color: Colors.white, fontSize: screenWidth * 0.035,
+                          fontFamily: 'NanumEB',
+                        ),
                       ),
                     ),
                   ),
