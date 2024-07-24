@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart'; // kReleaseMode 사용을 위해 추가
-import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/classroom/student/EnrollmentService.dart';
 import 'package:spaghetti/main/startPage.dart';

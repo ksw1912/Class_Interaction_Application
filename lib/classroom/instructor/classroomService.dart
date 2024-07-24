@@ -11,54 +11,11 @@ import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/opinion/OpinionVote.dart';
 
-class ClassOpinionData {
-  // 수업 생성시 옵션 데이터 삭제해야함
-  ClassOpinionData({
-    required this.content,
-    required this.count,
-  });
-
-  String content;
-  int count;
-}
-
 class ClassroomService extends ChangeNotifier {
   final String apiUrl = Apiurl().url;
   final storage = FlutterSecureStorage();
   List<Classroom> classroomList = [];
   List<Opinion> opinions = [];
-
-  List<ClassOpinionData> opinionList = [
-    ClassOpinionData(content: '20', count: 20),
-    ClassOpinionData(content: '30', count: 30),
-    ClassOpinionData(content: '100', count: 100),
-    ClassOpinionData(content: '40', count: 40),
-  ];
-
-  //필요없는기능 삭제해야함
-  createOpinion({required String content, required int count}) {
-    ClassOpinionData opinion = ClassOpinionData(content: content, count: count);
-    opinionList.add(opinion);
-    notifyListeners();
-  }
-
-//필요없는기능 삭제해야함
-  updateOpinion({required int index, required String content}) {
-    ClassOpinionData opinion = opinionList[index];
-    opinion.content = content;
-    notifyListeners();
-  }
-
-//필요없는기능 삭제해야함
-  deleteOpinion({required int index}) {
-    opinionList.removeAt(index);
-    notifyListeners();
-  }
-
-//필요없는기능 삭제해야함
-  deleteClassRoom() {
-    notifyListeners();
-  }
 
   int maxCount(List<OpinionVote> opinion) {
     int maxIndex = 0;
@@ -119,7 +76,8 @@ class ClassroomService extends ChangeNotifier {
       );
       print(response.statusCode);
       if (response.statusCode == 200) {
-        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        Map<String, dynamic> responseBody =
+            jsonDecode(utf8.decode(response.bodyBytes));
         print("응답성공 ");
         Classroom classroom =
             Classroom.fromJson_notArray(responseBody['classroom']);
@@ -175,7 +133,8 @@ class ClassroomService extends ChangeNotifier {
       );
       print(response.statusCode);
       if (response.statusCode == 200) {
-        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        Map<String, dynamic> responseBody =
+            jsonDecode(utf8.decode(response.bodyBytes));
         print("응답성공 ");
         Classroom classroom =
             Classroom.fromJson_notArray(responseBody['classroom']);
@@ -209,7 +168,7 @@ class ClassroomService extends ChangeNotifier {
   Future<Classroom?> editOpinions(
     BuildContext context,
     Classroom classroom,
-    List<String> opinions,
+    List<String> opinion,
   ) async {
     // JWT 토큰을 저장소에서 읽어오기
     String? jwt = await storage.read(key: 'Authorization');
@@ -227,11 +186,10 @@ class ClassroomService extends ChangeNotifier {
     };
     var body = jsonEncode({
       'classroom': classroom,
-      'opinions': opinions,
+      'opinion': opinion,
     });
 
     try {
-      print(body);
       var response = await http.put(
         Uri.parse('$apiUrl/classrooms/classroom/update'),
         headers: headers,
@@ -239,7 +197,8 @@ class ClassroomService extends ChangeNotifier {
       );
       print(response.statusCode);
       if (response.statusCode == 200) {
-        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        Map<String, dynamic> responseBody =
+            jsonDecode(utf8.decode(response.bodyBytes));
         print("수정 성공 ");
 
         List<Opinion> opinions = (responseBody['opinions'] as List)
@@ -298,7 +257,8 @@ class ClassroomService extends ChangeNotifier {
       print(classNumber);
       print(response.statusCode);
       if (response.statusCode == 200) {
-        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        Map<String, dynamic> responseBody =
+            jsonDecode(utf8.decode(response.bodyBytes));
         print("응답성공 ");
         Classroom classroom =
             Classroom.fromJson_notArray(responseBody['classroom']);
