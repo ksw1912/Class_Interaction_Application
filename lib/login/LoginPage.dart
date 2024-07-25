@@ -145,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                           // 로그인 요청
                           var response = await AuthService()
                               .login(email, password, widget.role);
-                          if (response.statusCode == 200) {
+                          if (response.statusCode == 200) { 
                             User user = AuthService()
                                 .parseUser(json.decode(response.body));
                             Provider.of<UserProvider>(context, listen: false)

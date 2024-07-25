@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:spaghetti/Websocket/UserCount.dart';
+import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
+import 'package:spaghetti/member/User.dart';
+import 'package:spaghetti/member/UserProvider.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 
@@ -17,11 +22,35 @@ class classDetailPage extends StatefulWidget {
 class _ClassDetailPageState extends State<classDetailPage> {
   TextEditingController contentController = TextEditingController();
   int? selectedRadio = 0;
+  Websocket? websocket;
+  String? jwt;
+  final storage = FlutterSecureStorage();
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeWebsocket();
+  }
+
+  Future<void> _initializeWebsocket() async {
+    String classId = widget.classroom.classId;
+    User? user = Provider.of<UserProvider>(context, listen: false).user;
+    UserCount userCount = Provider.of<UserCount>(context, listen: false);
+    jwt = await storage.read(key: "Authorization") ?? "";
+    websocket = Websocket(classId, user, userCount, jwt, context);
+  }
+
+  @override
+  void dispose() {
+    websocket?.unsubscribe();
+    websocket?.stomClient(jwt, context).deactivate(); // websocket 연결 해제
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<ClassroomService, OpinionService>(
-        builder: (context, classService, opinionService, child) {
+    return Consumer3<ClassroomService, OpinionService, UserCount>(
+        builder: (context, classService, opinionService, userCount, child) {
       List<Classroom> classList = classService.classroomList;
       List<Opinion> opinionList = opinionService.opinionList;
 
@@ -29,16 +58,18 @@ class _ClassDetailPageState extends State<classDetailPage> {
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
       print(opinionList[0].opinion);
+
       Classroom? classData = widget.classroom;
       String className = classData.className;
-      //참여인원
-      // String numberOfStudents = classData.numberStudents;
-      String numberOfStudents = '10';
+      String classId = widget.classroom!.classId;
+
       return Scaffold(
         resizeToAvoidBottomInset: false, // 키보드 오버플로우 방지
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
+              websocket?.unsubscribe();
+              websocket?.stomClient(jwt, context).deactivate();
               Navigator.of(context).pop();
             },
             icon: Icon(Icons.arrow_back_rounded),
@@ -62,7 +93,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
                   Positioned(
                     left: screenWidth * 0.11,
                     top: screenHeight * 0.15,
-                    child: Text('참여인원: ${numberOfStudents} 명',
+                    child: Text('참여인원: ${userCount.userList[classId] ?? 0} 명',
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           fontWeight: FontWeight.w100,

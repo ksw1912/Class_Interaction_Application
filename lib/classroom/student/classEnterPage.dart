@@ -30,6 +30,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
     _scrollController = ScrollController();
   }
 
+
   @override
   void dispose() {
     _scrollController?.dispose();
@@ -108,7 +109,6 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                             });
                             print('QR 코드 데이터: $result');
                             classroomService.classroomOpinions(context, output);
-                            
                           }
                         },
                         child: Text("QR코드로 입장하기",
