@@ -3,7 +3,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/services.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
@@ -16,6 +15,7 @@ import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/opinion/OpinionVote.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'classCreatePage.dart';
 
 class ClassRoomPage extends StatefulWidget {
@@ -109,7 +109,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                             height: 45,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xffFDDA60),
+                                backgroundColor: Color(0xfff7c678),
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
@@ -134,7 +134,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                             height: 45,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xff28BD25),
+                                backgroundColor: Color(0xff85a3d5),
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
@@ -195,8 +195,8 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                   child: IconButton(
                     icon: Image.asset(
                       'assets/images/share_icon.png',
-                      width: screenWidth * 0.08,
-                      height: screenWidth * 0.08,
+                      width: screenWidth * 0.06,
+                      height: screenWidth * 0.06,
                     ),
                     iconSize: screenWidth * 0.08,
                     onPressed: () {
@@ -296,8 +296,8 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                   child: IconButton(
                     icon: Image.asset(
                       'assets/images/edit.png', // 수정 아이콘 경로
-                      width: screenWidth * 0.08,
-                      height: screenWidth * 0.08,
+                      width: screenWidth * 0.06,
+                      height: screenWidth * 0.06,
                     ),
                     iconSize: screenWidth * 0.08,
                     onPressed: () {
@@ -311,7 +311,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                   child: Container(
                     width: screenWidth * 0.8,
                     height: screenHeight * 0.55, // 차트 높이 조정
-                    child: PieChartExample(),
+                    child: BarChartExample(),
                   ),
                 ),
               ],
@@ -510,24 +510,15 @@ void showQRCodeModal(BuildContext context, String classNumber) {
 
 final List<Color> contentColors = [
   // 차트 컬러 리스트
-  Colors.white, // mainTextcolor
-  Colors.blue,
-  Colors.yellow,
-  Colors.purple,
-  Colors.green,
-  Colors.red,
-  Colors.pink,
+  Color(0xff7b9bcf),
+  Color(0xfff5c369),
+  Color(0xffa4d3fb),
+  Color(0xfff7a3b5),
+  Color(0xfffcb29c),
+  Color(0xffcab3e7), // mainTextcolor
 ];
 
-// 차트
-class PieChartExample extends StatefulWidget {
-  @override
-  PieChart2State createState() => PieChart2State();
-}
-
-class PieChart2State extends State<PieChartExample> {
-  int touchedIndex = -1;
-
+class BarChartExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer2<ClassroomService, OpinionService>(
@@ -535,94 +526,44 @@ class PieChart2State extends State<PieChartExample> {
       List<Opinion> opinionList = opinionService.opinionList; // 옵션 배열
       List<OpinionVote> opinionCount = opinionService.countList; // 옵션 선택 개수 배열
 
-      final screenHeight = MediaQuery.of(context).size.height;
-      final screenWidth = MediaQuery.of(context).size.width;
-      List<PieChartSectionData> showingSections() {
-        final screenWidth = MediaQuery.of(context).size.width;
-
-        return List.generate(opinionList.length, (i) {
-          opinionCount.sort((b, a) => a.count.compareTo(b.count));
-          opinionService.sortOpinion();
-          int maxIndex = opinionService.maxCount(opinionCount);
-          final isMaxValue = i == maxIndex;
-          final fontSize = isMaxValue ? screenWidth * 0.07 : screenWidth * 0.04;
-          final radius = isMaxValue ? screenWidth * 0.15 : screenWidth * 0.12;
-          const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-
-          return PieChartSectionData(
-            color: contentColors[i + 1],
-            value: opinionCount[i].count.toDouble(),
-            title: '${opinionCount[i].count}개',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: contentColors[0],
-              shadows: shadows,
-            ),
-          );
-        });
-      }
-
-      return SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            AspectRatio(
-              aspectRatio: 1.3,
-              child: PieChart(
-                PieChartData(
-                  pieTouchData: PieTouchData(
-                    touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                      setState(() {
-                        if (!event.isInterestedForInteractions ||
-                            pieTouchResponse == null ||
-                            pieTouchResponse.touchedSection == null) {
-                          touchedIndex = -1;
-                          return;
-                        }
-                        touchedIndex = pieTouchResponse
-                            .touchedSection!.touchedSectionIndex;
-                      });
-                    },
-                  ),
-                  borderData: FlBorderData(show: false),
-                  sectionsSpace: 0,
-                  centerSpaceRadius: screenWidth * 0.15,
-                  sections: showingSections(),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 15, //차트랑 컬러 박스 위치
-            ),
-            SizedBox(
-              width: screenWidth * 0.8,
-              height: screenHeight * 0.22, // 하단위치
-              child: ListView.builder(
-                itemCount: opinionList.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Indicator(
-                        color: contentColors[index + 1],
-                        text: opinionList[index].opinion,
-                        isSquare: true,
-                      ),
-                      SizedBox(
-                        height: 15, //간격
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-          ],
+      return SfCartesianChart(
+        primaryXAxis: CategoryAxis(
+          majorGridLines: MajorGridLines(width: 0),
+          axisLine: AxisLine(width: 0),
         ),
+        primaryYAxis: NumericAxis(
+          majorGridLines: MajorGridLines(width: 0),
+          axisLine: AxisLine(width: 0),
+        ),
+        plotAreaBorderWidth: 0,
+        title: ChartTitle(text: '수업 의견'),
+        legend: Legend(isVisible: false),
+        tooltipBehavior: TooltipBehavior(enable: true),
+        series: <ChartSeries<OpinionData, String>>[
+          BarSeries<OpinionData, String>(
+            spacing: 0.2,
+            dataSource: List.generate(opinionList.length, (index) {
+              return OpinionData(
+                  opinionList[index].opinion,
+                  opinionCount[index].count.toDouble(),
+                  contentColors[index + 1]);
+            }),
+            xValueMapper: (OpinionData data, _) => data.opinion,
+            yValueMapper: (OpinionData data, _) => data.count,
+            pointColorMapper: (OpinionData data, _) => data.color,
+            dataLabelSettings: DataLabelSettings(isVisible: true),
+          ),
+        ],
       );
     });
   }
+}
+
+class OpinionData {
+  OpinionData(this.opinion, this.count, this.color);
+  final String opinion;
+  final double count;
+  final Color color;
 }
 
 class Indicator extends StatelessWidget {
@@ -672,3 +613,4 @@ class Indicator extends StatelessWidget {
     );
   }
 }
+

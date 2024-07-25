@@ -49,6 +49,7 @@ dependencies:
   http: ^0.13.3
   flutter_secure_storage: ^9.2.2
   fl_chart: ^0.68.0
+  syncfusion_flutter_charts: ^20.3.47
   email_validator: ^3.0.0
   stomp_dart_client: ^2.0.0
   

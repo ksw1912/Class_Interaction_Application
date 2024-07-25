@@ -122,7 +122,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                                 opinion: Opinion(opinion: ""));
                           },
                           iconSize: 35,
-                          color: Colors.green,
+                          color: Color(0xff71cdcb),
                         ),
                       ),
                       Positioned(
@@ -137,7 +137,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                             }
                           },
                           iconSize: 35,
-                          color: Colors.red,
+                          color: Color(0xfff9a3b6),
                         ),
                       ),
                       Positioned(
@@ -195,11 +195,12 @@ class _AddClassDialogState extends State<AddClassDialog> {
                         left: screenWidth * 0.1,
                         top: screenHeight * 0.57 + 30,
                         child: Container(
-                          width: screenWidth * 0.8, // 화면 너비의 80%
+                          width: screenWidth * 0.8,
+                          height: screenHeight * 0.06, // 화면 너비의 80%
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(192, 5, 165, 0),
-                              surfaceTintColor: Color.fromARGB(192, 5, 165, 0),
+                              backgroundColor: Color(0xff789ad0),
+                              surfaceTintColor: Color(0xff789ad0),
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
