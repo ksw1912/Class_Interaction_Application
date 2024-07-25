@@ -5,7 +5,7 @@ import 'package:spaghetti/opinion/OpinionVote.dart';
 class OpinionService extends ChangeNotifier {
   List<Opinion> opinionList = [];
   List<OpinionVote> countList = []; //투표 인원 수
-  bool _opinionSend = true; // 투표 1회만 
+  bool _opinionSend = true; // 투표 1회만
 
   bool get opinionSend => _opinionSend;
 
@@ -38,6 +38,16 @@ class OpinionService extends ChangeNotifier {
     notifyListeners();
   }
 
+  void voteAdd(Opinion? opinion) {
+    for (int i = 0; i < countList.length; i++) {
+      if (countList[i].opinionId == opinion?.opinionId) {
+        countList[i].count += 1;
+        break;
+      }
+    }
+    notifyListeners();
+  }
+
   void deleteOpinion(int index) {
     opinionList.removeAt(index);
     countList.removeAt(index); // countList에서도 해당 항목을 제거
@@ -50,7 +60,7 @@ class OpinionService extends ChangeNotifier {
     notifyListeners();
   }
 
-  //의견,투표 배열 전체 삭제 
+  //의견,투표 배열 전체 삭제
   void initializeOpinionList() {
     opinionList.clear();
     countList.clear();

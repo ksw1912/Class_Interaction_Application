@@ -68,9 +68,10 @@ class Websocket {
           case Status.OPINION:
             // 의견 제출 처리
             if (user?.role == "instructor") {
-              // OpinionService.countList
               if (message.opinion?.opinionId != null) {
                 //  message.opinion?.opinionId;
+                Provider.of<OpinionService>(context, listen: false)
+                    .voteAdd(message.opinion);
               }
             }
             break;
