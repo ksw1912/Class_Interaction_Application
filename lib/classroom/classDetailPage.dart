@@ -61,7 +61,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
 
       Classroom? classData = widget.classroom;
       String className = classData.className;
-      String classId = widget.classroom!.classId;
+      String classId = classData.classId;
 
       return Scaffold(
         resizeToAvoidBottomInset: false, // 키보드 오버플로우 방지
