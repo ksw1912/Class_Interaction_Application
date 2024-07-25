@@ -519,44 +519,85 @@ final List<Color> contentColors = [
   Color(0xffcab3e7), // mainTextcolor
 ];
 
-class BarChartExample extends StatelessWidget {
+class BarChartExample extends StatefulWidget {
+  @override
+  _BarChartExampleState createState() => _BarChartExampleState();
+}
+
+class _BarChartExampleState extends State<BarChartExample> {
+  late SortingOrder _sortingOrder;
+
+  @override
+  void initState() {
+    super.initState();
+    _sortingOrder = SortingOrder.ascending; // 초기 정렬 설정을 오름차순으로 변경
+  }
+
+  void _toggleSortingOrder() {
+    setState(() {
+      _sortingOrder = _sortingOrder == SortingOrder.ascending
+          ? SortingOrder.descending
+          : SortingOrder.ascending;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer2<ClassroomService, OpinionService>(
-        builder: (context, classService, opinionService, child) {
-      List<Opinion> opinionList = opinionService.opinionList; // 옵션 배열
-      List<OpinionVote> opinionCount = opinionService.countList; // 옵션 선택 개수 배열
-
-      return SfCartesianChart(
-        primaryXAxis: CategoryAxis(
-          majorGridLines: MajorGridLines(width: 0),
-          axisLine: AxisLine(width: 0),
-        ),
-        primaryYAxis: NumericAxis(
-          majorGridLines: MajorGridLines(width: 0),
-          axisLine: AxisLine(width: 0),
-        ),
-        plotAreaBorderWidth: 0,
-        title: ChartTitle(text: '수업 의견'),
-        legend: Legend(isVisible: false),
-        tooltipBehavior: TooltipBehavior(enable: true),
-        series: <ChartSeries<OpinionData, String>>[
-          BarSeries<OpinionData, String>(
-            spacing: 0.2,
-            dataSource: List.generate(opinionList.length, (index) {
-              return OpinionData(
-                  opinionList[index].opinion,
-                  opinionCount[index].count.toDouble(),
-                  contentColors[index % contentColors.length]);
-            }),
-            xValueMapper: (OpinionData data, _) => data.opinion,
-            yValueMapper: (OpinionData data, _) => data.count,
-            pointColorMapper: (OpinionData data, _) => data.color,
-            dataLabelSettings: DataLabelSettings(isVisible: true),
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false, // 뒤로가기 버튼 제거
+        title: Text('수업 의견'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.sort),
+            onPressed: _toggleSortingOrder,
           ),
         ],
-      );
-    });
+      ),
+      body: Consumer2<ClassroomService, OpinionService>(
+          builder: (context, classService, opinionService, child) {
+        List<Opinion> opinionList = opinionService.opinionList; // 옵션 배열
+        List<OpinionVote> opinionCount =
+            opinionService.countList; // 옵션 선택 개수 배열
+
+        List<OpinionData> sortedData =
+            List.generate(opinionList.length, (index) {
+          return OpinionData(
+              opinionList[index].opinion,
+              opinionCount[index].count.toDouble(),
+              contentColors[index % contentColors.length]);
+        });
+
+        sortedData.sort((a, b) => a.count.compareTo(b.count));
+        if (_sortingOrder == SortingOrder.descending) {
+          sortedData = sortedData.reversed.toList();
+        }
+
+        return SfCartesianChart(
+          primaryXAxis: CategoryAxis(
+            majorGridLines: MajorGridLines(width: 0),
+            axisLine: AxisLine(width: 0),
+          ),
+          primaryYAxis: NumericAxis(
+            majorGridLines: MajorGridLines(width: 0),
+            axisLine: AxisLine(width: 0),
+          ),
+          plotAreaBorderWidth: 0,
+          legend: Legend(isVisible: false),
+          tooltipBehavior: TooltipBehavior(enable: true),
+          series: <ChartSeries<OpinionData, String>>[
+            BarSeries<OpinionData, String>(
+              spacing: 0.2,
+              dataSource: sortedData,
+              xValueMapper: (OpinionData data, _) => data.opinion,
+              yValueMapper: (OpinionData data, _) => data.count,
+              pointColorMapper: (OpinionData data, _) => data.color,
+              dataLabelSettings: DataLabelSettings(isVisible: true),
+            ),
+          ],
+        );
+      }),
+    );
   }
 }
 

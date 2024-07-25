@@ -28,7 +28,8 @@ class OpinionService extends ChangeNotifier {
 
   void addOpinion({required Opinion opinion}) {
     this.opinionList.add(opinion);
-    countList.add(OpinionVote(opinionId: opinion.opinionId, count: 20));
+    countList.add(
+        OpinionVote(opinionId: opinion.opinionId, count: 0)); // 기본 투표 수를 0으로 설정
     notifyListeners();
   }
 
@@ -38,7 +39,7 @@ class OpinionService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void voteAdd(Opinion? opinion) {
+void voteAdd(Opinion? opinion) {
     for (int i = 0; i < countList.length; i++) {
       if (countList[i].opinionId == opinion?.opinionId) {
         countList[i].count += 1;
@@ -90,5 +91,8 @@ class OpinionService extends ChangeNotifier {
     // 정렬된 결과를 다시 각각의 리스트에 반영합니다.
     opinionList = combinedList.map((entry) => entry.key).toList();
     countList = combinedList.map((entry) => entry.value).toList();
+
+    // 정렬된 데이터를 반영한 후에 애니메이션을 적용하기 위해 notifyListeners() 호출
+    notifyListeners();
   }
 }
