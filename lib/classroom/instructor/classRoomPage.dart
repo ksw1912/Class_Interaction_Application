@@ -168,13 +168,13 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                         ),
                       ),
                       onPressed: () {
-                        // websocket!.unsubscribe!();
-                        // websocket?.stomClient(jwt).deactivate();
+                        websocket?.unsubscribe();
+                        websocket?.stomClient(jwt).deactivate();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (_) => ClassCreatePage(),
-                          ),
+                          ),  
                         );
                       },
                       child: Text(

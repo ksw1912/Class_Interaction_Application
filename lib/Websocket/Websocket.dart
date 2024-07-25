@@ -18,7 +18,7 @@ class Websocket {
   String? jwt;
   StompClient? stompClient;
   late User? user;
-  late StompUnsubscribe unsubscribe;
+  dynamic unsubscribe;
   final UserCount userCount;
   // late BuildContext context;
   Websocket(this.classId, this.user, this.userCount, this.jwt) {
@@ -83,6 +83,7 @@ class Websocket {
                 message.classId ?? "", message.userEmails.length);
             break;
           case Status.CLOSE:
+            print("교수님께서 수업을 종료하셨습니다");
             //사용자에게 수업끝났다고 알림
             // Dialogs.showErrorDialog(context, "교수님께서 수업을 종료하셨습니다 ");
             // Navigator.pop(context);
