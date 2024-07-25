@@ -251,6 +251,12 @@ class _EditClassDialogState extends State<EditClassDialog> {
                               await classService.editOpinions(
                                   context, widget.classRoomData!, opinion!);
                               Navigator.pop(context);
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => ClassCreatePage(),
+                                ),
+                              );
                             }
                           },
                           child: Row(

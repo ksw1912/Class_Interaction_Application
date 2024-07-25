@@ -58,8 +58,6 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
   Widget build(BuildContext context) {
     return Consumer3<ClassroomService, OpinionService, UserCount>(
         builder: (context, classService, opinionService, userCount, child) {
-      List<Classroom> classList = classService.classroomList;
-
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
