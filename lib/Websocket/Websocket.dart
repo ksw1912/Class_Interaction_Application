@@ -20,9 +20,10 @@ class Websocket {
   late User? user;
   dynamic unsubscribe;
   final UserCount userCount;
+  late BuildContext context;
 
   // late BuildContext context;
-  Websocket(this.classId, this.user, this.userCount, this.jwt, context) {
+  Websocket(this.classId, this.user, this.userCount, this.jwt, this.context) {
     stompClient = stomClient(jwt, context);
     stompClient?.activate();
   }
@@ -55,7 +56,7 @@ class Websocket {
   void onConnect(StompFrame frame, context) async {
     unsubscribe = stompClient!.subscribe(
       destination: '/sub/classroom/$classId',
-      callback: (frame) {
+      callback: (frame) async {
         Map<String, dynamic> json = jsonDecode(frame.body ?? "");
         MessageDTO message = MessageDTO.fromJson(json);
         switch (message.status) {
@@ -86,7 +87,7 @@ class Websocket {
           case Status.CLOSE:
             print("교수님께서 수업을 종료하셨습니다");
             // 사용자에게 수업끝났다고 알림
-            Dialogs.showErrorDialog(context, "교수님께서 수업을 종료하셨습니다 ");
+            await Dialogs.showErrorDialog(context, "교수님께서 수업을 종료하셨습니다 ");
             Navigator.pop(context);
             break;
           default:
