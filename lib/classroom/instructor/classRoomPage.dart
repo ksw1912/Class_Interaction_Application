@@ -44,14 +44,13 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     UserCount userCount = Provider.of<UserCount>(context, listen: false);
     jwt = await storage.read(key: "Authorization") ?? "";
-    websocket = Websocket(classId, user, userCount, jwt);
-    websocket?.stomClient(jwt).activate(); // websocket 활성화
+    websocket = Websocket(classId, user, userCount, jwt, context);
   }
 
   @override
   void dispose() {
     websocket?.unsubscribe();
-    websocket?.stomClient(jwt).deactivate(); // websocket 연결 해제
+    websocket?.stomClient(jwt, context).deactivate(); // websocket 연결 해제
     super.dispose();
   }
 
@@ -169,12 +168,12 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                       ),
                       onPressed: () {
                         websocket?.unsubscribe();
-                        websocket?.stomClient(jwt).deactivate();
+                        websocket?.stomClient(jwt, context).deactivate();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (_) => ClassCreatePage(),
-                          ),  
+                          ),
                         );
                       },
                       child: Text(

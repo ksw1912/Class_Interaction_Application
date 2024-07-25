@@ -20,17 +20,18 @@ class Websocket {
   late User? user;
   dynamic unsubscribe;
   final UserCount userCount;
+
   // late BuildContext context;
-  Websocket(this.classId, this.user, this.userCount, this.jwt) {
-    stompClient = stomClient(jwt);
+  Websocket(this.classId, this.user, this.userCount, this.jwt, context) {
+    stompClient = stomClient(jwt, context);
     stompClient?.activate();
   }
 
-  StompClient stomClient(String? jwt) {
+  StompClient stomClient(String? jwt, context) {
     return StompClient(
       config: StompConfig.sockJS(
         url: '${Apiurl().url}/classroomEnter',
-        onConnect: onConnect,
+        onConnect: (StompFrame frame) => onConnect(frame, context),
         beforeConnect: () async {
           print('waiting to connect...');
           await Future.delayed(const Duration(milliseconds: 2000));
@@ -51,7 +52,7 @@ class Websocket {
     );
   }
 
-  void onConnect(StompFrame frame) {
+  void onConnect(StompFrame frame, context) async {
     unsubscribe = stompClient!.subscribe(
       destination: '/sub/classroom/$classId',
       callback: (frame) {
@@ -84,9 +85,9 @@ class Websocket {
             break;
           case Status.CLOSE:
             print("교수님께서 수업을 종료하셨습니다");
-            //사용자에게 수업끝났다고 알림
-            // Dialogs.showErrorDialog(context, "교수님께서 수업을 종료하셨습니다 ");
-            // Navigator.pop(context);
+            // 사용자에게 수업끝났다고 알림
+            Dialogs.showErrorDialog(context, "교수님께서 수업을 종료하셨습니다 ");
+            Navigator.pop(context);
             break;
           default:
             print("예외문제 확인용(default switch문) ${message.status}");
@@ -97,7 +98,7 @@ class Websocket {
   }
 
   //의견 보내기
-  void opinionSend(Opinion opinion) {
+  Future<void> opinionSend(Opinion opinion) async {
     stompClient?.send(
       destination: '/pub/classroom/$classId/message',
       body: json.encode({
@@ -109,7 +110,7 @@ class Websocket {
   }
 
   //의견 수정 정보 알리기
-  void sendOpinionUpdate() {
+  Future<void> sendOpinionUpdate() async {
     stompClient?.send(
       destination: '/pub/classroom/$classId/message',
       body: json.encode({
@@ -120,7 +121,7 @@ class Websocket {
   }
 
   //학생들에게 퀴즈 풀기 알리기
-  void sendQuizUpdate() {
+  Future<void> sendQuizUpdate() async {
     stompClient?.send(
       destination: '/pub/classroom/$classId/message',
       body: json.encode({
@@ -131,7 +132,7 @@ class Websocket {
   }
 
   //학생 -> 교육자 평가
-  void studentEvaluation() {
+  Future<void> studentEvaluation() async {
     stompClient?.send(
       destination: '/pub/classroom/$classId/message',
       body: json.encode({
