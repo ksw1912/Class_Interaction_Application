@@ -105,189 +105,6 @@ class ClassroomService extends ChangeNotifier {
     return DateFormat('yyyy-MM-dd').format(date);
   }
 
-//교수클래스 입장
-  Future<Classroom?> classroomOpinions(
-    BuildContext context,
-    String classId,
-  ) async {
-    // JWT 토큰을 저장소에서 읽어오기
-    String? jwt = await storage.read(key: 'Authorization');
-
-    if (jwt == null) {
-      //토큰이 존재하지 않을 때 첫페이지로 이동
-      await Dialogs.showErrorDialog(context, '로그인시간이 만료되었습니다.');
-      Navigator.of(context).pushReplacementNamed('/Loginpage');
-      return null;
-    }
-
-    // 헤더에 JWT 토큰 추가
-    var headers = {
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': '${jwt}',
-    };
-
-    try {
-      var response = await http.post(
-        Uri.parse('$apiUrl/classrooms/classroomEnter/$classId'),
-        headers: headers,
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        Map<String, dynamic> responseBody =
-            jsonDecode(utf8.decode(response.bodyBytes));
-        print("응답성공 ");
-        Classroom classroom =
-            Classroom.fromJson_notArray(responseBody['classroom']);
-
-        List<Opinion> opinions = (responseBody['opinions'] as List)
-            .map((opinionJson) => Opinion.fromJson(opinionJson))
-            .toList();
-
-        var opinionService =
-            Provider.of<OpinionService>(context, listen: false);
-        if (opinions.length > 0) {
-          opinionService.initializeOpinionList();
-        }
-        for (int i = 0; i < opinions.length; i++) {
-          opinionService.addOpinion(opinion: opinions[i]);
-          print(opinions[i].opinion);
-        }
-
-        notifyListeners();
-        return classroom;
-      } else {
-        await Dialogs.showErrorDialog(context, ' 수업 입장 중 오류 발생');
-      }
-    } catch (exception) {
-      print(exception);
-      await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
-    }
-  }
-
-// 수업의견 수정
-  Future<Classroom?> editOpinions(
-    BuildContext context,
-    Classroom classroom,
-    List<String> opinion,
-  ) async {
-    // JWT 토큰을 저장소에서 읽어오기
-    String? jwt = await storage.read(key: 'Authorization');
-    if (jwt == null) {
-      //토큰이 존재하지 않을 때 첫페이지로 이동
-      await Dialogs.showErrorDialog(context, '로그인시간이 만료되었습니다.');
-      Navigator.of(context).pushReplacementNamed('/Loginpage');
-      return null;
-    }
-
-    // 헤더에 JWT 토큰 추가
-    var headers = {
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': '${jwt}',
-    };
-    var body = jsonEncode({
-      'classroom': classroom,
-      'opinion': opinion,
-    });
-
-    try {
-      var response = await http.put(
-        Uri.parse('$apiUrl/classrooms/classroom/update'),
-        headers: headers,
-        body: body,
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        Map<String, dynamic> responseBody =
-            jsonDecode(utf8.decode(response.bodyBytes));
-        print("수정 성공 ");
-
-        List<Opinion> opinions = (responseBody['opinions'] as List)
-            .map((opinionJson) => Opinion.fromJson(opinionJson))
-            .toList();
-
-        var opinionService =
-            Provider.of<OpinionService>(context, listen: false);
-        if (opinions.length > 0) {
-          opinionService.initializeOpinionList();
-        }
-        for (int i = 0; i < opinions.length; i++) {
-          opinionService.addOpinion(opinion: opinions[i]);
-          print(opinions[i].opinion);
-        }
-
-        notifyListeners();
-        return classroom;
-      } else {
-        await Dialogs.showErrorDialog(context, '의견 수정중 오류 발생');
-        print(body);
-      }
-    } catch (exception) {
-      print(exception);
-      await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
-    }
-  }
-
-  //학생 특정수업입장(pin번호 입력으로)
-
-  Future<Classroom?> studentEnterClassPin(
-    BuildContext context,
-    String classNumber,
-  ) async {
-    // JWT 토큰을 저장소에서 읽어오기
-    String? jwt = await storage.read(key: 'Authorization');
-
-    if (jwt == null) {
-      //토큰이 존재하지 않을 때 첫페이지로 이동
-      await Dialogs.showErrorDialog(context, '로그인시간이 만료되었습니다.');
-      Navigator.of(context).pushReplacementNamed('/Loginpage');
-      return null;
-    }
-
-    // 헤더에 JWT 토큰 추가
-    var headers = {
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': '${jwt}',
-    };
-
-    try {
-      var response = await http.get(
-        Uri.parse('$apiUrl/classrooms/classroomEnter/pin/$classNumber'),
-        headers: headers,
-      );
-      print(classNumber);
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        Map<String, dynamic> responseBody =
-            jsonDecode(utf8.decode(response.bodyBytes));
-        print("응답성공 ");
-        Classroom classroom =
-            Classroom.fromJson_notArray(responseBody['classroom']);
-
-        List<Opinion> opinions = (responseBody['opinions'] as List)
-            .map((opinionJson) => Opinion.fromJson(opinionJson))
-            .toList();
-
-        var opinionService =
-            Provider.of<OpinionService>(context, listen: false);
-
-        if (opinions.length > 0) {
-          opinionService.initializeOpinionList();
-        }
-        for (int i = 0; i < opinions.length; i++) {
-          opinionService.addOpinion(opinion: opinions[i]);
-          print(opinions[i].opinion);
-        }
-        notifyListeners();
-        return classroom;
-      } else {
-        await Dialogs.showErrorDialog(context, '오류발생');
-      }
-    } catch (exception) {
-      print(exception);
-      await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
-    }
-  }
-
   //수업삭제
   Future<void> classroomDelete(
     BuildContext context,
@@ -367,6 +184,198 @@ class ClassroomService extends ChangeNotifier {
         print("응답 성공");
       } else {
         await Dialogs.showErrorDialog(context, '오류 발생');
+      }
+    } catch (exception) {
+      print(exception);
+      await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
+    }
+  }
+
+//교수클래스 입장
+  Future<Classroom?> classroomOpinions(
+    BuildContext context,
+    String classId,
+  ) async {
+    // JWT 토큰을 저장소에서 읽어오기
+    String? jwt = await storage.read(key: 'Authorization');
+
+    if (jwt == null) {
+      //토큰이 존재하지 않을 때 첫페이지로 이동
+      await Dialogs.showErrorDialog(context, '로그인시간이 만료되었습니다.');
+      Navigator.of(context).pushReplacementNamed('/Loginpage');
+      return null;
+    }
+
+    // 헤더에 JWT 토큰 추가
+    var headers = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': '${jwt}',
+    };
+
+    try {
+      var response = await http.post(
+        Uri.parse('$apiUrl/classrooms/classroomEnter/$classId'),
+        headers: headers,
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody =
+            jsonDecode(utf8.decode(response.bodyBytes));
+        print("응답성공 ");
+        Classroom classroom =
+            Classroom.fromJson_notArray(responseBody['classroom']);
+
+        List<Opinion> opinions = (responseBody['opinions'] as List)
+            .map((opinionJson) => Opinion.fromJson(opinionJson))
+            .toList();
+
+        var opinionService =
+            Provider.of<OpinionService>(context, listen: false);
+        if (opinions.length > 0) {
+          opinionService.initializeOpinionList();
+        }
+        for (int i = 0; i < opinions.length; i++) {
+          opinionService.addOpinion(opinion: opinions[i]);
+          print(opinions[i].opinion);
+          notifyListeners();
+        }
+
+        notifyListeners();
+        return classroom;
+      } else {
+        await Dialogs.showErrorDialog(context, ' 수업 입장 중 오류 발생');
+      }
+    } catch (exception) {
+      print(exception);
+      await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
+    }
+  }
+
+// 수업의견 수정
+  Future<Classroom?> editOpinions(
+    BuildContext context,
+    Classroom classroom,
+    List<String> opinion,
+  ) async {
+    // JWT 토큰을 저장소에서 읽어오기
+    String? jwt = await storage.read(key: 'Authorization');
+    if (jwt == null) {
+      //토큰이 존재하지 않을 때 첫페이지로 이동
+      await Dialogs.showErrorDialog(context, '로그인시간이 만료되었습니다.');
+      Navigator.of(context).pushReplacementNamed('/Loginpage');
+      return null;
+    }
+
+    // 헤더에 JWT 토큰 추가
+    var headers = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': '${jwt}',
+    };
+    var body = jsonEncode({
+      'classroom': classroom,
+      'opinion': opinion,
+    });
+
+    try {
+      var response = await http.put(
+        Uri.parse('$apiUrl/classrooms/classroom/update'),
+        headers: headers,
+        body: body,
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody =
+            jsonDecode(utf8.decode(response.bodyBytes));
+        print("수정 성공 ");
+
+        List<Opinion> opinions = (responseBody['opinions'] as List)
+            .map((opinionJson) => Opinion.fromJson(opinionJson))
+            .toList();
+
+        var opinionService =
+            Provider.of<OpinionService>(context, listen: false);
+        if (opinions.length > 0) {
+          opinionService.initializeOpinionList();
+        }
+
+        for (int i = 0; i < classroomList.length; i++) {
+          print(i);
+          if (classroomList[i].classId == classroom.classId) {
+            classroomList[i].className = classroom.className;
+            notifyListeners();
+          }
+        }
+        for (int i = 0; i < opinions.length; i++) {
+          opinionService.addOpinion(opinion: opinions[i]);
+          print(opinions[i].opinion);
+        }
+
+        notifyListeners();
+        return classroom;
+      } else {
+        await Dialogs.showErrorDialog(context, '의견 수정중 오류 발생');
+        print(body);
+      }
+    } catch (exception) {
+      print(exception);
+      await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
+    }
+  }
+
+  //학생 특정수업입장(pin번호 입력으로)
+
+  Future<Classroom?> studentEnterClassPin(
+    BuildContext context,
+    String classNumber,
+  ) async {
+    // JWT 토큰을 저장소에서 읽어오기
+    String? jwt = await storage.read(key: 'Authorization');
+
+    if (jwt == null) {
+      //토큰이 존재하지 않을 때 첫페이지로 이동
+      await Dialogs.showErrorDialog(context, '로그인시간이 만료되었습니다.');
+      Navigator.of(context).pushReplacementNamed('/Loginpage');
+      return null;
+    }
+
+    // 헤더에 JWT 토큰 추가
+    var headers = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': '${jwt}',
+    };
+
+    try {
+      var response = await http.get(
+        Uri.parse('$apiUrl/classrooms/classroomEnter/pin/$classNumber'),
+        headers: headers,
+      );
+      print(classNumber);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody =
+            jsonDecode(utf8.decode(response.bodyBytes));
+        print("응답성공 ");
+        Classroom classroom =
+            Classroom.fromJson_notArray(responseBody['classroom']);
+
+        List<Opinion> opinions = (responseBody['opinions'] as List)
+            .map((opinionJson) => Opinion.fromJson(opinionJson))
+            .toList();
+
+        var opinionService =
+            Provider.of<OpinionService>(context, listen: false);
+
+        if (opinions.length > 0) {
+          opinionService.initializeOpinionList();
+        }
+        for (int i = 0; i < opinions.length; i++) {
+          opinionService.addOpinion(opinion: opinions[i]);
+          print(opinions[i].opinion);
+        }
+        notifyListeners();
+        return classroom;
+      } else {
+        await Dialogs.showErrorDialog(context, '오류발생');
       }
     } catch (exception) {
       print(exception);

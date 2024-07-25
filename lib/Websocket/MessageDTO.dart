@@ -24,24 +24,26 @@ enum Status {
 
 class MessageDTO {
   Status? status;
-  String? classId;
   Opinion? opinion;
   Quiz? quiz;
   int? evaluation;
+  String? classId;
   Set<String> userEmails = HashSet<String>();
 
   MessageDTO(
     Status? status,
-    String? classId,
     Opinion? opinion,
     Quiz? quiz,
     int? evaluation,
+    String? classId,
+    // Set<String> userEmails,
   ) {
     this.status = status;
-    this.classId = classId;
     this.opinion = opinion;
     this.quiz = quiz;
     this.evaluation = evaluation;
+    this.classId = classId;
+    // this.userEmails = userEmails;
   }
 
   Map<String, dynamic> toJson() => {
@@ -62,7 +64,7 @@ class MessageDTO {
     Quiz? quiz = json['quiz'] != null ? Quiz.fromJson(json['quiz']) : null;
     int? evaluation = json['evaluation'];
 
-    MessageDTO dto = MessageDTO(status, classId, opinion, quiz, evaluation);
+    MessageDTO dto = MessageDTO(status, opinion, quiz, evaluation, classId);
     dto.userEmails = (json['userEmails'] != null
             ? List<String>.from(json['userEmails'])
             : <String>[])
