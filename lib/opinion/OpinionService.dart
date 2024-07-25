@@ -5,12 +5,12 @@ import 'package:spaghetti/opinion/OpinionVote.dart';
 class OpinionService extends ChangeNotifier {
   List<Opinion> opinionList = [];
   List<OpinionVote> countList = []; //투표 인원 수
-  bool _opinionSend = true; // 투표 1회만
+  bool opinionSend = true; // 투표 1회만
 
-  bool get opinionSend => _opinionSend;
 
+  //의견제출버튼 true or false 동작
   void setOpinionSend(bool value) {
-    _opinionSend = value;
+    opinionSend = value;
     notifyListeners();
   }
 

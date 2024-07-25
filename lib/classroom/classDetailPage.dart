@@ -8,6 +8,7 @@ import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/member/User.dart';
 import 'package:spaghetti/member/UserProvider.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
+
 import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/quiz/Quiz.dart';
 
@@ -209,13 +210,17 @@ class _ClassDetailPageState extends State<classDetailPage> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        onPressed: opinionService.opinionSend
-                            ? () {
-                                websocket
-                                    ?.opinionSend(opinionList[selectedRadio!]);
-                                opinionService.setOpinionSend(false);
-                              }
-                            : null,
+                        // onPressed: opinionService.opinionSend
+                        //     ? () {
+                        //         websocket
+                        //             ?.opinionSend(opinionList[selectedRadio!]);
+                        //         opinionService.setOpinionSend(false);
+                        //       }
+                        //     : null,
+                        onPressed: () {
+                          websocket?.opinionSend(opinionList[selectedRadio!]);
+                          opinionService.setOpinionSend(false);
+                        },
                         child: Text(
                           "제출하기",
                           style: TextStyle(

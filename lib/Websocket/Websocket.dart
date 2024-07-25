@@ -79,6 +79,7 @@ class Websocket {
             // 교수 의견 업데이트 처리
             break;
           case Status.OPINIONINITIALIZE:
+            print("의견초기화");
             //의견초기화
             if (user?.role == "student") {
               Provider.of<OpinionService>(context, listen: false)
