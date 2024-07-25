@@ -547,7 +547,7 @@ class BarChartExample extends StatelessWidget {
               return OpinionData(
                   opinionList[index].opinion,
                   opinionCount[index].count.toDouble(),
-                  contentColors[index + 1]);
+                  contentColors[index % contentColors.length]);
             }),
             xValueMapper: (OpinionData data, _) => data.opinion,
             yValueMapper: (OpinionData data, _) => data.count,
