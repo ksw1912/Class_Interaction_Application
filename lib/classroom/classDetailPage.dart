@@ -9,6 +9,7 @@ import 'package:spaghetti/member/User.dart';
 import 'package:spaghetti/member/UserProvider.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
+import 'package:spaghetti/quiz/Quiz.dart';
 
 class classDetailPage extends StatefulWidget {
   final Classroom classroom;
@@ -208,9 +209,13 @@ class _ClassDetailPageState extends State<classDetailPage> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        onPressed: () {
-                          websocket?.opinionSend(opinionList[selectedRadio!]);
-                        },
+                        onPressed: opinionService.opinionSend
+                            ? () {
+                                websocket
+                                    ?.opinionSend(opinionList[selectedRadio!]);
+                                opinionService.setOpinionSend(false);
+                              }
+                            : null,
                         child: Text(
                           "제출하기",
                           style: TextStyle(
@@ -259,7 +264,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
   }
 }
 
-void addDialog(BuildContext context) {
+Future<void> addDialog(BuildContext context) async {
   showModalBottomSheet(
     context: context,
     backgroundColor: Colors.white,
@@ -283,7 +288,6 @@ class AddClassDialog extends StatefulWidget {
 
 class _AddClassDialogState extends State<AddClassDialog> {
   ScrollController? _scrollController;
-
   @override
   void initState() {
     super.initState();
@@ -348,7 +352,9 @@ class _AddClassDialogState extends State<AddClassDialog> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                             ),
-                            onPressed: () async {},
+                            onPressed: () {
+                              // sendQuiz(Quiz(quizId, classId, null));
+                            },
                             child: Text(
                               "답안 제출",
                               style: TextStyle(color: Colors.white),

@@ -8,6 +8,7 @@ enum Status {
   CLOSE,
   OPINION,
   OPINIONUPDATE,
+  OPINIONINITIALIZE,
   QUIZ,
   QUIZUPDATE,
   EVALUATION,
@@ -47,14 +48,13 @@ class MessageDTO {
   }
 
   Map<String, dynamic> toJson() => {
-        'status': status,
-        'classId': classId,
+        'status': status.toString().split('.').last as String,
         'opinion': opinion?.toJson() ?? null,
         'quiz': quiz?.toJson() ?? null,
         'evaluation': evaluation ?? null,
+        'classId': classId,
       };
 
-      
   factory MessageDTO.fromJson(Map<String, dynamic> json) {
     Status status = Status.values
         .firstWhere((e) => e.toString() == 'Status.${json['status']}');

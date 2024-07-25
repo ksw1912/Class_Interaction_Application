@@ -3,11 +3,15 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 import 'package:spaghetti/Dialog/Dialogs.dart';
 import 'package:spaghetti/Websocket/MessageDTO.dart';
 import 'package:spaghetti/Websocket/UserCount.dart';
+import 'package:spaghetti/classroom/classDetailPage.dart';
 import 'package:spaghetti/member/User.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
+import 'package:spaghetti/opinion/OpinionService.dart';
+import 'package:spaghetti/quiz/Quiz.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 import 'package:spaghetti/ApiUrl.dart';
 import 'dart:convert';
@@ -58,25 +62,41 @@ class Websocket {
       destination: '/sub/classroom/$classId',
       callback: (frame) async {
         Map<String, dynamic> json = jsonDecode(frame.body ?? "");
+        print(json);
         MessageDTO message = MessageDTO.fromJson(json);
         switch (message.status) {
           case Status.OPINION:
             // 의견 제출 처리
             if (user?.role == "instructor") {
               // OpinionService.countList
+              if (message.opinion?.opinionId != null) {
+                //  message.opinion?.opinionId;
+              }
             }
             break;
           case Status.OPINIONUPDATE:
             // 교수 의견 업데이트 처리
             break;
+          case Status.OPINIONINITIALIZE:
+            //의견초기화
+            if (user?.role == "student") {
+              Provider.of<OpinionService>(context, listen: false)
+                  .setOpinionSend(true);
+            }
+            break;
           case Status.QUIZ:
             // 퀴즈 처리
+            if (user?.role == "instructor") {}
             break;
           case Status.QUIZUPDATE:
             // 교수 퀴즈 업데이트 처리
+            if (user?.role == "student") {
+              await addDialog(context);
+            }
             break;
           case Status.EVALUATION:
             // 수업 평가 처리
+
             break;
           case Status.PEOPLESTATUS:
             // 사용자인원 처리
@@ -103,9 +123,20 @@ class Websocket {
     stompClient?.send(
       destination: '/pub/classroom/$classId/message',
       body: json.encode({
-        'status': Status.OPINION,
+        'status': Status.OPINION.toString().split('.').last,
         'classId': classId,
         'opinion': opinion,
+      }),
+    );
+  }
+
+  //의견 초기화
+  Future<void> opinionInit() async {
+    stompClient?.send(
+      destination: '/pub/classroom/$classId/message',
+      body: json.encode({
+        'status': Status.OPINIONINITIALIZE.toString().split('.').last,
+        'classId': classId,
       }),
     );
   }
@@ -115,8 +146,20 @@ class Websocket {
     stompClient?.send(
       destination: '/pub/classroom/$classId/message',
       body: json.encode({
-        'status': Status.OPINIONUPDATE,
+        'status': Status.OPINIONUPDATE.toString().split('.').last,
         'classId': classId,
+      }),
+    );
+  }
+
+  //퀴즈 제출
+  Future<void> sendQuiz(Quiz quiz) async {
+    stompClient?.send(
+      destination: '/pub/classroom/$classId/message',
+      body: json.encode({
+        'status': Status.QUIZ.toString().split('.').last,
+        'classId': classId,
+        'quiz': quiz,
       }),
     );
   }
@@ -126,7 +169,7 @@ class Websocket {
     stompClient?.send(
       destination: '/pub/classroom/$classId/message',
       body: json.encode({
-        'status': Status.QUIZ,
+        'status': Status.QUIZUPDATE.toString().split('.').last,
         'classId': classId,
       }),
     );
@@ -137,7 +180,7 @@ class Websocket {
     stompClient?.send(
       destination: '/pub/classroom/$classId/message',
       body: json.encode({
-        'status': Status.QUIZ,
+        'status': Status.EVALUATION.toString().split('.').last,
         'classId': classId,
       }),
     );

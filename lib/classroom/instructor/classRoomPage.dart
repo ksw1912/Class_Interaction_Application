@@ -115,7 +115,12 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                //투표 초기화
+                                opinionService.updateCountList();
+                                //학생들에게 버튼 초기화 메세지
+                                websocket?.opinionInit();
+                              },
                               child: Text(
                                 "의견 초기화",
                                 style: TextStyle(fontSize: screenWidth * 0.039),

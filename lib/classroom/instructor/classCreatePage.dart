@@ -137,8 +137,10 @@ class _MyWidgetState extends State<ClassCreatePage> {
                         itemCount: classList.length,
                         itemBuilder: (context, index) {
                           Classroom classData = classList[index];
-                          String dateFormat = DateFormat('yyyy-MM-dd')
-                              .format(classData.updatedAt); // 날짜 변환
+                          String dateFormat = classData.updatedAt != null
+                              ? DateFormat('yyyy-MM-dd')
+                                  .format(classData.updatedAt!)
+                              : 'N/A';
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: ElevatedButton(

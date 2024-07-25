@@ -5,8 +5,8 @@ class Classroom {
   String classId;
   String className;
   Instructor instructor;
-  DateTime createdAt;
-  DateTime updatedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   Classroom({
     required this.classId,
@@ -54,8 +54,10 @@ class Classroom {
       classId: json['classId'],
       className: json['className'],
       instructor: Instructor.fromJson(json['instructor']),
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      createdAt:
+          json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      updatedAt:
+          json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
   }
 }
