@@ -28,7 +28,7 @@ class OpinionService extends ChangeNotifier {
 
   void addOpinion({required Opinion opinion}) {
     this.opinionList.add(opinion);
-    countList.add(OpinionVote(opinionId: opinion.opinionId, count: 0));
+    countList.add(OpinionVote(opinionId: opinion.opinionId, count: 20));
     notifyListeners();
   }
 

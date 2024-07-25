@@ -172,6 +172,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                       onPressed: () {
                         websocket?.unsubscribe();
                         websocket?.stomClient(jwt, context).deactivate();
+                        opinionService.deleteAll();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -613,4 +614,3 @@ class Indicator extends StatelessWidget {
     );
   }
 }
-
