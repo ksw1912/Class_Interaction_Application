@@ -188,8 +188,8 @@ class _EditClassDialogState extends State<EditClassDialog> {
                       children: [
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(192, 5, 165, 0),
-                            surfaceTintColor: Color.fromARGB(192, 5, 165, 0),
+                            backgroundColor: Color(0xff64c9c6),
+                            surfaceTintColor: Color(0xff64c9c6),
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -276,8 +276,8 @@ class _EditClassDialogState extends State<EditClassDialog> {
                         SizedBox(height: 10),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(192, 255, 0, 0),
-                            surfaceTintColor: Color.fromARGB(192, 255, 0, 0),
+                            backgroundColor: Color(0xfff7a3b5),
+                            surfaceTintColor: Color(0xfff7a3b5),
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
