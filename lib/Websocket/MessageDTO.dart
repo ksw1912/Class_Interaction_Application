@@ -51,6 +51,8 @@ class MessageDTO {
         'quiz': quiz?.toJson() ?? null,
         'evaluation': evaluation ?? null,
       };
+
+      
   factory MessageDTO.fromJson(Map<String, dynamic> json) {
     Status status = Status.values
         .firstWhere((e) => e.toString() == 'Status.${json['status']}');
