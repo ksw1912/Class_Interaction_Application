@@ -1,8 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
+import 'package:spaghetti/member/User.dart';
+import 'package:spaghetti/member/UserProvider.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 
@@ -19,10 +25,11 @@ class EditClassDialog extends StatefulWidget {
 
 class _EditClassDialogState extends State<EditClassDialog> {
   ScrollController? _scrollController;
-
   List<String>? ops;
   List<String>? opinion;
   List<Opinion>? opinionList;
+  String? jwt;
+  final storage = FlutterSecureStorage();
 
   @override
   void initState() {
@@ -37,11 +44,11 @@ class _EditClassDialogState extends State<EditClassDialog> {
         opinion = opinionList?.map((opinion) => opinion.opinion).toList();
       });
     });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {});
   }
 
   @override
   void dispose() {
-    _scrollController?.dispose();
     super.dispose();
   }
 
