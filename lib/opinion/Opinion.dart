@@ -27,9 +27,9 @@ class Opinion {
     );
   }
 
-  static String opinionListToJson(List<Opinion> quizList) {
-    List<Map<String, dynamic>> quizMapList =
-        quizList.map((quiz) => quiz.toJson()).toList();
-    return jsonEncode(quizMapList);
+  static String opinionListToJson(List<Opinion> opList) {
+    List<Map<String, dynamic>> opinionMapList =
+        opList.map((opinion) => opinion.toJson()).toList();
+    return jsonEncode(opinionMapList);
   }
 }
