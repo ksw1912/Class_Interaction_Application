@@ -75,20 +75,22 @@ class Websocket {
             }
             break;
           case Status.OPINIONUPDATE:
-            print("test");
             // 교수 의견 업데이트 처리
             if (user?.role == "student") {
-              print(message);
+              if (message.opList != null) {
+                for (int i = 0; i < message.opList!.length; i++) {
+                  print(message.opList?[i].opinion);
+                }
+              } else {
+                print("opList is null");
+              }
+              print("체크1");
               Provider.of<OpinionService>(context, listen: false)
                   .setOpinionList(message.opList ?? null);
-
-              await Dialogs.showErrorDialog(context, "교수님께서 수업의견 수정하셨습니다 ");
-              Navigator.pop(context);
-
-              //의견정보저장하기
-              print("test");
+              print("체크2");
               Provider.of<OpinionService>(context, listen: false)
                   .setOpinionList(message.opList ?? null);
+              print("체크3");
             }
 
             break;
@@ -170,7 +172,6 @@ class Websocket {
         'opinionList': opinion,
       }),
     );
-    print(opinion);
   }
 
   //퀴즈 제출

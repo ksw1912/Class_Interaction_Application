@@ -26,10 +26,4 @@ class Opinion {
       classroom: Classroom.fromJson_notArray(json['classroom']),
     );
   }
-
-  static String opinionListToJson(List<Opinion> opList) {
-    List<Map<String, dynamic>> opinionMapList =
-        opList.map((opinion) => opinion.toJson()).toList();
-    return jsonEncode(opinionMapList);
-  }
 }

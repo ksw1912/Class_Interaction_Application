@@ -214,17 +214,13 @@ class _ClassDetailPageState extends State<classDetailPage> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        // onPressed: opinionService.opinionSend
-                        //     ? () {
-                        //         websocket
-                        //             ?.opinionSend(opinionList[selectedRadio!]);
-                        //         opinionService.setOpinionSend(false);
-                        //       }
-                        //     : null,
-                        onPressed: () {
-                          websocket?.opinionSend(opinionList[selectedRadio!]);
-                          opinionService.setOpinionSend(false);
-                        },
+                        onPressed: opinionService.opinionSend
+                            ? () {
+                                websocket
+                                    ?.opinionSend(opinionList[selectedRadio!]);
+                                opinionService.setOpinionSend(false);
+                              }
+                            : null,
                         child: Text(
                           "제출하기",
                           style: TextStyle(

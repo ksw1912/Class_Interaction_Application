@@ -9,6 +9,7 @@ import 'package:spaghetti/Websocket/MessageDTO.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/quiz/Quiz.dart';
 import 'package:spaghetti/quiz/QuizVote.dart';
+import 'package:spaghetti/quiz/QuizVote.dart';
 
 class QuizService extends ChangeNotifier {
   List<String> quizList = [];
