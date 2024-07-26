@@ -260,6 +260,7 @@ class _EditClassDialogState extends State<EditClassDialog> {
                               // 수정하기
                               await classService.editOpinions(
                                   context, widget.classRoomData!, opinion!);
+                                  
                               widget.websocket?.sendOpinionUpdate(
                                   Provider.of<OpinionService>(context,
                                           listen: false)
