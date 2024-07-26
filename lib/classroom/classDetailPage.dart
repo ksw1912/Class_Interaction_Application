@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:spaghetti/Dialog/Dialogs.dart';
 import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
@@ -43,7 +44,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     UserCount userCount = Provider.of<UserCount>(context, listen: false);
     jwt = await storage.read(key: "Authorization") ?? "";
-    websocket = Websocket(classId, user, userCount, jwt, context);
+    websocket = Websocket(classId, user, jwt, context);
   }
 
   @override
@@ -51,6 +52,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
     websocket?.unsubscribe();
     websocket?.stomClient(jwt, context).deactivate(); // websocket 연결 해제
     _scrollController.dispose();
+    Provider.of<OpinionService>(context, listen: false).deleteAll();
     super.dispose();
   }
 
@@ -73,9 +75,11 @@ class _ClassDetailPageState extends State<classDetailPage> {
         resizeToAvoidBottomInset: false, // 키보드 오버플로우 방지
         appBar: AppBar(
           leading: IconButton(
-            onPressed: () {
-              websocket?.unsubscribe();
+            onPressed: () async {
+              await Dialogs.showEvaluationDialog(context, websocket!);
+              await websocket?.unsubscribe();
               websocket?.stomClient(jwt, context).deactivate();
+              Provider.of<OpinionService>(context, listen: false).deleteAll();
               Navigator.of(context).pop();
             },
             icon: Icon(Icons.arrow_back_rounded),

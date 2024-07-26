@@ -23,11 +23,10 @@ class Websocket {
   StompClient? stompClient;
   late User? user;
   dynamic unsubscribe;
-  final UserCount userCount;
   late BuildContext context;
 
   // late BuildContext context;
-  Websocket(this.classId, this.user, this.userCount, this.jwt, this.context) {
+  Websocket(this.classId, this.user, this.jwt, this.context) {
     stompClient = stomClient(jwt, context);
     stompClient?.activate();
   }
@@ -77,6 +76,11 @@ class Websocket {
             break;
           case Status.OPINIONUPDATE:
             // 교수 의견 업데이트 처리
+            if (user?.role == "student") {
+              Provider.of<OpinionService>(context, listen: false)
+                  .setOpinionSend(true);
+              //의견정보저장하기
+            }
             break;
           case Status.OPINIONINITIALIZE:
             print("의견초기화");
@@ -98,12 +102,15 @@ class Websocket {
             break;
           case Status.EVALUATION:
             // 수업 평가 처리
-
+            if (user?.role == "instructor") {
+              Provider.of<UserCount>(context, listen: false)
+                  .evaluationListAdd(message.evaluation);
+            }
             break;
           case Status.PEOPLESTATUS:
             // 사용자인원 처리
             print("사용자인원 제공: ${message.userEmails.length}");
-            userCount.updateUserCount(
+            Provider.of<UserCount>(context, listen: false).updateUserCount(
                 message.classId ?? "", message.userEmails.length);
             break;
           case Status.CLOSE:
@@ -178,12 +185,13 @@ class Websocket {
   }
 
   //학생 -> 교육자 평가
-  Future<void> studentEvaluation() async {
+  Future<void> studentEvaluation(int evaluation) async {
     stompClient?.send(
       destination: '/pub/classroom/$classId/message',
       body: json.encode({
         'status': Status.EVALUATION.toString().split('.').last,
         'classId': classId,
+        'evaluation': evaluation,
       }),
     );
   }
@@ -202,4 +210,3 @@ class Websocket {
 
 // unsubscribeFn(unsubscribeHeaders: {});
 // client.deactivate();
-

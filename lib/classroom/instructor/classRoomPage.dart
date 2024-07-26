@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/services.dart';
+import 'package:spaghetti/Dialog/Dialogs.dart';
 import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
@@ -16,6 +17,7 @@ import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/opinion/OpinionVote.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'Quiz_class_dialog.dart';
 import 'classCreatePage.dart';
 
 class ClassRoomPage extends StatefulWidget {
@@ -44,13 +46,15 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     UserCount userCount = Provider.of<UserCount>(context, listen: false);
     jwt = await storage.read(key: "Authorization") ?? "";
-    websocket = Websocket(classId, user, userCount, jwt, context);
+    websocket = Websocket(classId, user, jwt, context);
+    userCount.evaluationList = [0, 0, 0, 0];
   }
 
   @override
-  void dispose() {
-    websocket?.unsubscribe();
+  void dispose() async {
+    await websocket?.unsubscribe();
     websocket?.stomClient(jwt, context).deactivate(); // websocket 연결 해제
+    Provider.of<OpinionService>(context, listen: false).deleteAll();
     super.dispose();
   }
 
@@ -169,7 +173,8 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
+                        await Dialogs.showInstructorDialogEval(context);
                         websocket?.unsubscribe();
                         websocket?.stomClient(jwt, context).deactivate();
                         opinionService.deleteAll();
@@ -360,99 +365,6 @@ void addDialog(BuildContext context) {
   );
 }
 
-class QuizClassDialog extends StatefulWidget {
-  @override
-  _QuizClassDialogState createState() => _QuizClassDialogState();
-}
-
-class _QuizClassDialogState extends State<QuizClassDialog> {
-  ScrollController? _scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController();
-  }
-
-  @override
-  void dispose() {
-    _scrollController?.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer2<ClassroomService, OpinionService>(
-        builder: (context, classService, opinionService, child) {
-      List<Opinion> opinionList = opinionService.opinionList;
-
-      final mediaQuery = MediaQuery.of(context);
-      final screenHeight = mediaQuery.size.height;
-      final screenWidth = mediaQuery.size.width;
-      return SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        controller: _scrollController,
-        child: Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: SizedBox(
-            height: screenHeight * 0.5,
-            width: double.infinity,
-            child: PageView(
-              children: [
-                Container(
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        left: screenWidth * 0.12,
-                        top: screenHeight * 0.05,
-                        child: Text('퀴즈를 생성해주세요.',
-                            style: TextStyle(fontSize: screenWidth * 0.05)),
-                      ),
-                      Positioned(
-                        left: screenWidth * 0.1,
-                        top: screenHeight * 0.1,
-                        child: Container(
-                          height: 3,
-                          width: screenWidth * 0.8,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Positioned(
-                        left: screenWidth * 0.1,
-                        top: screenHeight * 0.4,
-                        child: Container(
-                          width: screenWidth * 0.2,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(192, 5, 165, 0),
-                              surfaceTintColor: Color.fromARGB(192, 5, 165, 0),
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            onPressed: () async {},
-                            child: Text(
-                              "퀴즈 생성",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    });
-  }
-}
-
 void showQRCodeModal(BuildContext context, String classNumber) {
   showModalBottomSheet(
     context: context,
@@ -517,7 +429,9 @@ final List<Color> contentColors = [
   Color(0xfff7a3b5),
   Color(0xfffcb29c),
   Color(0xffcab3e7), // mainTextcolor
-];class BarChartExample extends StatefulWidget {
+];
+
+class BarChartExample extends StatefulWidget {
   @override
   _BarChartExampleState createState() => _BarChartExampleState();
 }
@@ -543,7 +457,8 @@ class _BarChartExampleState extends State<BarChartExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bar Chart Example'),
+        automaticallyImplyLeading: false, // 뒤로가기 버튼 제거
+        title: Text('수업 의견'),
         actions: [
           IconButton(
             icon: Icon(Icons.sort),
@@ -554,9 +469,11 @@ class _BarChartExampleState extends State<BarChartExample> {
       body: Consumer2<ClassroomService, OpinionService>(
           builder: (context, classService, opinionService, child) {
         List<Opinion> opinionList = opinionService.opinionList; // 옵션 배열
-        List<OpinionVote> opinionCount = opinionService.countList; // 옵션 선택 개수 배열
+        List<OpinionVote> opinionCount =
+            opinionService.countList; // 옵션 선택 개수 배열
 
-        List<OpinionData> sortedData = List.generate(opinionList.length, (index) {
+        List<OpinionData> sortedData =
+            List.generate(opinionList.length, (index) {
           return OpinionData(
               opinionList[index].opinion,
               opinionCount[index].count.toDouble(),
@@ -578,7 +495,6 @@ class _BarChartExampleState extends State<BarChartExample> {
             axisLine: AxisLine(width: 0),
           ),
           plotAreaBorderWidth: 0,
-          title: ChartTitle(text: '수업 의견'),
           legend: Legend(isVisible: false),
           tooltipBehavior: TooltipBehavior(enable: true),
           series: <ChartSeries<OpinionData, String>>[
@@ -603,51 +519,3 @@ class OpinionData {
   final double count;
   final Color color;
 }
-
-// class Indicator extends StatelessWidget {
-//   final Color color;
-//   final String text;
-//   final bool isSquare;
-//   final double size;
-//   final Color textColor;
-
-//   const Indicator({
-//     Key? key,
-//     required this.color,
-//     required this.text,
-//     required this.isSquare,
-//     this.size = 16,
-//     this.textColor = const Color(0xff505050),
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final screenWidth = MediaQuery.of(context).size.width;
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: <Widget>[
-//         Container(
-//           width: screenWidth * 0.04,
-//           height: screenWidth * 0.04,
-//           decoration: BoxDecoration(
-//             shape: isSquare ? BoxShape.rectangle : BoxShape.circle,
-//             color: color,
-//           ),
-//         ),
-//         const SizedBox(
-//           width: 4,
-//         ),
-//         Expanded(
-//           child: Text(
-//             text,
-//             style: TextStyle(
-//               fontSize: screenWidth * 0.04,
-//               color: textColor,
-//             ),
-//             textAlign: TextAlign.center,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
