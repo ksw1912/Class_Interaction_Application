@@ -21,8 +21,8 @@ class Opinion {
 
   factory Opinion.fromJson(Map<String, dynamic> json) {
     return Opinion(
-      opinionId: json['opinionId'],
-      opinion: json['opinion'],
+      opinionId: json['opinionId'] ?? "",
+      opinion: json['opinion'] ?? "",
       classroom: Classroom.fromJson_notArray(json['classroom']),
     );
   }

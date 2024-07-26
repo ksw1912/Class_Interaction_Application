@@ -147,7 +147,8 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                                 ),
                               ),
                               onPressed: () {
-                                addDialog(context);
+                                addDialog(
+                                    context, widget?.classRoomData, websocket);
                               },
                               child: Text(
                                 "퀴즈 생성하기",
@@ -352,7 +353,8 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
   }
 }
 
-void addDialog(BuildContext context) {
+void addDialog(
+    BuildContext context, Classroom? classroom, Websocket? websocket) {
   showModalBottomSheet(
     context: context,
     backgroundColor: Colors.white,
@@ -364,7 +366,7 @@ void addDialog(BuildContext context) {
       ),
     ),
     builder: (BuildContext context) {
-      return QuizClassDialog();
+      return QuizClassDialog(classroom, websocket);
     },
   );
 }

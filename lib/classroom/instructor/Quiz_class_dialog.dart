@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spaghetti/Dialog/Dialogs.dart';
+import 'package:spaghetti/Websocket/Websocket.dart';
+import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
@@ -7,6 +10,9 @@ import 'package:spaghetti/quiz/Quiz.dart';
 import 'package:spaghetti/quiz/QuizService.dart';
 
 class QuizClassDialog extends StatefulWidget {
+  Classroom? classroom;
+  Websocket? websocket;
+  QuizClassDialog(this.classroom, this.websocket, {super.key});
   @override
   _QuizClassDialogState createState() => _QuizClassDialogState();
 }
@@ -31,7 +37,7 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
     return Consumer2<ClassroomService, QuizService>(
         builder: (context, classService, quizService, child) {
       List<TextEditingController> _controllers = [];
-      List<String> quizList = quizService.quizList;
+      List<Quiz> quizList = quizService.quizList;
 
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
@@ -65,7 +71,7 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
                           icon: Icon(Icons.add_circle_outline),
                           onPressed: () {
                             setState(() {
-                              quizList.add("");
+                              quizList.add(Quiz("", widget.classroom, ""));
                             });
                           },
                         ),
@@ -103,9 +109,11 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
                                           alignment: Alignment.centerLeft,
                                           height: screenHeight * 0.07,
                                           child: TextFormField(
-                                            onChanged: (value) {},
-                                            controller:
-                                                TextEditingController(text: ''),
+                                            onChanged: (value) {
+                                              quizList[index].question = value;
+                                            },
+                                            controller: TextEditingController(
+                                                text: quizList[index].question),
                                             decoration: InputDecoration(
                                               fillColor: Color.fromARGB(
                                                   255, 214, 214, 214),
@@ -155,7 +163,28 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                             ),
-                            onPressed: () async {},
+                            onPressed: () async {
+                              List<Quiz> quizs = [];
+                              for (int i = 0; i < quizList.length; i++) {
+                                //1. 입력한 배열을 검색하여 존재여부 판단
+                                if (quizList[i].question != null) {
+                                  quizs.add(quizList[i]); //존재할경우 quizs라는 배열에 삽입
+                                }
+                              }
+                              if (!quizs.isEmpty) {
+                                //배열이 존재할경우 create
+                                quizService.quizCreate(
+                                    context,
+                                    widget.classroom!.classId,
+                                    quizList,
+                                    widget.websocket);
+                                Navigator.pop(context);
+                              } else {
+                                //배열이 존재하지 않을 경우 Dialog
+                                await Dialogs.showErrorDialog(
+                                    context, "퀴즈를 입력해주세요");
+                              }
+                            },
                             child: Text(
                               "퀴즈 생성",
                               style: TextStyle(color: Colors.white),

@@ -12,6 +12,7 @@ import 'package:spaghetti/member/User.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/quiz/Quiz.dart';
+import 'package:spaghetti/quiz/QuizService.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 import 'package:spaghetti/ApiUrl.dart';
 import 'dart:convert';
@@ -108,7 +109,11 @@ class Websocket {
             break;
           case Status.QUIZUPDATE:
             // 교수 퀴즈 업데이트 처리
+            print(message.quizList);
+            print(Status.QUIZUPDATE);
             if (user?.role == "student") {
+              Provider.of<QuizService>(context, listen: false)
+                  .setQuizList(message.quizList);
               await addDialog(context);
             }
             break;
@@ -193,7 +198,7 @@ class Websocket {
       body: json.encode({
         'status': Status.QUIZUPDATE.toString().split('.').last,
         'classId': classId,
-        'opinionList': Quiz.convertQuizListToJson(quizs),
+        'opinionList': quizs.map((quiz) => quiz.toJson()).toList(),
       }),
     );
   }

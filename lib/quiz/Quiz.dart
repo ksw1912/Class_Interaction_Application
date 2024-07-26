@@ -7,7 +7,7 @@ class Quiz {
   Classroom? classroom;
   String? question;
 
-  Quiz(String quizId, Classroom classroom, String question) {
+  Quiz(String quizId, Classroom? classroom, String question) {
     this.quizId = quizId;
     this.classroom = classroom;
     this.question = this.question;
@@ -19,14 +19,10 @@ class Quiz {
         'question': question
       };
 
-  factory Quiz.fromJson(Map<String, dynamic> json) {
+  
+
+  factory Quiz.fromJson(Map<String ,dynamic> json) {
     return Quiz(json['quizId'], Classroom.fromJson_notArray(json['classroom']),
         json['question']);
-  }
-
-  static String convertQuizListToJson(List<Quiz> quizList) {
-    List<Map<String, dynamic>> quizMapList =
-        quizList.map((quiz) => quiz.toJson()).toList();
-    return jsonEncode(quizMapList);
   }
 }

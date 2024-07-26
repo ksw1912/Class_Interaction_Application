@@ -12,13 +12,12 @@ import 'package:spaghetti/quiz/QuizVote.dart';
 import 'package:spaghetti/quiz/QuizVote.dart';
 
 class QuizService extends ChangeNotifier {
-  List<String> quizList = [];
+  List<Quiz> quizList = [];
   List<QuizVote> quizCount = [];
   final storage = FlutterSecureStorage();
   final String apiUrl = Apiurl().url;
-
-  void setQuizList(List<String> quizs) {
-    quizList = quizs;
+  void setQuizList(List<Quiz>? quizs) {
+    quizList = quizs ?? [];
     notifyListeners();
   }
 
@@ -28,7 +27,7 @@ class QuizService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addQuiz({required String quiz}) {
+  void addQuiz({required Quiz quiz}) {
     this.quizList.add(quiz);
     quizCount.add(QuizVote(quizId: "", count: 0)); // 기본 투표 수를 0으로 설정
     notifyListeners();
@@ -36,19 +35,14 @@ class QuizService extends ChangeNotifier {
 
   //퀴즈 생성
   Future<void> quizCreate(BuildContext context, String classId,
-      List<Quiz> quizList, Websocket websocket) async {
-    if (quizList.isEmpty) {
-      await Dialogs.showErrorDialog(context, '내용을 입력해주세요.');
-    }
+      List<Quiz> quizList, Websocket? websocket) async {
     String? jwt = await storage.read(key: 'Authorization');
-
     if (jwt!.isEmpty) {
       //토큰이 존재하지 않을 때 첫페이지로 이동
       await Dialogs.showErrorDialog(context, '로그인시간이 만료되었습니다.');
       Navigator.of(context).pushReplacementNamed('/Loginpage');
       return;
     }
-    var quizListJson = quizList.map((quiz) => quiz.toJson()).toList();
 
     // 헤더에 JWT 토큰 추가
     var headers = {
@@ -57,7 +51,7 @@ class QuizService extends ChangeNotifier {
     };
     var body = jsonEncode({
       'classId': classId,
-      'question': quizListJson,
+      'quiz': quizList.map((quiz) => quiz.toJson()).toList(),
     });
 
     try {
@@ -68,19 +62,17 @@ class QuizService extends ChangeNotifier {
       );
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> responseBody =
+        List<dynamic> responseBody =
             jsonDecode(utf8.decode(response.bodyBytes));
-        List<Quiz> quizs = (responseBody['quiz'] as List)
-            .map((json) => Quiz.fromJson(json))
-            .toList();
-        //setQuizList(quizs);
-        websocket.sendQuizUpdate(quizs);
+        print(responseBody);
+        List<Quiz> quizs =
+            responseBody.map((json) => Quiz.fromJson(json)).toList();
+        setQuizList(quizs);
+        websocket?.sendQuizUpdate(quizs);
       } else {
         await Dialogs.showErrorDialog(
             context, '퀴즈 생성 실패: ${response.statusCode}');
       }
-
-      print(response.statusCode);
     } catch (exception) {
       print(exception);
       await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
