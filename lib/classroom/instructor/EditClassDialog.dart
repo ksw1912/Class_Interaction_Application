@@ -17,6 +17,7 @@ import 'classCreatePage.dart';
 class EditClassDialog extends StatefulWidget {
   final Classroom? classRoomData;
   Websocket? websocket;
+  
   EditClassDialog(
       {super.key, required this.classRoomData, required this.websocket});
   @override

@@ -22,7 +22,6 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'Quiz_class_dialog.dart';
 import 'package:spaghetti/Dialog/EvaluationResultPage.dart';
 
-
 class ClassRoomPage extends StatefulWidget {
   final Classroom? classRoomData;
 
@@ -177,17 +176,17 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                         ),
                       ),
                       onPressed: () async {
-                        
-                        websocket?.unsubscribe();
-                        websocket?.stomClient(jwt, context).deactivate();
-                        opinionService.deleteAll();
+                        // websocket?.unsubscribe();
+                        // websocket?.stomClient(jwt, context).deactivate();
+                        // opinionService.deleteAll();
                         // 평가 페이지에서 평가 완료 후 결과 페이지로 이동
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => EvaluationResultPage()),
+                            builder: (context) =>
+                                EvaluationResultPage(websocket),
+                          ),
                         );
-
                       },
                       child: Text(
                         "수업 종료하기",
