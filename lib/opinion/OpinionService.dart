@@ -11,7 +11,6 @@ class OpinionService extends ChangeNotifier {
     if (opList != null) {
       opinionList = opList;
     }
-
     notifyListeners();
   }
 

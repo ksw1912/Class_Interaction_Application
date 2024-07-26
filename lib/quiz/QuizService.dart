@@ -8,9 +8,12 @@ import 'package:spaghetti/Dialog/Dialogs.dart';
 import 'package:spaghetti/Websocket/MessageDTO.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/quiz/Quiz.dart';
+import 'package:spaghetti/quiz/QuizVote.dart';
 
 class Quizservice extends ChangeNotifier {
   List<Quiz> quizList = [];
+  List<QuizVote> quizVoteList = [];
+  
   final storage = FlutterSecureStorage();
   final String apiUrl = Apiurl().url;
 
@@ -40,7 +43,7 @@ class Quizservice extends ChangeNotifier {
       return;
     }
     var quizListJson = quizList.map((quiz) => quiz.toJson()).toList();
- 
+
     // 헤더에 JWT 토큰 추가
     var headers = {
       'Content-Type': 'application/json; charset=UTF-8',
