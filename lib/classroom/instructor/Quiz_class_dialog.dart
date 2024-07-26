@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
+import 'package:spaghetti/quiz/Quiz.dart';
+import 'package:spaghetti/quiz/QuizService.dart';
 
 class QuizClassDialog extends StatefulWidget {
   @override
@@ -26,13 +28,15 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<ClassroomService, OpinionService>(
-        builder: (context, classService, opinionService, child) {
-      List<Opinion> opinionList = opinionService.opinionList;
+    return Consumer2<ClassroomService, QuizService>(
+        builder: (context, classService, quizService, child) {
+      List<TextEditingController> _controllers = [];
+      List<String> quizList = quizService.quizList;
 
       final mediaQuery = MediaQuery.of(context);
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
+
       return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         controller: _scrollController,
@@ -55,6 +59,18 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
                             style: TextStyle(fontSize: screenWidth * 0.05)),
                       ),
                       Positioned(
+                        left: screenWidth * 0.775,
+                        top: screenHeight * 0.04,
+                        child: IconButton(
+                          icon: Icon(Icons.add_circle_outline),
+                          onPressed: () {
+                            setState(() {
+                              quizList.add("");
+                            });
+                          },
+                        ),
+                      ),
+                      Positioned(
                         left: screenWidth * 0.1,
                         top: screenHeight * 0.1,
                         child: Container(
@@ -75,7 +91,7 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
                             child: ListView.builder(
                               scrollDirection: Axis.vertical,
                               padding: EdgeInsets.zero,
-                              itemCount: 5,
+                              itemCount: quizList.length,
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding:
@@ -88,8 +104,8 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
                                           height: screenHeight * 0.07,
                                           child: TextFormField(
                                             onChanged: (value) {},
-                                            // controller: TextEditingController(
-                                            //     text: ),
+                                            controller:
+                                                TextEditingController(text: ''),
                                             decoration: InputDecoration(
                                               fillColor: Color.fromARGB(
                                                   255, 214, 214, 214),
@@ -112,7 +128,9 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
                                       IconButton(
                                         icon: Icon(Icons.delete),
                                         onPressed: () {
-                                          setState(() {});
+                                          setState(() {
+                                            quizList.removeAt(index);
+                                          });
                                         },
                                       ),
                                     ],
@@ -125,9 +143,9 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
                       ),
                       Positioned(
                         left: screenWidth * 0.1,
-                        top: screenHeight * 0.4,
+                        top: screenHeight * 0.6,
                         child: Container(
-                          width: screenWidth * 0.2,
+                          width: screenWidth * 0.8,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color.fromARGB(192, 5, 165, 0),

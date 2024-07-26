@@ -167,7 +167,7 @@ class Websocket {
       body: json.encode({
         'status': Status.OPINIONUPDATE.toString().split('.').last,
         'classId': classId,
-        'opinionList': Opinion.opinionListToJson(opinion),
+        'opinionList': opinion,
       }),
     );
     print(opinion);

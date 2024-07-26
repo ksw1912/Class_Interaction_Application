@@ -8,13 +8,15 @@ import 'package:spaghetti/Dialog/Dialogs.dart';
 import 'package:spaghetti/Websocket/MessageDTO.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/quiz/Quiz.dart';
+import 'package:spaghetti/quiz/QuizVote.dart';
 
-class Quizservice extends ChangeNotifier {
-  List<Quiz> quizList = [];
+class QuizService extends ChangeNotifier {
+  List<String> quizList = [];
+  List<QuizVote> quizCount = [];
   final storage = FlutterSecureStorage();
   final String apiUrl = Apiurl().url;
 
-  void setQuizList(List<Quiz> quizs) {
+  void setQuizList(List<String> quizs) {
     quizList = quizs;
     notifyListeners();
   }
@@ -22,6 +24,12 @@ class Quizservice extends ChangeNotifier {
   //퀴즈 초기화
   void quizInit() {
     quizList.clear();
+    notifyListeners();
+  }
+
+  void addQuiz({required String quiz}) {
+    this.quizList.add(quiz);
+    quizCount.add(QuizVote(quizId: "", count: 0)); // 기본 투표 수를 0으로 설정
     notifyListeners();
   }
 
@@ -40,7 +48,7 @@ class Quizservice extends ChangeNotifier {
       return;
     }
     var quizListJson = quizList.map((quiz) => quiz.toJson()).toList();
- 
+
     // 헤더에 JWT 토큰 추가
     var headers = {
       'Content-Type': 'application/json; charset=UTF-8',
@@ -64,7 +72,7 @@ class Quizservice extends ChangeNotifier {
         List<Quiz> quizs = (responseBody['quiz'] as List)
             .map((json) => Quiz.fromJson(json))
             .toList();
-        setQuizList(quizs);
+        //setQuizList(quizs);
         websocket.sendQuizUpdate(quizs);
       } else {
         await Dialogs.showErrorDialog(

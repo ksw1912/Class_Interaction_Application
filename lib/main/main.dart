@@ -8,6 +8,7 @@ import 'package:spaghetti/classroom/student/EnrollmentService.dart';
 import 'package:spaghetti/main/startPage.dart';
 import 'package:spaghetti/member/UserProvider.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
+import 'package:spaghetti/quiz/QuizService.dart';
 
 void main() {
   // HttpOverrides.global = NoCheckCertificateHttpOverrides();
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => OpinionService()),
         ChangeNotifierProvider(create: (context) => EnrollmentService()),
         ChangeNotifierProvider(create: (context) => UserCount()),
+        ChangeNotifierProvider(create: (context) => QuizService()),
       ],
       child: MaterialApp(
         builder: DevicePreview.appBuilder, // DevicePreview.appBuilder 사용
