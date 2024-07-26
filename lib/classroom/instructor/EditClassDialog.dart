@@ -266,12 +266,6 @@ class _EditClassDialogState extends State<EditClassDialog> {
                                           listen: false)
                                       .opinionList);
                               Navigator.pop(context);
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => ClassCreatePage(),
-                                ),
-                              );
                             }
                           },
                           child: Row(
