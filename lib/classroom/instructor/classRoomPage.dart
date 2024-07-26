@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
@@ -307,7 +309,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                     ),
                     iconSize: screenWidth * 0.08,
                     onPressed: () {
-                      showEditClassDialog(context);
+                      showEditClassDialog(context, websocket!);
                     },
                   ),
                 ),
@@ -328,7 +330,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
     });
   }
 
-  void showEditClassDialog(BuildContext context) {
+  void showEditClassDialog(BuildContext context, Websocket websocket) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
@@ -342,6 +344,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
       builder: (BuildContext context) {
         return EditClassDialog(
           classRoomData: widget.classRoomData,
+          websocket: websocket,
         );
       },
     );

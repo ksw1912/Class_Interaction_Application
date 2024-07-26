@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
@@ -9,8 +10,9 @@ import 'classCreatePage.dart';
 
 class EditClassDialog extends StatefulWidget {
   final Classroom? classRoomData;
-
-  EditClassDialog({super.key, required this.classRoomData});
+  Websocket? websocket;
+  EditClassDialog(
+      {super.key, required this.classRoomData, required this.websocket});
   @override
   _EditClassDialogState createState() => _EditClassDialogState();
 }
@@ -248,8 +250,13 @@ class _EditClassDialogState extends State<EditClassDialog> {
                                 },
                               );
                             } else {
+                              // 수정하기
                               await classService.editOpinions(
                                   context, widget.classRoomData!, opinion!);
+                              widget.websocket?.sendOpinionUpdate(
+                                  Provider.of<OpinionService>(context,
+                                          listen: false)
+                                      .opinionList);
                               Navigator.pop(context);
                               Navigator.pushReplacement(
                                 context,

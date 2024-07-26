@@ -75,11 +75,15 @@ class Websocket {
             }
             break;
           case Status.OPINIONUPDATE:
+            print("test");
             // 교수 의견 업데이트 처리
             if (user?.role == "student") {
               Provider.of<OpinionService>(context, listen: false)
                   .setOpinionSend(true);
               //의견정보저장하기
+              print("test");
+              Provider.of<OpinionService>(context, listen: false)
+                  .setOpinionList(message.opList ?? null);
             }
             break;
           case Status.OPINIONINITIALIZE:
