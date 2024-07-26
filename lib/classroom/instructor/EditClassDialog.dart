@@ -261,11 +261,12 @@ class _EditClassDialogState extends State<EditClassDialog> {
                               // 수정하기
                               await classService.editOpinions(
                                   context, widget.classRoomData!, opinion!);
-                                  
-                              widget.websocket?.sendOpinionUpdate(
+
+                              await widget.websocket?.sendOpinionUpdate(
                                   Provider.of<OpinionService>(context,
                                           listen: false)
                                       .opinionList);
+                              print("진짜 김서원;;;;");
                               Navigator.pop(context);
                             }
                           },

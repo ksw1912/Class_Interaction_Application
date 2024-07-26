@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:spaghetti/Dialog/Dialogs.dart';
 import 'package:spaghetti/classroom/classDetailPage.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
@@ -23,13 +22,13 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
   ScrollController? _scrollController;
   String output = 'Empty Scan Code';
   final TextEditingController _controller = TextEditingController();
+  bool isEditing = false;
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
   }
-
 
   @override
   void dispose() {
@@ -79,15 +78,149 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                   Positioned(
                     left: screenWidth * 0.1,
                     top: screenHeight * 0.23,
-                    child: Text('수업을 입장해 주세요',
+                    child: Text('수강 목록',
                         style: TextStyle(fontSize: screenWidth * 0.04)),
                   ),
                   Positioned(
-                    left: screenWidth * 0.1,
                     top: screenHeight * 0.28,
+                    left: screenWidth * 0.1,
                     child: Container(
                       width: screenWidth * 0.8,
-                      height: 40,
+                      height: screenHeight * 0.45, // 목록을 위한 높이 조정
+                      child: ListView.builder(
+                        controller: _scrollController, // ScrollController 추가
+                        padding: EdgeInsets.zero, // ListView의 패딩을 없앰
+                        itemCount: enrollList.length,
+                        itemBuilder: (context, index) {
+                          Enrollment enrollmentData = enrollList[index];
+                          String dateFormat = DateFormat('yyyy-MM-dd')
+                              .format(enrollmentData.updatedAt);
+
+                          return Column(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.book,
+                                      size: screenWidth * 0.1,
+                                      color: Colors.blue,
+                                    ), // 작은 아이콘 추가
+                                    SizedBox(width: 10),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            enrollmentData.classroom.className,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 16.0, // 텍스트 크기 설정
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                              fontFamily: 'NanumB',
+                                            ),
+                                          ),
+                                          Text(
+                                            dateFormat,
+                                            style: TextStyle(
+                                              fontSize: 12.0, // 텍스트 크기 설정
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    isEditing
+                                        ? IconButton(
+                                            icon: Icon(
+                                                Icons.remove_circle_outline,
+                                                color: Colors.red),
+                                            onPressed: () {
+                                              // 삭제 기능 추가
+                                              enrollmentService
+                                                  .removeEnrollment(
+                                                      enrollmentData
+                                                          .classroom.classId);
+                                            },
+                                          )
+                                        : ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Color.fromARGB(
+                                                  130,
+                                                  230,
+                                                  230,
+                                                  230), // 기본 배경색 설정
+                                              surfaceTintColor: Color.fromARGB(
+                                                  255,
+                                                  203,
+                                                  203,
+                                                  203), // 기본 표면 틴트 색상 설정
+                                              foregroundColor: Colors.black,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: 10.0,
+                                                horizontal: 15.0,
+                                              ), // 버튼의 위아래 및 좌우 간격 설정
+                                              shadowColor: Colors.transparent,
+                                            ),
+                                            onPressed: () async {
+                                              var classroom =
+                                                  await classroomService
+                                                      .classroomOpinions(
+                                                          context,
+                                                          enrollmentData
+                                                              .classroom
+                                                              .classId);
+                                              if (classroom == null) {
+                                                Navigator.pop(context);
+                                              } else {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        classDetailPage(
+                                                      classroom: classroom,
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                            child: Text(
+                                              "수업 입장하기",
+                                              style: TextStyle(
+                                                fontSize: 14.0, // 텍스트 크기 설정
+                                                fontWeight: FontWeight.normal,
+                                                color: Color(0xff4E4E4E),
+                                              ),
+                                            ),
+                                          ),
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                thickness: 1,
+                                color: Colors.grey[300],
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: screenWidth * 0.1,
+                    bottom: screenHeight * 0.1 + 50,
+                    child: Container(
+                      width: screenWidth * 0.8,
+                      height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 237, 241, 0),
@@ -118,10 +251,10 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                   ),
                   Positioned(
                     left: screenWidth * 0.1,
-                    top: screenHeight * 0.355,
+                    bottom: screenHeight * 0.1,
                     child: Container(
                       width: screenWidth * 0.8,
-                      height: 40,
+                      height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromARGB(192, 5, 165, 0),
@@ -292,122 +425,19 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                     ),
                   ),
                   Positioned(
-                    left: screenWidth * 0.1,
-                    top: screenHeight * 0.45,
-                    child: Text('수강 목록',
-                        style: TextStyle(fontSize: screenWidth * 0.04)),
-                  ),
-                  Positioned(
-                    top: screenHeight * 0.45 + 30, // "이전 수업" 텍스트 아래 30px
-                    left: screenWidth * 0.1,
-                    child: Scrollbar(
-                      child: Container(
-                        width: screenWidth * 0.8,
-                        height: screenHeight * 0.95 -
-                            (screenHeight * 0.45 + 30), // 화면 높이의 90% - top 위치
-                        child: ListView.builder(
-                          controller: _scrollController, // ScrollController 추가
-                          padding: EdgeInsets.zero, // ListView의 패딩을 없앰
-                          itemCount: enrollList.length,
-                          itemBuilder: (context, index) {
-                            Enrollment enrollmentData = enrollList[index];
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color.fromARGB(
-                                      130, 230, 230, 230), // 기본 배경색 설정
-                                  surfaceTintColor: Color.fromARGB(
-                                      255, 203, 203, 203), // 기본 표면 틴트 색상 설정
-                                  foregroundColor: Colors.black, // 텍스트 색상 설정
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: 10.0,
-                                    horizontal: 15.0,
-                                  ), // 버튼의 위아래 및 좌우 간격 설정
-                                  shadowColor: Colors.transparent, // 그림자 색상 제거
-                                  // overlayColor 속성 제거
-                                ),
-                                onPressed: () async {
-                                  var classroom =
-                                      await classroomService.classroomOpinions(
-                                          context,
-                                          enrollmentData.classroom.classId);
-                                  if (classroom == null) {
-                                    Navigator.pop(context);
-                                  } else {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => classDetailPage(
-                                          classroom: classroom,
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                },
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            enrollmentData.classroom.className,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: 16.0, // 텍스트 크기 설정
-                                              fontWeight:
-                                                  FontWeight.bold, // 폰트 굵기 설정
-                                              color: Colors.black, // 폰트 색상 설정
-                                              fontFamily: 'NanumB', // 폰트 패밀리 설정
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 1,
-                                          ), // content와 date 사이의 간격
-                                          Text(
-                                            DateFormat('yyyy-MM-dd').format(
-                                                enrollmentData.updatedAt),
-                                            style: TextStyle(
-                                              fontSize: 12.0, // 텍스트 크기 설정
-                                              fontWeight:
-                                                  FontWeight.normal, // 폰트 굵기 설정
-                                              color: Colors.grey, // 폰트 색상 설정
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment:
-                                          Alignment.center, // 텍스트를 수직 중앙에 정렬
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10.0), // 왼쪽에 약간의 간격 추가
-                                        child: Text(
-                                          "수업 입장하기",
-                                          style: TextStyle(
-                                            fontSize: 14.0, // 텍스트 크기 설정
-                                            fontWeight:
-                                                FontWeight.normal, // 폰트 굵기 설정
-                                            color:
-                                                Color(0xff4E4E4E), // 폰트 색상 설정
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
+                    right: screenWidth * 0.1,
+                    top: screenHeight * 0.215,
+                    child: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          isEditing = !isEditing;
+                        });
+                      },
+                      child: Text(
+                        isEditing ? '확인' : '편집',
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.04,
+                          color: Colors.blue,
                         ),
                       ),
                     ),
