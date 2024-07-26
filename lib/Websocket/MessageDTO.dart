@@ -29,6 +29,8 @@ class MessageDTO {
   Quiz? quiz;
   int? evaluation;
   String? classId;
+  List<Quiz>? quizList;
+  List<Opinion>? opList;
   Set<String> userEmails = HashSet<String>();
 
   MessageDTO(
@@ -37,6 +39,8 @@ class MessageDTO {
     Quiz? quiz,
     int? evaluation,
     String? classId,
+    List<Quiz>? quizList,
+    List<Opinion>? opList,
     // Set<String> userEmails,
   ) {
     this.status = status;
@@ -64,7 +68,18 @@ class MessageDTO {
     Quiz? quiz = json['quiz'] != null ? Quiz.fromJson(json['quiz']) : null;
     int? evaluation = json['evaluation'];
 
-    MessageDTO dto = MessageDTO(status, opinion, quiz, evaluation, classId);
+    List<Quiz>? quizList = json['quiz'] != null
+        ? (json['quiz'] as List).map((item) => Quiz.fromJson(item)).toList()
+        : null;
+
+    List<Opinion>? opList = json['opinionList'] != null
+        ? (json['opinionList'] as List)
+            .map((item) => Opinion.fromJson(item))
+            .toList()
+        : null;
+
+    MessageDTO dto = MessageDTO(
+        status, opinion, quiz, evaluation, classId, quizList, opList);
     dto.userEmails = (json['userEmails'] != null
             ? List<String>.from(json['userEmails'])
             : <String>[])

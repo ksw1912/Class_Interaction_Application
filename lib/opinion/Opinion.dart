@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:spaghetti/classroom/classroom.dart';
 
 class Opinion {
@@ -23,5 +25,11 @@ class Opinion {
       opinion: json['opinion'],
       classroom: Classroom.fromJson_notArray(json['classroom']),
     );
+  }
+
+  static String opinionListToJson(List<Opinion> quizList) {
+    List<Map<String, dynamic>> quizMapList =
+        quizList.map((quiz) => quiz.toJson()).toList();
+    return jsonEncode(quizMapList);
   }
 }

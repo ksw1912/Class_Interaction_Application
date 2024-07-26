@@ -92,7 +92,7 @@ class Websocket {
             break;
           case Status.QUIZ:
             // 퀴즈 처리
-            if (user?.role == "instructor") {}
+            if (user?.role == "student") {}
             break;
           case Status.QUIZUPDATE:
             // 교수 퀴즈 업데이트 처리
@@ -151,12 +151,13 @@ class Websocket {
   }
 
   //의견 수정 정보 알리기
-  Future<void> sendOpinionUpdate() async {
+  Future<void> sendOpinionUpdate(List<Opinion> opinion) async {
     stompClient?.send(
       destination: '/pub/classroom/$classId/message',
       body: json.encode({
         'status': Status.OPINIONUPDATE.toString().split('.').last,
         'classId': classId,
+        'opinionList': Opinion.opinionListToJson(opinion),
       }),
     );
   }
@@ -174,12 +175,13 @@ class Websocket {
   }
 
   //학생들에게 퀴즈 풀기 알리기
-  Future<void> sendQuizUpdate() async {
+  Future<void> sendQuizUpdate(List<Quiz> quizs) async {
     stompClient?.send(
       destination: '/pub/classroom/$classId/message',
       body: json.encode({
         'status': Status.QUIZUPDATE.toString().split('.').last,
         'classId': classId,
+        'opinionList': Quiz.convertQuizListToJson(quizs),
       }),
     );
   }

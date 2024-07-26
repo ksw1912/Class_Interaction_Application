@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:spaghetti/ApiUrl.dart';
 import 'package:spaghetti/Dialog/Dialogs.dart';
+import 'package:spaghetti/Websocket/MessageDTO.dart';
+import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/quiz/Quiz.dart';
 
 class Quizservice extends ChangeNotifier {
@@ -24,8 +26,8 @@ class Quizservice extends ChangeNotifier {
   }
 
   //퀴즈 생성
-  Future<void> quizCreate(
-      BuildContext context, String classId, List<Quiz> quizList) async {
+  Future<void> quizCreate(BuildContext context, String classId,
+      List<Quiz> quizList, Websocket websocket) async {
     if (quizList.isEmpty) {
       await Dialogs.showErrorDialog(context, '내용을 입력해주세요.');
     }
@@ -38,6 +40,7 @@ class Quizservice extends ChangeNotifier {
       return;
     }
     var quizListJson = quizList.map((quiz) => quiz.toJson()).toList();
+ 
     // 헤더에 JWT 토큰 추가
     var headers = {
       'Content-Type': 'application/json; charset=UTF-8',
@@ -45,7 +48,7 @@ class Quizservice extends ChangeNotifier {
     };
     var body = jsonEncode({
       'classId': classId,
-      'quizs': quizListJson,
+      'question': quizListJson,
     });
 
     try {
@@ -58,6 +61,11 @@ class Quizservice extends ChangeNotifier {
       if (response.statusCode == 200) {
         Map<String, dynamic> responseBody =
             jsonDecode(utf8.decode(response.bodyBytes));
+        List<Quiz> quizs = (responseBody['quiz'] as List)
+            .map((json) => Quiz.fromJson(json))
+            .toList();
+        setQuizList(quizs);
+        websocket.sendQuizUpdate(quizs);
       } else {
         await Dialogs.showErrorDialog(
             context, '퀴즈 생성 실패: ${response.statusCode}');
