@@ -1,7 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:spaghetti/Websocket/UserCount.dart';
+import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
+import 'package:spaghetti/member/User.dart';
+import 'package:spaghetti/member/UserProvider.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 
@@ -17,10 +24,12 @@ class EditClassDialog extends StatefulWidget {
 
 class _EditClassDialogState extends State<EditClassDialog> {
   ScrollController? _scrollController;
-
+  Websocket? websocket;
   List<String>? ops;
   List<String>? opinion;
   List<Opinion>? opinionList;
+  String? jwt;
+  final storage = FlutterSecureStorage();
 
   @override
   void initState() {
@@ -35,11 +44,25 @@ class _EditClassDialogState extends State<EditClassDialog> {
         opinion = opinionList?.map((opinion) => opinion.opinion).toList();
       });
     });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _initializeWebsocket();
+    });
+  }
+
+  Future<void> _initializeWebsocket() async {
+    String classId = widget.classRoomData!.classId;
+    User? user = Provider.of<UserProvider>(context, listen: false).user;
+    UserCount userCount = Provider.of<UserCount>(context, listen: false);
+    jwt = await storage.read(key: "Authorization") ?? "";
+    websocket = Websocket(classId, user, jwt, context);
   }
 
   @override
   void dispose() {
+    websocket?.unsubscribe();
+    websocket?.stomClient(jwt, context).deactivate(); // websocket 연결 해제
     _scrollController?.dispose();
+    Provider.of<OpinionService>(context, listen: false).deleteAll();
     super.dispose();
   }
 
@@ -250,13 +273,6 @@ class _EditClassDialogState extends State<EditClassDialog> {
                             } else {
                               await classService.editOpinions(
                                   context, widget.classRoomData!, opinion!);
-                              Navigator.pop(context);
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => ClassCreatePage(),
-                                ),
-                              );
                             }
                           },
                           child: Row(

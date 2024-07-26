@@ -7,7 +7,6 @@ class OpinionService extends ChangeNotifier {
   List<OpinionVote> countList = []; //투표 인원 수
   bool opinionSend = true; // 투표 1회만
 
-
   //의견제출버튼 true or false 동작
   void setOpinionSend(bool value) {
     opinionSend = value;
@@ -39,7 +38,7 @@ class OpinionService extends ChangeNotifier {
     notifyListeners();
   }
 
-void voteAdd(Opinion? opinion) {
+  void voteAdd(Opinion? opinion) {
     for (int i = 0; i < countList.length; i++) {
       if (countList[i].opinionId == opinion?.opinionId) {
         countList[i].count += 1;
@@ -65,6 +64,14 @@ void voteAdd(Opinion? opinion) {
   void initializeOpinionList() {
     opinionList.clear();
     countList.clear();
+    notifyListeners();
+  }
+
+  void setOpinionList(List<Opinion>? opList) {
+    if (opList != null) {
+      opinionList = opList;
+    }
+
     notifyListeners();
   }
 

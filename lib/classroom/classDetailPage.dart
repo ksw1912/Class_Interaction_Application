@@ -92,7 +92,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
                 children: [
                   Positioned(
                     left: screenWidth * 0.1,
-                    top: screenHeight * 0.1,
+                    top: screenHeight * 0.01,
                     child: Text(className,
                         style: TextStyle(
                           fontSize: screenWidth * 0.06,
@@ -102,7 +102,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
                   ),
                   Positioned(
                     left: screenWidth * 0.11,
-                    top: screenHeight * 0.15,
+                    top: screenHeight * 0.05,
                     child: Text('참여인원: ${userCount.userList[classId] ?? 0} 명',
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
@@ -112,7 +112,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
                   ),
                   Positioned(
                     left: screenWidth * 0.1,
-                    top: screenHeight * 0.25,
+                    top: screenHeight * 0.12,
                     child: Text('의견 제출하기',
                         style: TextStyle(
                           fontSize: screenWidth * 0.06,
@@ -122,7 +122,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
                   ),
                   Positioned(
                     left: screenWidth * 0.1,
-                    top: screenHeight * 0.3,
+                    top: screenHeight * 0.17,
                     child: Container(
                       height: 3,
                       width: screenWidth * 0.8,
@@ -131,13 +131,13 @@ class _ClassDetailPageState extends State<classDetailPage> {
                   ),
                   Positioned(
                     left: screenWidth * 0.1,
-                    top: screenHeight * 0.32,
+                    top: screenHeight * 0.19,
                     child: Text('의견 선택 후 제출해 주세요',
                         style: TextStyle(
                             fontSize: screenWidth * 0.04, color: Colors.grey)),
                   ),
                   Positioned(
-                    top: screenHeight * 0.355, // "이전 수업" 텍스트 아래 30px
+                    top: screenHeight * 0.22, // "이전 수업" 텍스트 아래 30px
                     left: screenWidth * 0.1,
                     child: Scrollbar(
                       thumbVisibility: true,
