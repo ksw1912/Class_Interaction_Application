@@ -58,7 +58,7 @@ class AuthService {
 
   void startTokenDeletionTimer(BuildContext context) {
     // 2시간 후 토큰 삭제 타이머
-    Timer(Duration(minutes: 1), () async {
+    Timer(Duration(hours: 2), () async {
       await logout();
       showLogoutDialog(context);
     });
