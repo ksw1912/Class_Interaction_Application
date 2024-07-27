@@ -13,6 +13,8 @@ import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/quiz/Quiz.dart';
 
+import 'student/quiz_add_class_dialog.dart';
+
 class classDetailPage extends StatefulWidget {
   final Classroom classroom;
 
@@ -284,97 +286,4 @@ Future<void> addDialog(BuildContext context) async {
       return AddClassDialog();
     },
   );
-}
-
-class AddClassDialog extends StatefulWidget {
-  @override
-  _AddClassDialogState createState() => _AddClassDialogState();
-}
-
-class _AddClassDialogState extends State<AddClassDialog> {
-  ScrollController? _scrollController;
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController();
-  }
-
-  @override
-  void dispose() {
-    _scrollController?.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer2<ClassroomService, OpinionService>(
-        builder: (context, classService, opinionService, child) {
-      List<Opinion> opinionList = opinionService.opinionList;
-      final mediaQuery = MediaQuery.of(context);
-      final screenHeight = mediaQuery.size.height;
-      final screenWidth = mediaQuery.size.width;
-      return SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        controller: _scrollController, // ScrollController 추가
-        child: Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: SizedBox(
-            height: screenHeight * 0.5,
-            width: double.infinity,
-            child: PageView(
-              children: [
-                Container(
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        left: screenWidth * 0.12,
-                        top: screenHeight * 0.05,
-                        child: Text('퀴즈를 풀어주세요.',
-                            style: TextStyle(fontSize: screenWidth * 0.05)),
-                      ),
-                      Positioned(
-                        left: screenWidth * 0.1,
-                        top: screenHeight * 0.1,
-                        child: Container(
-                          height: 3,
-                          width: screenWidth * 0.8,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Positioned(
-                        left: screenWidth * 0.1,
-                        top: screenHeight * 0.4,
-                        child: Container(
-                          width: screenWidth * 0.8, // 화면 너비의 80%
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(192, 5, 165, 0),
-                              surfaceTintColor: Color.fromARGB(192, 5, 165, 0),
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            onPressed: () {
-                              // sendQuiz(Quiz(quizId, classId, null));
-                            },
-                            child: Text(
-                              "답안 제출",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    });
-  }
 }

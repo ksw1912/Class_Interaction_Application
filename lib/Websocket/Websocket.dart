@@ -62,6 +62,7 @@ class Websocket {
       destination: '/sub/classroom/$classId',
       callback: (frame) async {
         Map<String, dynamic> json = jsonDecode(frame.body ?? "");
+        print("수신 json:");
         print(json);
         MessageDTO message = MessageDTO.fromJson(json);
         switch (message.status) {
@@ -78,20 +79,10 @@ class Websocket {
           case Status.OPINIONUPDATE:
             // 교수 의견 업데이트 처리
             if (user?.role == "student") {
-              if (message.opList != null) {
-                for (int i = 0; i < message.opList!.length; i++) {
-                  print(message.opList?[i].opinion);
-                }
-              } else {
-                print("opList is null");
-              }
-              print("체크1");
               Provider.of<OpinionService>(context, listen: false)
                   .setOpinionList(message.opList ?? null);
-              print("체크2");
               Provider.of<OpinionService>(context, listen: false)
                   .setOpinionList(message.opList ?? null);
-              print("체크3");
             }
 
             break;
@@ -111,11 +102,11 @@ class Websocket {
             // 교수 퀴즈 업데이트 처리
             print(message.quizList);
             print(Status.QUIZUPDATE);
-            if (user?.role == "student") {
-              Provider.of<QuizService>(context, listen: false)
-                  .setQuizList(message.quizList);
-              await addDialog(context);
-            }
+            // if (user?.role == "student") {
+            Provider.of<QuizService>(context, listen: false)
+                .setQuizList(message.quizList);
+            await addDialog(context);
+            // }
             break;
           case Status.EVALUATION:
             // 수업 평가 처리
@@ -198,7 +189,7 @@ class Websocket {
       body: json.encode({
         'status': Status.QUIZUPDATE.toString().split('.').last,
         'classId': classId,
-        'opinionList': quizs.map((quiz) => quiz.toJson()).toList(),
+        'quizList': quizs.map((quiz) => quiz.toJson()).toList(),
       }),
     );
   }

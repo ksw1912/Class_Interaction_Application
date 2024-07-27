@@ -68,7 +68,7 @@ class MessageDTO {
     int? evaluation = json['evaluation'];
 
     List<Quiz>? quizList = json['quizList'] != null
-        ? (json['quizList'] as List).map((item) => Quiz.fromJson(item)).toList()
+        ? (json['quizList'] as List).map((quiz) => Quiz.fromJson(quiz)).toList()
         : null;
     print("퀴즈list 문제X");
     List<Opinion>? opList = json['opinionList'] != null

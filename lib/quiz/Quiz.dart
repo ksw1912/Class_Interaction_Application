@@ -19,10 +19,10 @@ class Quiz {
         'question': question
       };
 
-  
-
-  factory Quiz.fromJson(Map<String ,dynamic> json) {
-    return Quiz(json['quizId'], Classroom.fromJson_notArray(json['classroom']),
-        json['question']);
+  factory Quiz.fromJson(Map<String, dynamic> json) {
+    return Quiz(
+        json['quizId'] ?? "",
+        Classroom.fromJson_notArray(json['classroom']) ?? null,
+        json['question'] ?? "");
   }
 }
