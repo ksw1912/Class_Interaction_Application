@@ -8,6 +8,7 @@ import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/member/User.dart';
 import 'package:spaghetti/member/UserProvider.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
+import 'package:spaghetti/quiz/QuizService.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:spaghetti/classroom/instructor/classCreatePage.dart';
 
@@ -110,6 +111,9 @@ class _EvaluationResultPage extends State<EvaluationResultPage> {
                           .deactivate(); // websocket 연결 해제
                       Provider.of<OpinionService>(context, listen: false)
                           .deleteAll();
+                      Provider.of<QuizService>(context,
+                              listen: false) //방 삭제시 퀴즈 빠이빠이
+                          .initializeQuizList();
                       Navigator.push(
                         context,
                         MaterialPageRoute(

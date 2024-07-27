@@ -57,6 +57,12 @@ class QuizService extends ChangeNotifier {
     notifyListeners();
   }
 
+  void initializeQuizList() {
+    quizList.clear();
+    quizCount.clear();
+    notifyListeners();
+  }
+
   //퀴즈 생성
   Future<void> quizCreate(BuildContext context, String classId,
       List<Quiz> quizList, Websocket? websocket) async {

@@ -10,6 +10,7 @@ import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/EditClassDialog.dart';
+import 'package:spaghetti/classroom/instructor/QuizCheckpage.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/login/AuthService.dart';
 import 'package:spaghetti/member/User.dart';
@@ -301,11 +302,31 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                   ),
                 ),
                 Positioned(
+                  right: screenWidth * 0.375, // 적절히 조정
+                  top: screenHeight * 0.1,
+                  child: IconButton(
+                    icon: Image.asset(
+                      'assets/images/check.png', // 수정 아이콘 경로
+                      width: screenWidth * 0.06,
+                      height: screenWidth * 0.06,
+                    ),
+                    iconSize: screenWidth * 0.08,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => QuizCheckPage(websocket),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Positioned(
                   right: screenWidth * 0.23, // 적절히 조정
                   top: screenHeight * 0.1,
                   child: IconButton(
                     icon: Image.asset(
-                      'assets/images/edit.png', // 수정 아이콘 경로
+                      'assets/images/edit.png', // 퀴즈 결과 창
                       width: screenWidth * 0.06,
                       height: screenWidth * 0.06,
                     ),

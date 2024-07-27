@@ -38,8 +38,18 @@ class _ClassDetailPageState extends State<classDetailPage> {
     _scrollController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _initializeWebsocket();
+      // _checkClassStart();
     });
   }
+//수업 시작전 입장 막기
+/*   Future<void> _checkClassStart() async {
+    String classId = widget.classroom.classId;
+    UserCount userCount = Provider.of<UserCount>(context, listen: false);
+    if (userCount.userList[classId]! <= 1) {
+      await Dialogs.showErrorDialog(context, "수업시작 전입니다");
+      Navigator.pop(context);
+    }
+  }*/
 
   Future<void> _initializeWebsocket() async {
     String classId = widget.classroom.classId;
