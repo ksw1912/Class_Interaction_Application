@@ -10,7 +10,7 @@ class Quiz {
   Quiz(String quizId, Classroom? classroom, String question) {
     this.quizId = quizId;
     this.classroom = classroom;
-    this.question = this.question;
+    this.question = question;
   }
 
   Map<String, dynamic> toJson() => {

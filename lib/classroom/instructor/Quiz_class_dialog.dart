@@ -173,6 +173,7 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
                               }
                               if (!quizs.isEmpty) {
                                 //배열이 존재할경우 create
+
                                 quizService.quizCreate(
                                     context,
                                     widget.classroom!.classId,

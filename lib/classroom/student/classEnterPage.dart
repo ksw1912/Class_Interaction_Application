@@ -142,6 +142,13 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                                 color: Colors.red),
                                             onPressed: () {
                                               // 삭제 기능 추가
+                                              print(enrollList[index]
+                                                  .enrollmentID);
+                                              enrollmentService
+                                                  .enrollmentDelete(
+                                                      context,
+                                                      enrollList[index]
+                                                          .enrollmentID);
                                               enrollmentService
                                                   .removeEnrollment(
                                                       enrollmentData

@@ -69,7 +69,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                         ),
                       ),
                       Positioned(
-                        top: screenHeight * 0.22, // "이전 수업" 텍스트 아래 30px
+                        top: screenHeight * 0.15, // "이전 수업" 텍스트 아래 30px
                         left: screenWidth * 0.1,
                         child: Scrollbar(
                           thumbVisibility: true,
@@ -78,7 +78,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                             controller: _scrollController,
                             child: Container(
                               width: screenWidth * 0.8,
-                              height: screenHeight * 0.4,
+                              height: screenHeight * 0.3,
                               child: quizList.isNotEmpty
                                   ? ListView.builder(
                                       padding:

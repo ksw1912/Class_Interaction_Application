@@ -3,14 +3,14 @@ import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/member/Student.dart';
 
 class Enrollment {
-  String enrollmentId;
+  String enrollmentID;
   Classroom classroom;
   Student student;
   DateTime createdAt;
   DateTime updatedAt;
 
   Enrollment({
-    required this.enrollmentId,
+    required this.enrollmentID,
     required this.classroom,
     required this.student,
     required this.createdAt,
@@ -18,7 +18,7 @@ class Enrollment {
   });
 
   Map<String, dynamic> toJson() => {
-        'enrollmentId': enrollmentId,
+        'enrollmentID': enrollmentID,
         'classroom': classroom,
         'student': student,
         'createdAt': DateFormat('yyyy-MM-dd').format(createdAt),
@@ -50,11 +50,13 @@ class Enrollment {
     );
 
     return Enrollment(
-      enrollmentId: json['enrollmentId'] ?? "",
+      enrollmentID: json['enrollmentID'] ?? "",
       classroom: Classroom.fromJson(json['classroom']),
       student: Student.fromJson(json['student']),
       createdAt: createdAt,
       updatedAt: updatedAt,
     );
   }
+
+  void enrollmentDelete(int index) {}
 }
