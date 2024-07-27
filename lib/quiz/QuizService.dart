@@ -16,15 +16,39 @@ class QuizService extends ChangeNotifier {
   List<QuizVote> quizCount = [];
   final storage = FlutterSecureStorage();
   final String apiUrl = Apiurl().url;
+
   void setQuizList(List<Quiz>? quizs) {
     quizList = quizs ?? [];
+    updateCountList();
+    notifyListeners();
+  }
+
+  QuizService() {
+    updateCountList();
+  }
+
+  //투표수량 초기화
+  void updateCountList() {
+    quizCount = quizList
+        .map((quiz) => QuizVote(quizId: quiz.quizId ?? "", count: 0))
+        .toList();
     notifyListeners();
   }
 
   //퀴즈 초기화
   void quizInit() {
     quizList.clear();
+    quizCount.clear();
     notifyListeners();
+  }
+
+  void voteAdd(Quiz? quiz) {
+    for (int i = 0; i < quizCount.length; i++) {
+      if (quizCount[i].quizId == quiz?.quizId) {
+        quizCount[i].count += 1;
+        break;
+      }
+    }
   }
 
   void addQuiz({required Quiz quiz}) {

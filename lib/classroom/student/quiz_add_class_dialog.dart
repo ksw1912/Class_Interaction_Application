@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spaghetti/Dialog/Dialogs.dart';
+import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
@@ -7,6 +9,8 @@ import 'package:spaghetti/quiz/Quiz.dart';
 import 'package:spaghetti/quiz/QuizService.dart';
 
 class AddClassDialog extends StatefulWidget {
+  Websocket? websocket;
+  AddClassDialog(this.websocket, {super.key});
   @override
   _AddClassDialogState createState() => _AddClassDialogState();
 }
@@ -148,7 +152,13 @@ class _AddClassDialogState extends State<AddClassDialog> {
                               ),
                             ),
                             onPressed: () {
-                              // sendQuiz(Quiz(quizId, classId, null));
+                              if (selectedRadio != null) {
+                                print("test");
+                                widget.websocket
+                                    ?.sendQuiz(quizList[selectedRadio ?? 0]);
+                              } else {
+                                Dialogs.showErrorDialog(context, "답 맞춰라");
+                              }
                             },
                             child: Text(
                               "답안 제출",

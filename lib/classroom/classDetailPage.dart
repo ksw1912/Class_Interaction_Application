@@ -249,7 +249,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
                           ),
                         ),
                         onPressed: () {
-                          addDialog(context);
+                          addDialog(context, websocket);
                         },
                         child: Text(
                           "퀴즈풀기",
@@ -271,7 +271,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
   }
 }
 
-Future<void> addDialog(BuildContext context) async {
+Future<void> addDialog(BuildContext context, Websocket? websocket) async {
   showModalBottomSheet(
     context: context,
     backgroundColor: Colors.white,
@@ -283,7 +283,7 @@ Future<void> addDialog(BuildContext context) async {
       ),
     ),
     builder: (BuildContext context) {
-      return AddClassDialog();
+      return AddClassDialog(websocket);
     },
   );
 }

@@ -96,7 +96,11 @@ class Websocket {
             break;
           case Status.QUIZ:
             // 퀴즈 처리
-            if (user?.role == "student") {}
+            if (user?.role == "instructor") {
+              //QuizVote 구현해야함
+              Provider.of<QuizService>(context, listen: false)
+                  .voteAdd(message.quiz);
+            }
             break;
           case Status.QUIZUPDATE:
             // 교수 퀴즈 업데이트 처리
@@ -105,7 +109,7 @@ class Websocket {
             // if (user?.role == "student") {
             Provider.of<QuizService>(context, listen: false)
                 .setQuizList(message.quizList);
-            await addDialog(context);
+            await addDialog(context, this);
             // }
             break;
           case Status.EVALUATION:
@@ -172,6 +176,7 @@ class Websocket {
 
   //퀴즈 제출
   Future<void> sendQuiz(Quiz quiz) async {
+    print("퀴즈아이디 : $quiz.quizId");
     stompClient?.send(
       destination: '/pub/classroom/$classId/message',
       body: json.encode({
