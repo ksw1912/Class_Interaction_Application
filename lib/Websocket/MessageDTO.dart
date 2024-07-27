@@ -48,10 +48,10 @@ class MessageDTO {
   }
 
   Map<String, dynamic> toJson() => {
-        'status': status.toString().split('.').last as String,
-        'opinion': opinion?.toJson() ?? null,
-        'quiz': quiz?.toJson() ?? null,
-        'evaluation': evaluation ?? null,
+        'status': status.toString().split('.').last,
+        'opinion': opinion?.toJson(),
+        'quiz': quiz?.toJson(),
+        'evaluation': evaluation,
         'classId': classId,
       };
 

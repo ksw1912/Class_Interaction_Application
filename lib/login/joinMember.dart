@@ -63,7 +63,7 @@ class _JoinmemberState extends State<Joinmember> {
 
   Future<void> checkEmail(String email) async {
     if (EmailValidator.validate(email)) {
-      var response = await AuthService().checkEmail(email);
+      var response = await AuthService(context).checkEmail(email);
       if (response.statusCode != 200) {
         setState(() {
           emailValidationMessage = "사용 가능한 이메일입니다.";
@@ -349,7 +349,7 @@ class _JoinmemberState extends State<Joinmember> {
                       foregroundColor: Colors.white,
                     ),
                     onPressed: () async {
-                      var response = await AuthService()
+                      var response = await AuthService(context)
                           .join(username, email, password, role, department);
                       if (response.statusCode == 200) {
                         _formKey1.currentState!.save();
@@ -368,7 +368,7 @@ class _JoinmemberState extends State<Joinmember> {
                               content: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     width: screenWidth * 0.2,
                                     height: screenHeight * 0.2,
                                     child:

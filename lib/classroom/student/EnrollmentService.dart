@@ -7,7 +7,7 @@ import 'package:spaghetti/classroom/student/Enrollment.dart';
 
 class EnrollmentService extends ChangeNotifier {
   final String apiUrl = Apiurl().url;
-  final storage = new FlutterSecureStorage();
+  final storage = FlutterSecureStorage();
   List<Enrollment> enrollList = [];
 
   // setter
@@ -41,7 +41,7 @@ class EnrollmentService extends ChangeNotifier {
     // 헤더에 JWT 토큰 추가
     var headers = {
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': '${jwt}',
+      'Authorization': jwt,
     };
 
     try {

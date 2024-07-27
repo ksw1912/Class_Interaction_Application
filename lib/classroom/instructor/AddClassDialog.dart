@@ -5,6 +5,8 @@ import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 
 class AddClassDialog extends StatefulWidget {
+  const AddClassDialog({super.key});
+
   @override
   _AddClassDialogState createState() => _AddClassDialogState();
 }
@@ -89,7 +91,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                       Positioned(
                         left: screenWidth * 0.1,
                         top: screenHeight * 0.11,
-                        child: Container(
+                        child: SizedBox(
                           width: screenWidth * 0.8,
                           height: screenHeight * 0.07,
                           child: TextField(
@@ -143,7 +145,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                       Positioned(
                         top: screenHeight * 0.225 + 40,
                         left: screenWidth * 0.1,
-                        child: Container(
+                        child: SizedBox(
                           width: screenWidth * 0.8,
                           height: screenHeight * 0.32,
                           child: Scrollbar(
@@ -194,7 +196,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                       Positioned(
                         left: screenWidth * 0.1,
                         top: screenHeight * 0.57 + 30,
-                        child: Container(
+                        child: SizedBox(
                           width: screenWidth * 0.8,
                           height: screenHeight * 0.06, // 화면 너비의 80%
                           child: ElevatedButton(

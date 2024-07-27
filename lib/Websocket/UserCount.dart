@@ -1,9 +1,8 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 
 class UserCount extends ChangeNotifier {
-  Map<String, int> userList = Map();
+  Map<String, int> userList = {};
   List<int> evaluationList = [0, 0, 0, 0, 0];
 
   void updateUserCount(String classId, int count) {

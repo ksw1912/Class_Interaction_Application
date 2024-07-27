@@ -17,7 +17,7 @@ import '../login/joinMember.dart';
 class LoginPage extends StatefulWidget {
   final String role;
 
-  const LoginPage({Key? key, required this.role}) : super(key: key);
+  const LoginPage({super.key, required this.role});
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -155,19 +155,19 @@ class _LoginPageState extends State<LoginPage> {
                               var password = passwordController.text;
 
                               // 로그인 요청
-                              var response = await AuthService()
+                              var response = await AuthService(context)
                                   .login(email, password, widget.role);
                               if (response.statusCode == 200) {
-                                User user = AuthService()
+                                User user = AuthService(context)
                                     .parseUser(json.decode(response.body));
                                 Provider.of<UserProvider>(context,
                                         listen: false)
                                     .setUser(user);
                                 if (widget.role == "student") {
-                                  List<Enrollment> enrollments = AuthService()
-                                          .parseEnrollments(
+                                  List<Enrollment> enrollments =
+                                      AuthService(context).parseEnrollments(
                                               json.decode(response.body)) ??
-                                      [];
+                                          [];
                                   Provider.of<EnrollmentService>(context,
                                           listen: false)
                                       .setEnrollList(enrollments);
@@ -177,10 +177,10 @@ class _LoginPageState extends State<LoginPage> {
                                         builder: (context) => ClassEnterPage()),
                                   );
                                 } else {
-                                  List<Classroom> classrooms = AuthService()
-                                          .parseClassrooms(
+                                  List<Classroom> classrooms =
+                                      AuthService(context).parseClassrooms(
                                               json.decode(response.body)) ??
-                                      [];
+                                          [];
                                   Provider.of<ClassroomService>(context,
                                           listen: false)
                                       .setClassrooms(classrooms);

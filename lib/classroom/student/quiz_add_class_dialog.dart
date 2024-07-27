@@ -3,8 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:spaghetti/Dialog/Dialogs.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
-import 'package:spaghetti/opinion/Opinion.dart';
-import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/quiz/Quiz.dart';
 import 'package:spaghetti/quiz/QuizService.dart';
 
@@ -76,7 +74,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                           controller: _scrollController,
                           child: SingleChildScrollView(
                             controller: _scrollController,
-                            child: Container(
+                            child: SizedBox(
                               width: screenWidth * 0.8,
                               height: screenHeight * 0.3,
                               child: quizList.isNotEmpty
@@ -140,7 +138,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                       Positioned(
                         left: screenWidth * 0.1,
                         top: screenHeight * 0.4,
-                        child: Container(
+                        child: SizedBox(
                           width: screenWidth * 0.8, // 화면 너비의 80%
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(

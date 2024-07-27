@@ -1,12 +1,9 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
-import 'package:spaghetti/member/User.dart';
-import 'package:spaghetti/member/UserProvider.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/quiz/QuizService.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -15,7 +12,7 @@ import 'package:spaghetti/classroom/instructor/classCreatePage.dart';
 class EvaluationResultPage extends StatefulWidget {
   final Websocket? webSocket;
 
-  EvaluationResultPage(this.webSocket, {super.key});
+  const EvaluationResultPage(this.webSocket, {super.key});
   @override
   _EvaluationResultPage createState() => _EvaluationResultPage();
 }
@@ -121,7 +118,6 @@ class _EvaluationResultPage extends State<EvaluationResultPage> {
                         ),
                       );
                     },
-                    child: Text('확인하기'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xfffbaf01),
                       foregroundColor: Colors.white,
@@ -130,6 +126,7 @@ class _EvaluationResultPage extends State<EvaluationResultPage> {
                       ),
                       minimumSize: Size(double.infinity, 50), // 버튼 높이 설정
                     ),
+                    child: Text('확인하기'),
                   ),
                 ),
               ],

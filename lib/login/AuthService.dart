@@ -1,11 +1,13 @@
+import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter_session_jwt/flutter_session_jwt.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:spaghetti/ApiUrl.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/student/Enrollment.dart';
+import 'package:spaghetti/main/startPage.dart';
 import 'package:spaghetti/member/Instructor.dart';
 import 'package:spaghetti/member/Student.dart';
 import 'package:spaghetti/member/User.dart';
@@ -13,8 +15,9 @@ import 'package:spaghetti/member/User.dart';
 class AuthService {
   //url 주소
   final String apiUrl = Apiurl().url;
-  final storage = new FlutterSecureStorage();
-  AuthService() {}
+  final storage = FlutterSecureStorage();
+  BuildContext context;
+  AuthService(this.context);
 
   Future<http.Response> login(
       String email, String password, String role) async {
@@ -37,7 +40,9 @@ class AuthService {
         // response.body를 JSON으로 파싱하여 토큰 추출
         var token = response.headers['authorization'];
         // FlutterSecureStorage에 토큰 저장
-        print("토큰 발급테스트: ${token}");
+        print("토큰 발급테스트: $token");
+
+        startTokenDeletionTimer(context);
 
         await storage.write(key: 'Authorization', value: token);
       } else {
@@ -51,9 +56,39 @@ class AuthService {
     }
   }
 
+  void startTokenDeletionTimer(BuildContext context) {
+    // 2시간 후 토큰 삭제 타이머
+    Timer(Duration(minutes: 1), () async {
+      await logout();
+      showLogoutDialog(context);
+    });
+  }
+
+  void showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('알림'),
+          content: Text('로그인 시간이 만료되었습니다.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('확인'),
+              onPressed: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => StartPage()),
+                    (route) => false);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> logout() async {
     // FlutterSecureStorage에서 토큰 삭제
-    await storage.delete(key: 'jwt_token');
+    await storage.delete(key: 'Authorization');
   }
 
   Future<String?> getToken() async {

@@ -107,7 +107,6 @@ class Dialogs {
                     websocket.studentEvaluation(selectedRating);
                     Navigator.of(context).pop();
                   },
-                  child: Text('평가하기'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xfffbaf01),
                     foregroundColor: Colors.white,
@@ -115,6 +114,7 @@ class Dialogs {
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                   ),
+                  child: Text('평가하기'),
                 ),
               ),
             ],

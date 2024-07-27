@@ -1,24 +1,19 @@
-import 'dart:ffi';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
-import 'package:spaghetti/member/User.dart';
-import 'package:spaghetti/member/UserProvider.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/quiz/Quiz.dart';
 import 'package:spaghetti/quiz/QuizService.dart';
 import 'package:spaghetti/quiz/QuizVote.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:spaghetti/classroom/instructor/classCreatePage.dart';
 
 class QuizCheckPage extends StatefulWidget {
   final Websocket? webSocket;
 
-  QuizCheckPage(this.webSocket, {super.key});
+  const QuizCheckPage(this.webSocket, {super.key});
   @override
   _QuizCheckPage createState() => _QuizCheckPage();
 }
@@ -64,14 +59,14 @@ class _QuizCheckPage extends State<QuizCheckPage> {
           title: Text('퀴즈'),
         ),
         resizeToAvoidBottomInset: false,
-        body: Container(
+        body: SizedBox(
           height: screenHeight,
           child: Stack(
             children: [
               Positioned(
                 left: screenWidth * 0.1,
                 top: screenHeight * 0.05,
-                child: Container(
+                child: SizedBox(
                   width: screenWidth * 0.8,
                   height: screenHeight * 0.55, // 차트 높이 조정
                   child: BarChartExample(),
@@ -80,15 +75,13 @@ class _QuizCheckPage extends State<QuizCheckPage> {
               Positioned(
                 left: screenWidth * 0.1,
                 top: screenHeight * 0.7,
-                child: Container(
+                child: SizedBox(
                   width: screenWidth * 0.8,
                   height: screenHeight * 0.05,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text('확인',
-                        style: TextStyle(fontSize: screenWidth * 0.05)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xfffbaf01),
                       foregroundColor: Colors.white,
@@ -96,6 +89,8 @@ class _QuizCheckPage extends State<QuizCheckPage> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                     ),
+                    child: Text('확인',
+                        style: TextStyle(fontSize: screenWidth * 0.05)),
                   ),
                 ),
               ),
@@ -161,6 +156,8 @@ final List<Color> contentColors = [
 ];
 
 class BarChartExample extends StatefulWidget {
+  const BarChartExample({super.key});
+
   @override
   _BarChartExampleState createState() => _BarChartExampleState();
 }

@@ -5,10 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:spaghetti/ApiUrl.dart';
 import 'package:spaghetti/Dialog/Dialogs.dart';
-import 'package:spaghetti/Websocket/MessageDTO.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/quiz/Quiz.dart';
-import 'package:spaghetti/quiz/QuizVote.dart';
 import 'package:spaghetti/quiz/QuizVote.dart';
 
 class QuizService extends ChangeNotifier {
@@ -52,7 +50,7 @@ class QuizService extends ChangeNotifier {
   }
 
   void addQuiz({required Quiz quiz}) {
-    this.quizList.add(quiz);
+    quizList.add(quiz);
     quizCount.add(QuizVote(quizId: "", count: 0)); // 기본 투표 수를 0으로 설정
     notifyListeners();
   }
@@ -77,7 +75,7 @@ class QuizService extends ChangeNotifier {
     // 헤더에 JWT 토큰 추가
     var headers = {
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': '${jwt}',
+      'Authorization': jwt,
     };
     var body = jsonEncode({
       'classId': classId,

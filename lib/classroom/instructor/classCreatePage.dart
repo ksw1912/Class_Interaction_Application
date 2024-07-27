@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spaghetti/classroom/classroom.dart'; // Classroom 클래스 임포트
@@ -7,12 +6,10 @@ import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:intl/intl.dart'; // DateFormat 임포트
 import 'package:spaghetti/login/AuthService.dart'; // AuthService 임포트
 import 'package:spaghetti/main/startPage.dart'; // StartPage 임포트
-import 'package:spaghetti/member/User.dart'; // User 임포트
+// User 임포트
 import 'package:spaghetti/member/UserProvider.dart'; // UserProvider 임포트
-import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 import 'classRoomPage.dart';
-import '../../login/LoginPage.dart';
 
 class ClassCreatePage extends StatefulWidget {
   const ClassCreatePage({super.key});
@@ -87,7 +84,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
                   Positioned(
                     top: screenHeight * 0.23 + 30, // "이전 수업" 텍스트 아래 30px
                     left: screenWidth * 0.1,
-                    child: Container(
+                    child: SizedBox(
                       width: screenWidth * 0.8,
                       height: screenHeight * 0.45, // 목록을 위한 높이 조정
                       child: ListView.builder(
@@ -213,7 +210,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
                   Positioned(
                     left: screenWidth * 0.1,
                     bottom: screenHeight * 0.1 - 50, // 하단에서 50px 위로
-                    child: Container(
+                    child: SizedBox(
                       width: screenWidth * 0.8,
                       height: screenHeight * 0.06, // 화면 너비의 80%
                       child: ElevatedButton(
@@ -303,7 +300,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                           onPressed: () {
                                             // 로그아웃 기능을 여기에 추가
                                             //토큰, 수업정보,유저 정보삭제
-                                            AuthService().logout();
+                                            AuthService(context).logout();
                                             user = null;
                                             classList = [];
                                             Navigator.of(context)

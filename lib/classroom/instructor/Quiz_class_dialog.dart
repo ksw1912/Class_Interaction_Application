@@ -4,8 +4,6 @@ import 'package:spaghetti/Dialog/Dialogs.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
-import 'package:spaghetti/opinion/Opinion.dart';
-import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/quiz/Quiz.dart';
 import 'package:spaghetti/quiz/QuizService.dart';
 
@@ -36,7 +34,7 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
   Widget build(BuildContext context) {
     return Consumer2<ClassroomService, QuizService>(
         builder: (context, classService, quizService, child) {
-      List<TextEditingController> _controllers = [];
+      List<TextEditingController> controllers = [];
       List<Quiz> quizList = quizService.quizList;
 
       final mediaQuery = MediaQuery.of(context);
@@ -152,7 +150,7 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
                       Positioned(
                         left: screenWidth * 0.1,
                         top: screenHeight * 0.6,
-                        child: Container(
+                        child: SizedBox(
                           width: screenWidth * 0.8,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -171,7 +169,7 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
                                   quizs.add(quizList[i]); //존재할경우 quizs라는 배열에 삽입
                                 }
                               }
-                              if (!quizs.isEmpty) {
+                              if (quizs.isNotEmpty) {
                                 //배열이 존재할경우 create
 
                                 quizService.quizCreate(

@@ -1,24 +1,20 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/services.dart';
-import 'package:spaghetti/Dialog/Dialogs.dart';
 import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/EditClassDialog.dart';
 import 'package:spaghetti/classroom/instructor/QuizCheckpage.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
-import 'package:spaghetti/login/AuthService.dart';
 import 'package:spaghetti/member/User.dart';
 import 'package:spaghetti/member/UserProvider.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/opinion/OpinionVote.dart';
-import 'package:stomp_dart_client/stomp_dart_client.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'Quiz_class_dialog.dart';
 import 'package:spaghetti/Dialog/EvaluationResultPage.dart';
@@ -26,7 +22,7 @@ import 'package:spaghetti/Dialog/EvaluationResultPage.dart';
 class ClassRoomPage extends StatefulWidget {
   final Classroom? classRoomData;
 
-  ClassRoomPage({super.key, required this.classRoomData});
+  const ClassRoomPage({super.key, required this.classRoomData});
 
   @override
   _ClassRoomPageState createState() => _ClassRoomPageState();
@@ -79,7 +75,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
       return Scaffold(
         resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
-          child: Container(
+          child: SizedBox(
             height: screenHeight,
             child: Stack(
               children: [
@@ -106,13 +102,13 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                 Positioned(
                   left: screenWidth * 0.1,
                   top: screenHeight * 0.87 - 70,
-                  child: Container(
+                  child: SizedBox(
                     width: screenWidth * 0.8,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: Container(
+                          child: SizedBox(
                             height: 45,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -137,7 +133,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                         ),
                         SizedBox(width: 30),
                         Expanded(
-                          child: Container(
+                          child: SizedBox(
                             height: 45,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -149,7 +145,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                               ),
                               onPressed: () {
                                 addDialog(
-                                    context, widget?.classRoomData, websocket);
+                                    context, widget.classRoomData, websocket);
                               },
                               child: Text(
                                 "퀴즈 생성하기",
@@ -165,7 +161,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                 Positioned(
                   left: screenWidth * 0.1,
                   top: screenHeight * 0.87,
-                  child: Container(
+                  child: SizedBox(
                     width: screenWidth * 0.8,
                     height: screenHeight * 0.06,
                     child: ElevatedButton(
@@ -339,7 +335,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                 Positioned(
                   left: screenWidth * 0.1,
                   top: screenHeight * 0.2,
-                  child: Container(
+                  child: SizedBox(
                     width: screenWidth * 0.8,
                     height: screenHeight * 0.55, // 차트 높이 조정
                     child: BarChartExample(),
@@ -459,6 +455,8 @@ final List<Color> contentColors = [
 ];
 
 class BarChartExample extends StatefulWidget {
+  const BarChartExample({super.key});
+
   @override
   _BarChartExampleState createState() => _BarChartExampleState();
 }

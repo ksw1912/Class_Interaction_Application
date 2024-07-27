@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:spaghetti/classroom/classroom.dart';
 
@@ -22,7 +21,7 @@ class Quiz {
   factory Quiz.fromJson(Map<String, dynamic> json) {
     return Quiz(
         json['quizId'] ?? "",
-        Classroom.fromJson_notArray(json['classroom']) ?? null,
+        Classroom.fromJson_notArray(json['classroom']),
         json['question'] ?? "");
   }
 }

@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:spaghetti/Dialog/Dialogs.dart';
@@ -80,9 +78,9 @@ class Websocket {
             // 교수 의견 업데이트 처리
             if (user?.role == "student") {
               Provider.of<OpinionService>(context, listen: false)
-                  .setOpinionList(message.opList ?? null);
+                  .setOpinionList(message.opList);
               Provider.of<OpinionService>(context, listen: false)
-                  .setOpinionList(message.opList ?? null);
+                  .setOpinionList(message.opList);
             }
 
             break;

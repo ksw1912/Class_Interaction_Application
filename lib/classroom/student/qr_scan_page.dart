@@ -3,6 +3,8 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'dart:io'; // dart:io 패키지 import
 
 class QRScanPage extends StatefulWidget {
+  const QRScanPage({super.key});
+
   @override
   _QRScanPageState createState() => _QRScanPageState();
 }

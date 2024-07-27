@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:spaghetti/classroom/classDetailPage.dart';
-import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/classroom/student/Enrollment.dart';
 import 'package:spaghetti/classroom/student/EnrollmentService.dart';
 import 'package:spaghetti/classroom/student/qr_scan_page.dart';
-import 'package:spaghetti/member/User.dart';
 import 'package:spaghetti/member/UserProvider.dart';
 import '../../login/LoginPage.dart';
 
@@ -84,7 +82,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                   Positioned(
                     top: screenHeight * 0.28,
                     left: screenWidth * 0.1,
-                    child: Container(
+                    child: SizedBox(
                       width: screenWidth * 0.8,
                       height: screenHeight * 0.45, // 목록을 위한 높이 조정
                       child: ListView.builder(
@@ -225,7 +223,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                   Positioned(
                     left: screenWidth * 0.1,
                     bottom: screenHeight * 0.1 + 50,
-                    child: Container(
+                    child: SizedBox(
                       width: screenWidth * 0.8,
                       height: 50,
                       child: ElevatedButton(
@@ -259,7 +257,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                   Positioned(
                     left: screenWidth * 0.1,
                     bottom: screenHeight * 0.1,
-                    child: Container(
+                    child: SizedBox(
                       width: screenWidth * 0.8,
                       height: 50,
                       child: ElevatedButton(

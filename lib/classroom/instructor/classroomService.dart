@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:spaghetti/ApiUrl.dart';
 import 'package:spaghetti/Dialog/Dialogs.dart';
-import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
@@ -44,7 +43,7 @@ class ClassroomService extends ChangeNotifier {
       ops.add(op.opinion);
     }
 
-    if (className.isEmpty || className == null) {
+    if (className.isEmpty) {
       await Dialogs.showErrorDialog(context, '수업명을 입력해주세요.');
       return;
     }
@@ -62,7 +61,7 @@ class ClassroomService extends ChangeNotifier {
     // 헤더에 JWT 토큰 추가
     var headers = {
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': '${jwt}',
+      'Authorization': jwt,
     };
 
     var body = jsonEncode({
@@ -124,7 +123,7 @@ class ClassroomService extends ChangeNotifier {
     // 헤더에 JWT 토큰 추가
     var headers = {
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': '${jwt}',
+      'Authorization': jwt,
     };
 
     try {
@@ -210,7 +209,7 @@ class ClassroomService extends ChangeNotifier {
     // 헤더에 JWT 토큰 추가
     var headers = {
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': '${jwt}',
+      'Authorization': jwt,
     };
 
     try {
@@ -232,7 +231,7 @@ class ClassroomService extends ChangeNotifier {
 
         var opinionService =
             Provider.of<OpinionService>(context, listen: false);
-        if (opinions.length > 0) {
+        if (opinions.isNotEmpty) {
           opinionService.initializeOpinionList();
         }
         for (int i = 0; i < opinions.length; i++) {
@@ -250,6 +249,7 @@ class ClassroomService extends ChangeNotifier {
       print(exception);
       await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
     }
+    return null;
   }
 
 // 수업의견 수정
@@ -270,7 +270,7 @@ class ClassroomService extends ChangeNotifier {
     // 헤더에 JWT 토큰 추가
     var headers = {
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': '${jwt}',
+      'Authorization': jwt,
     };
     var body = jsonEncode({
       'classroom': classroom,
@@ -295,7 +295,7 @@ class ClassroomService extends ChangeNotifier {
 
         var opinionService =
             Provider.of<OpinionService>(context, listen: false);
-        if (opinions.length > 0) {
+        if (opinions.isNotEmpty) {
           opinionService.initializeOpinionList();
         }
 
@@ -321,6 +321,7 @@ class ClassroomService extends ChangeNotifier {
       print(exception);
       await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
     }
+    return null;
   }
 
   //학생 특정수업입장(pin번호 입력으로)
@@ -342,7 +343,7 @@ class ClassroomService extends ChangeNotifier {
     // 헤더에 JWT 토큰 추가
     var headers = {
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': '${jwt}',
+      'Authorization': jwt,
     };
 
     try {
@@ -366,7 +367,7 @@ class ClassroomService extends ChangeNotifier {
         var opinionService =
             Provider.of<OpinionService>(context, listen: false);
 
-        if (opinions.length > 0) {
+        if (opinions.isNotEmpty) {
           opinionService.initializeOpinionList();
         }
         for (int i = 0; i < opinions.length; i++) {
@@ -382,5 +383,6 @@ class ClassroomService extends ChangeNotifier {
       print(exception);
       await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
     }
+    return null;
   }
 }

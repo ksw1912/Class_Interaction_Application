@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:spaghetti/login/joinMember.dart';
 import '../login/LoginPage.dart';
 
 class StartPage extends StatefulWidget {
@@ -29,7 +28,7 @@ class StartPageState extends State<StartPage> {
                 Positioned(
                   left: screenWidth * 0.16,
                   top: screenHeight * 0.01,
-                  child: Container(
+                  child: SizedBox(
                     width: screenWidth * 0.8,
                     height: screenHeight * 0.8,
                     child: Image.asset('assets/images/1.png'),
@@ -57,7 +56,7 @@ class StartPageState extends State<StartPage> {
                 Positioned(
                   left: screenWidth * 0.05,
                   top: screenHeight * -0.04,
-                  child: Container(
+                  child: SizedBox(
                     width: screenWidth * 0.9,
                     height: screenHeight * 0.9,
                     child: Image.asset('assets/images/2.png'),
@@ -85,7 +84,7 @@ class StartPageState extends State<StartPage> {
                 Positioned(
                   left: screenWidth * 0.1,
                   top: screenHeight * -0.04,
-                  child: Container(
+                  child: SizedBox(
                     width: screenWidth * 0.8,
                     height: screenHeight * 0.95,
                     child: Image.asset('assets/images/3.png'),
@@ -100,7 +99,7 @@ class StartPageState extends State<StartPage> {
                 Positioned(
                   left: screenWidth * 0.1,
                   top: screenHeight * 0.85,
-                  child: Container(
+                  child: SizedBox(
                     width: screenWidth * 0.375,
                     height: screenWidth * 0.12,
                     child: ElevatedButton(
@@ -134,7 +133,7 @@ class StartPageState extends State<StartPage> {
                 Positioned(
                   left: screenWidth * 0.525,
                   top: screenHeight * 0.85,
-                  child: Container(
+                  child: SizedBox(
                     width: screenWidth * 0.375,
                     height: screenWidth * 0.12,
                     child: ElevatedButton(

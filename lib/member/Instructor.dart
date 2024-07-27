@@ -4,19 +4,13 @@ class Instructor extends User {
   final String department;
 
   Instructor({
-    required String id,
-    required String username,
-    required String email,
-    required String password,
-    required String role,
+    required super.id,
+    required super.username,
+    required super.email,
+    required super.password,
+    required super.role,
     required this.department,
-  }) : super(
-          id: id,
-          username: username,
-          email: email,
-          password: password,
-          role: role,
-        );
+  });
 
   // From JSON
   factory Instructor.fromJson(Map<String, dynamic> json) {

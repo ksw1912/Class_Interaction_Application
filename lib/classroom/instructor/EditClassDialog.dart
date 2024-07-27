@@ -1,14 +1,10 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
-import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
-import 'package:spaghetti/member/User.dart';
-import 'package:spaghetti/member/UserProvider.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 
@@ -126,7 +122,7 @@ class _EditClassDialogState extends State<EditClassDialog> {
                         ),
                         Divider(color: Colors.black),
                         SizedBox(height: screenHeight * 0.02),
-                        Container(
+                        SizedBox(
                           height: screenHeight * 0.25,
                           child: Scrollbar(
                             thumbVisibility: false,
@@ -233,7 +229,7 @@ class _EditClassDialogState extends State<EditClassDialog> {
                                 },
                               );
                             } else if (opinion!
-                                .any((item) => item == null || item!.isEmpty)) {
+                                .any((item) => item.isEmpty)) {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {

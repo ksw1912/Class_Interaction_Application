@@ -33,7 +33,7 @@ class OpinionService extends ChangeNotifier {
   }
 
   void addOpinion({required Opinion opinion}) {
-    this.opinionList.add(opinion);
+    opinionList.add(opinion);
     countList.add(
         OpinionVote(opinionId: opinion.opinionId, count: 0)); // 기본 투표 수를 0으로 설정
     notifyListeners();
