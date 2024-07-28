@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:spaghetti/Dialog/Dialogs.dart';
+import 'package:spaghetti/Dialog/EvaluationResultPage.dart';
 import 'package:spaghetti/Websocket/MessageDTO.dart';
 import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/classroom/classDetailPage.dart';
@@ -95,7 +96,6 @@ class Websocket {
           case Status.QUIZ:
             // 퀴즈 처리
             if (user?.role == "instructor") {
-              //QuizVote 구현해야함
               Provider.of<QuizService>(context, listen: false)
                   .voteAdd(message.quiz);
             }
@@ -127,6 +127,7 @@ class Websocket {
             print("교수님께서 수업을 종료하셨습니다");
             // 사용자에게 수업끝났다고 알림
             await Dialogs.showErrorDialog(context, "교수님께서 수업을 종료하셨습니다 ");
+            await EvaluationResultPage(context);
             Navigator.pop(context);
             break;
           default:

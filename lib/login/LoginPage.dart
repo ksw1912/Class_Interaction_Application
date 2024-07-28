@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
   bool _isObscure = true;
   String errorMessage = "";
-
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     String name;
@@ -139,72 +139,86 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         SizedBox(height: 30),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 50,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xfffbaf01),
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                            onPressed: () async {
-                              var email = emailController.text;
-                              var password = passwordController.text;
+                        isLoading
+                            ? CircularProgressIndicator()
+                            : SizedBox(
+                                width: double.infinity,
+                                height: 50,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color(0xfffbaf01),
+                                    foregroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+                                    var email = emailController.text;
+                                    var password = passwordController.text;
 
-                              // 로그인 요청
-                              var response = await AuthService(context)
-                                  .login(email, password, widget.role);
-                              if (response.statusCode == 200) {
-                                User user = AuthService(context)
-                                    .parseUser(json.decode(response.body));
-                                Provider.of<UserProvider>(context,
-                                        listen: false)
-                                    .setUser(user);
-                                if (widget.role == "student") {
-                                  List<Enrollment> enrollments =
-                                      AuthService(context).parseEnrollments(
-                                              json.decode(response.body)) ??
-                                          [];
-                                  Provider.of<EnrollmentService>(context,
-                                          listen: false)
-                                      .setEnrollList(enrollments);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ClassEnterPage()),
-                                  );
-                                } else {
-                                  List<Classroom> classrooms =
-                                      AuthService(context).parseClassrooms(
-                                              json.decode(response.body)) ??
-                                          [];
-                                  Provider.of<ClassroomService>(context,
-                                          listen: false)
-                                      .setClassrooms(classrooms);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ClassCreatePage()),
-                                  );
-                                }
-                              } else {
-                                setState(() {
-                                  errorMessage = "이메일 또는 비밀번호를 확인하세요";
-                                });
-                              }
-                            },
-                            child: Text(
-                              '로그인',
-                              style: TextStyle(
-                                fontFamily: 'NanumB',
+                                    // 로그인 요청
+                                    var response = await AuthService(context)
+                                        .login(email, password, widget.role);
+                                    setState(() {
+                                      isLoading = false; // 로딩 종료
+                                    });
+                                    if (response.statusCode == 200) {
+                                      User user = AuthService(context)
+                                          .parseUser(
+                                              json.decode(response.body));
+                                      Provider.of<UserProvider>(context,
+                                              listen: false)
+                                          .setUser(user);
+                                      if (widget.role == "student") {
+                                        List<Enrollment> enrollments =
+                                            AuthService(context)
+                                                    .parseEnrollments(
+                                                        json.decode(
+                                                            response.body)) ??
+                                                [];
+                                        Provider.of<EnrollmentService>(context,
+                                                listen: false)
+                                            .setEnrollList(enrollments);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ClassEnterPage()),
+                                        );
+                                      } else {
+                                        List<Classroom> classrooms =
+                                            AuthService(context)
+                                                    .parseClassrooms(
+                                                        json.decode(
+                                                            response.body)) ??
+                                                [];
+                                        Provider.of<ClassroomService>(context,
+                                                listen: false)
+                                            .setClassrooms(classrooms);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ClassCreatePage()),
+                                        );
+                                      }
+                                    } else {
+                                      setState(() {
+                                        errorMessage = "이메일 또는 비밀번호를 확인하세요";
+                                      });
+                                    }
+                                  },
+                                  child: Text(
+                                    '로그인',
+                                    style: TextStyle(
+                                      fontFamily: 'NanumB',
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
                         SizedBox(height: 20),
                         GestureDetector(
                           onTap: () {

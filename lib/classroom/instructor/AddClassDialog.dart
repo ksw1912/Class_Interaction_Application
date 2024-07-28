@@ -212,7 +212,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                               await classService.classroomCreate(
                                   context,
                                   className,
-                                  opinionList ?? [],
+                                  opinionList,
                                   opinionService); //??:의견 추가안했을 때는 빈 배열
                               Navigator.pop(context);
                             },

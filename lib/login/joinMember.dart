@@ -86,9 +86,9 @@ class _JoinmemberState extends State<Joinmember> {
   @override
   Widget build(BuildContext context) {
     final List<String> selectjob = ["교수", "학생"];
-    final mediaQuery = MediaQuery.of(context);
-    final screenHeight = mediaQuery.size.height;
-    final screenWidth = mediaQuery.size.width;
+    // final mediaQuery = MediaQuery.of(context);
+    // final screenHeight = mediaQuery.size.height;
+    // final screenWidth = mediaQuery.size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text('회원가입', style: TextStyle(color: Colors.black)),

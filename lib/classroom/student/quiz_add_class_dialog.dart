@@ -129,7 +129,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                                       },
                                     )
                                   : Center(
-                                      child: Text('의견이 없습니다.'),
+                                      child: Text('퀴즈가 없습니다.'),
                                     ),
                             ),
                           ),

@@ -12,49 +12,49 @@ import 'package:spaghetti/member/Instructor.dart';
 import 'package:spaghetti/member/Student.dart';
 import 'package:spaghetti/member/User.dart';
 
-class AuthService {
-  //url 주소
-  final String apiUrl = Apiurl().url;
-  final storage = FlutterSecureStorage();
-  BuildContext context;
-  AuthService(this.context);
+  class AuthService {
+    //url 주소
+    final String apiUrl = Apiurl().url;
+    final storage = FlutterSecureStorage();
+    BuildContext context;
+    AuthService(this.context);
 
-  Future<http.Response> login(
-      String email, String password, String role) async {
-    try {
-      var response = await http.post(
-        Uri.parse('$apiUrl/login'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(
-          <String, String>{
-            'email': email,
-            'password': password,
-            'role': role,
+    Future<http.Response> login(
+        String email, String password, String role) async {
+      try {
+        var response = await http.post(
+          Uri.parse('$apiUrl/login'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
           },
-        ),
-      );
+          body: jsonEncode(
+            <String, String>{
+              'email': email,
+              'password': password,
+              'role': role,
+            },
+          ),
+        );
 
-      if (response.statusCode == 200) {
-        // response.body를 JSON으로 파싱하여 토큰 추출
-        var token = response.headers['authorization'];
-        // FlutterSecureStorage에 토큰 저장
-        print("토큰 발급테스트: $token");
+        if (response.statusCode == 200) {
+          // response.body를 JSON으로 파싱하여 토큰 추출
+          var token = response.headers['authorization'];
+          // FlutterSecureStorage에 토큰 저장
+          print("토큰 발급테스트: $token");
 
-        startTokenDeletionTimer(context);
+          startTokenDeletionTimer(context);
 
-        await storage.write(key: 'Authorization', value: token);
-      } else {
-        print(response.statusCode);
+          await storage.write(key: 'Authorization', value: token);
+        } else {
+          print(response.statusCode);
+        }
+        print(utf8.decode(response.bodyBytes));
+        return response;
+      } catch (e) {
+        print("$e");
+        return http.Response('Error 발생', 500);
       }
-      print(utf8.decode(response.bodyBytes));
-      return response;
-    } catch (e) {
-      print("$e");
-      return http.Response('Error 발생', 500);
     }
-  }
 
   void startTokenDeletionTimer(BuildContext context) {
     // 2시간 후 토큰 삭제 타이머

@@ -9,6 +9,7 @@ import 'package:spaghetti/main/startPage.dart';
 import 'package:spaghetti/member/UserProvider.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/quiz/QuizService.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   // HttpOverrides.global = NoCheckCertificateHttpOverrides();
@@ -19,12 +20,15 @@ void main() {
     ),
   );
 }
+// void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    //하단바 숨기기
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ClassroomService()),
