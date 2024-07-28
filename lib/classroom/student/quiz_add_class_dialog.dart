@@ -77,7 +77,6 @@ class _AddClassDialogState extends State<AddClassDialog> {
                           thumbVisibility: true,
                           controller: _scrollController,
                           child: SingleChildScrollView(
-                            controller: _scrollController,
                             child: SizedBox(
                               width: screenWidth * 0.8,
                               height: screenHeight * 0.3,
@@ -155,14 +154,14 @@ class _AddClassDialogState extends State<AddClassDialog> {
                             ),
                             onPressed: () {
                               setState(() {
-                               isLoading = true;
+                                isLoading = true;
                               });
                               if (selectedRadio != null) {
                                 print("test");
                                 widget.websocket
                                     ?.sendQuiz(quizList[selectedRadio ?? 0]);
                                 setState(() {
-                                 isLoading = false;
+                                  isLoading = false;
                                 });
                               } else {
                                 setState(() {

@@ -443,6 +443,9 @@ class _JoinmemberState extends State<Joinmember> {
                     ),
                   ),
                 ),
+                isActive: _currentStep >= 5,
+                state:
+                    _currentStep >= 5 ? StepState.complete : StepState.disabled,
               )
             ],
             controlsBuilder: (BuildContext context, ControlsDetails details) {

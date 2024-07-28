@@ -30,14 +30,17 @@ class _LoginPageState extends State<LoginPage> {
   bool _isObscure = true;
   String errorMessage = "";
   bool isLoading = false;
+  String roleCheck = '';
   @override
   Widget build(BuildContext context) {
     String name;
 
     if (widget.role == "student") {
       name = "학생님";
+      roleCheck = 'student';
     } else {
       name = "교수님";
+      roleCheck = 'instructor';
     }
 
     return Scaffold(
@@ -171,33 +174,42 @@ class _LoginPageState extends State<LoginPage> {
                                 Provider.of<UserProvider>(context,
                                         listen: false)
                                     .setUser(user);
-                                if (widget.role == "student") {
-                                  List<Enrollment> enrollments =
-                                      AuthService(context).parseEnrollments(
-                                              json.decode(response.body)) ??
-                                          [];
-                                  Provider.of<EnrollmentService>(context,
-                                          listen: false)
-                                      .setEnrollList(enrollments);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ClassEnterPage()),
-                                  );
+                                if (user.role != widget.role) {
+                                  setState(() {
+                                    errorMessage = user.role == "instructor"
+                                        ? "교수 계정 입니다 교수페이지에서 로그인 하세요"
+                                        : "학생 계정 입니다 학생페이지에서 로그인 하세요";
+                                  });
                                 } else {
-                                  List<Classroom> classrooms =
-                                      AuthService(context).parseClassrooms(
-                                              json.decode(response.body)) ??
-                                          [];
-                                  Provider.of<ClassroomService>(context,
-                                          listen: false)
-                                      .setClassrooms(classrooms);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ClassCreatePage()),
-                                  );
+                                  if (widget.role == "student") {
+                                    List<Enrollment> enrollments =
+                                        AuthService(context).parseEnrollments(
+                                                json.decode(response.body)) ??
+                                            [];
+                                    Provider.of<EnrollmentService>(context,
+                                            listen: false)
+                                        .setEnrollList(enrollments);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ClassEnterPage()),
+                                    );
+                                  } else {
+                                    List<Classroom> classrooms =
+                                        AuthService(context).parseClassrooms(
+                                                json.decode(response.body)) ??
+                                            [];
+                                    Provider.of<ClassroomService>(context,
+                                            listen: false)
+                                        .setClassrooms(classrooms);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ClassCreatePage()),
+                                    );
+                                  }
                                 }
                               } else {
                                 setState(() {
