@@ -136,7 +136,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                             height: 45,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xfffbaf01),
+                                backgroundColor: Color(0xff789bd0),
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
@@ -167,7 +167,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                             height: 45,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xff85a3d5),
+                                backgroundColor: Color(0xfffbaf01),
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
