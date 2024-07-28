@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/services.dart';
+import 'package:spaghetti/Dialog/CicularProgress.dart';
 import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
@@ -33,11 +33,12 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
   Websocket? websocket;
   String? jwt;
   final storage = FlutterSecureStorage();
-
+  bool isLoading = false;
+  Future<void>? _webSocketFuture;
   @override
   void initState() {
     super.initState();
-    _initializeWebsocket();
+    _webSocketFuture = _initializeWebsocket();
   }
 
   Future<void> _initializeWebsocket() async {
@@ -54,11 +55,34 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
     await websocket?.unsubscribe();
     websocket?.stomClient(jwt, context).deactivate(); // websocket 연결 해제
     Provider.of<OpinionService>(context, listen: false).deleteAll();
+    isLoading = false;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder<void>(
+      future: _webSocketFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            body: CircularProgress.build(),
+          );
+        } else if (snapshot.hasError) {
+          return Scaffold(
+            body: Center(
+              child: Text('Error: ${snapshot.error}'),
+            ),
+          );
+        } else {
+          return _buildClassDetailPage(context);
+        }
+      },
+    );
+  }
+
+  @override
+  Widget _buildClassDetailPage(BuildContext context) {
     return Consumer3<ClassroomService, OpinionService, UserCount>(
         builder: (context, classService, opinionService, userCount, child) {
       final mediaQuery = MediaQuery.of(context);
@@ -67,7 +91,6 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
 
       String className = widget.classRoomData!.className;
       String classId = widget.classRoomData!.classId;
-
       // classNumber 생성
       String classNumber =
           (widget.classRoomData!.classId.hashCode.abs() % 100000000).toString();
@@ -79,6 +102,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
             height: screenHeight,
             child: Stack(
               children: [
+                if (isLoading) CircularProgress.build(),
                 Positioned(
                   left: screenWidth * 0.1,
                   top: screenHeight * 0.1,
@@ -119,10 +143,16 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                                 ),
                               ),
                               onPressed: () {
+                                setState(() {
+                                  isLoading = true;
+                                });
                                 //투표 초기화
                                 opinionService.updateCountList();
                                 //학생들에게 버튼 초기화 메세지
                                 websocket?.opinionInit();
+                                setState(() {
+                                  isLoading = false;
+                                });
                               },
                               child: Text(
                                 "의견 초기화",

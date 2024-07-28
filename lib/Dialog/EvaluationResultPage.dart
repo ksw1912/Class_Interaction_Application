@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +19,7 @@ class EvaluationResultPage extends StatefulWidget {
 class _EvaluationResultPage extends State<EvaluationResultPage> {
   String? jwt;
   final storage = FlutterSecureStorage();
-
+  bool isLoading = false;
   @override
   void initState() {
     super.initState();
@@ -45,6 +44,7 @@ class _EvaluationResultPage extends State<EvaluationResultPage> {
           .deactivate(); // websocket 연결 해제
     }
     Provider.of<OpinionService>(context, listen: false).deleteAll();
+    isLoading = false;
   }
 
   @override
@@ -113,7 +113,7 @@ class _EvaluationResultPage extends State<EvaluationResultPage> {
                           .initializeQuizList();
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        MaterialPageRoute(            
                           builder: (_) => ClassCreatePage(),
                         ),
                       );

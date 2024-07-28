@@ -44,7 +44,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
       final screenHeight = mediaQuery.size.height;
       final screenWidth = mediaQuery.size.width;
       var user = Provider.of<UserProvider>(context).user; // UserProvider 사용
-
+      bool isLoading = false;
       return Scaffold(
         resizeToAvoidBottomInset: false, // 키보드 오버플로우 방지
         body: PageView(
@@ -148,51 +148,70 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                         ],
                                       ),
                                     ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color.fromARGB(
-                                            130, 230, 230, 230), // 기본 배경색 설정
-                                        surfaceTintColor: Color.fromARGB(255,
-                                            203, 203, 203), // 기본 표면 틴트 색상 설정
-                                        foregroundColor:
-                                            Colors.black, // 텍스트 색상 설정
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        padding: EdgeInsets.symmetric(
-                                          vertical: 10.0,
-                                          horizontal: 15.0,
-                                        ), // 버튼의 위아래 및 좌우 간격 설정
-                                        shadowColor:
-                                            Colors.transparent, // 그림자 색상 제거
-                                      ),
-                                      onPressed: () async {
-                                        Classroom classData = classList[index];
-                                        String classId = classData.classId;
-                                        Classroom? classRoomData =
-                                            await classService
-                                                .classroomOpinions(
-                                                    context, classId);
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (_) => ClassRoomPage(
-                                              classRoomData: classRoomData,
+                                    isLoading
+                                        ? CircularProgressIndicator()
+                                        : ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Color.fromARGB(
+                                                  130,
+                                                  230,
+                                                  230,
+                                                  230), // 기본 배경색 설정
+                                              surfaceTintColor: Color.fromARGB(
+                                                  255,
+                                                  203,
+                                                  203,
+                                                  203), // 기본 표면 틴트 색상 설정
+                                              foregroundColor:
+                                                  Colors.black, // 텍스트 색상 설정
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: 10.0,
+                                                horizontal: 15.0,
+                                              ), // 버튼의 위아래 및 좌우 간격 설정
+                                              shadowColor: Colors
+                                                  .transparent, // 그림자 색상 제거
+                                            ),
+                                            onPressed: () async {
+                                              setState(() {
+                                                isLoading = true;
+                                              });
+                                              Classroom classData =
+                                                  classList[index];
+                                              String classId =
+                                                  classData.classId;
+                                              Classroom? classRoomData =
+                                                  await classService
+                                                      .classroomOpinions(
+                                                          context, classId);
+
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (_) => ClassRoomPage(
+                                                    classRoomData:
+                                                        classRoomData,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: Text(
+                                              "수업 입장하기",
+                                              style: TextStyle(
+                                                fontSize: 14.0, // 텍스트 크기 설정
+                                                fontWeight: FontWeight
+                                                    .normal, // 폰트 굵기 설정
+                                                color: Color(
+                                                    0xff4E4E4E), // 폰트 색상 설정
+                                              ),
                                             ),
                                           ),
-                                        );
-                                      },
-                                      child: Text(
-                                        "수업 입장하기",
-                                        style: TextStyle(
-                                          fontSize: 14.0, // 텍스트 크기 설정
-                                          fontWeight:
-                                              FontWeight.normal, // 폰트 굵기 설정
-                                          color: Color(0xff4E4E4E), // 폰트 색상 설정
-                                        ),
-                                      ),
-                                    ),
                                   ],
                                 ),
                               ),
@@ -291,7 +310,8 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                           ),
                                           child: Text('취소',
                                               style: TextStyle(
-                                                  fontFamily: "NanumEB", color: Colors.white)),
+                                                  fontFamily: "NanumEB",
+                                                  color: Colors.white)),
                                         ),
                                       ),
                                       SizedBox(width: 10), // 버튼 사이 간격
@@ -320,7 +340,8 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                             ),
                                           ),
                                           child: Text('로그아웃',
-                                              style: TextStyle(fontFamily: "NanumEB",
+                                              style: TextStyle(
+                                                  fontFamily: "NanumEB",
                                                   color: Colors.white)),
                                         ),
                                       ),

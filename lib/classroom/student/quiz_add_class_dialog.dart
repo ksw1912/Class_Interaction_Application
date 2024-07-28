@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spaghetti/Dialog/CicularProgress.dart';
 import 'package:spaghetti/Dialog/Dialogs.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
@@ -16,6 +17,7 @@ class AddClassDialog extends StatefulWidget {
 class _AddClassDialogState extends State<AddClassDialog> {
   ScrollController? _scrollController;
   int? selectedRadio = 0;
+  bool isLoading = false;
   @override
   void initState() {
     super.initState();
@@ -25,6 +27,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
   @override
   void dispose() {
     _scrollController?.dispose();
+    isLoading = false;
     super.dispose();
   }
 
@@ -51,6 +54,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                 Container(
                   child: Stack(
                     children: [
+                      if (isLoading) CircularProgress.build(),
                       Positioned(
                         left: screenWidth * 0.12,
                         top: screenHeight * 0.05,
@@ -150,11 +154,20 @@ class _AddClassDialogState extends State<AddClassDialog> {
                               ),
                             ),
                             onPressed: () {
+                              setState(() {
+                               isLoading = true;
+                              });
                               if (selectedRadio != null) {
                                 print("test");
                                 widget.websocket
                                     ?.sendQuiz(quizList[selectedRadio ?? 0]);
+                                setState(() {
+                                 isLoading = false;
+                                });
                               } else {
+                                setState(() {
+                                  isLoading = false;
+                                });
                                 Dialogs.showErrorDialog(context, "답 맞춰라");
                               }
                             },

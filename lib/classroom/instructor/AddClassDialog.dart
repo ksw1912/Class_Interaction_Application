@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spaghetti/Dialog/CicularProgress.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
@@ -15,6 +16,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
   ScrollController? _scrollController;
   var className = "";
   List<String>? ops;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -54,6 +56,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                 Container(
                   child: Stack(
                     children: [
+                      if (isLoading) CircularProgress.build(),
                       Positioned(
                         left: screenWidth * 0.12,
                         top: screenHeight * 0.05,
@@ -209,11 +212,17 @@ class _AddClassDialogState extends State<AddClassDialog> {
                               ),
                             ),
                             onPressed: () async {
+                              setState(() {
+                                isLoading = true;
+                              });
                               await classService.classroomCreate(
                                   context,
                                   className,
                                   opinionList,
                                   opinionService); //??:의견 추가안했을 때는 빈 배열
+                              setState(() {
+                                isLoading = false;
+                              });
                               Navigator.pop(context);
                             },
                             child: Row(

@@ -31,6 +31,10 @@ class Websocket {
     stompClient?.activate();
   }
 
+  Future<void> connect() async {
+    stompClient?.activate();
+  }
+
   StompClient stomClient(String? jwt, context) {
     return StompClient(
       config: StompConfig.sockJS(

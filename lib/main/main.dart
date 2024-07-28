@@ -27,8 +27,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //하단바 숨기기
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+    //하단바 숨기기 나중에 주석풀기 ★
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ClassroomService()),

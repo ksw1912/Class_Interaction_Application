@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:spaghetti/Dialog/CicularProgress.dart';
 import 'package:spaghetti/Dialog/Dialogs.dart';
 import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
@@ -30,15 +31,24 @@ class _ClassDetailPageState extends State<classDetailPage> {
   String? jwt;
   final storage = FlutterSecureStorage();
   late ScrollController _scrollController;
+  bool isLoading = false;
+  Future<void>? _webSocketFuture;
+  OpinionService? _opinionService;
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _initializeWebsocket();
+      _webSocketFuture = _initializeWebsocket();
       // _checkClassStart();
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _opinionService = Provider.of<OpinionService>(context, listen: false);
   }
 //수업 시작전 입장 막기
 /*   Future<void> _checkClassStart() async {
@@ -63,12 +73,33 @@ class _ClassDetailPageState extends State<classDetailPage> {
     websocket?.unsubscribe();
     websocket?.stomClient(jwt, context).deactivate(); // websocket 연결 해제
     _scrollController.dispose();
-    Provider.of<OpinionService>(context, listen: false).deleteAll();
+    _opinionService?.deleteAll();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder<void>(
+      future: _webSocketFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            body: CircularProgress.build(),
+          );
+        } else if (snapshot.hasError) {
+          return Scaffold(
+            body: Center(
+              child: Text('Error: ${snapshot.error}'),
+            ),
+          );
+        } else {
+          return _buildClassDetailPage(context);
+        }
+      },
+    );
+  }
+
+  Widget _buildClassDetailPage(BuildContext context) {
     return Consumer3<ClassroomService, OpinionService, UserCount>(
         builder: (context, classService, opinionService, userCount, child) {
       List<Classroom> classList = classService.classroomList;
@@ -227,9 +258,15 @@ class _ClassDetailPageState extends State<classDetailPage> {
                         ),
                         onPressed: opinionService.opinionSend
                             ? () {
+                                setState(() {
+                                  isLoading = true;
+                                });
                                 websocket
                                     ?.opinionSend(opinionList[selectedRadio!]);
                                 opinionService.setOpinionSend(false);
+                                setState(() {
+                                  isLoading = false;
+                                });
                               }
                             : null,
                         child: Text(

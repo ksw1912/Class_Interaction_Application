@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spaghetti/Dialog/CicularProgress.dart';
 import 'package:spaghetti/Dialog/Dialogs.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
@@ -17,7 +18,7 @@ class QuizClassDialog extends StatefulWidget {
 
 class _QuizClassDialogState extends State<QuizClassDialog> {
   ScrollController? _scrollController;
-
+  bool isLoading = false;
   @override
   void initState() {
     super.initState();
@@ -56,6 +57,7 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
                 Container(
                   child: Stack(
                     children: [
+                      if (isLoading) CircularProgress.build(),
                       Positioned(
                         left: screenWidth * 0.12,
                         top: screenHeight * 0.05,
@@ -171,12 +173,17 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
                               }
                               if (quizs.isNotEmpty) {
                                 //배열이 존재할경우 create
-
+                                setState(() {
+                                  isLoading = true;
+                                });
                                 quizService.quizCreate(
                                     context,
                                     widget.classroom!.classId,
                                     quizList,
                                     widget.websocket);
+                                setState(() {
+                                  isLoading = false;
+                                });
                                 Navigator.pop(context);
                               } else {
                                 //배열이 존재하지 않을 경우 Dialog

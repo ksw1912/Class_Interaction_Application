@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:spaghetti/Dialog/CicularProgress.dart';
 import 'package:spaghetti/classroom/classDetailPage.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/classroom/student/Enrollment.dart';
@@ -21,6 +22,8 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
   String output = 'Empty Scan Code';
   final TextEditingController _controller = TextEditingController();
   bool isEditing = false;
+  bool isLoading = false;
+  // late AnimationController controller;
 
   @override
   void initState() {
@@ -52,6 +55,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
             Container(
               child: Stack(
                 children: [
+                  if (isLoading) CircularProgress.build(),
                   Positioned(
                     left: screenWidth * 0.1,
                     top: screenHeight * 0.1,
@@ -142,6 +146,9 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                               // 삭제 기능 추가
                                               print(enrollList[index]
                                                   .enrollmentID);
+                                              setState(() {
+                                                isLoading = true;
+                                              });
                                               enrollmentService
                                                   .enrollmentDelete(
                                                       context,
@@ -151,6 +158,9 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                                   .removeEnrollment(
                                                       enrollmentData
                                                           .classroom.classId);
+                                              setState(() {
+                                                isLoading = false;
+                                              });
                                             },
                                           )
                                         : ElevatedButton(
@@ -177,6 +187,9 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                               shadowColor: Colors.transparent,
                                             ),
                                             onPressed: () async {
+                                              setState(() {
+                                                isLoading = true;
+                                              });
                                               var classroom =
                                                   await classroomService
                                                       .classroomOpinions(
@@ -184,6 +197,9 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                                           enrollmentData
                                                               .classroom
                                                               .classId);
+                                              setState(() {
+                                                isLoading = false; // 로딩 시작
+                                              });
                                               if (classroom == null) {
                                                 Navigator.pop(context);
                                               } else {
@@ -246,7 +262,13 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                               output = result;
                             });
                             print('QR 코드 데이터: $result');
+                            setState(() {
+                              isLoading = true;
+                            });
                             classroomService.classroomOpinions(context, output);
+                            setState(() {
+                              isLoading = false;
+                            });
                           }
                         },
                         child: Text("QR코드로 입장하기",
@@ -388,10 +410,16 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                               ),
                                             ),
                                             onPressed: () async {
+                                              setState(() {
+                                                isLoading = true;
+                                              });
                                               var classroom =
                                                   await classroomService
                                                       .studentEnterClassPin(
                                                           context, classNumber);
+                                              setState(() {
+                                                isLoading = false;
+                                              });
                                               if (classroom == null) {
                                                 Navigator.pop(context);
                                               } // 기존 모달 닫기
