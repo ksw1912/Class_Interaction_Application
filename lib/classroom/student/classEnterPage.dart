@@ -238,14 +238,14 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                   ),
                   Positioned(
                     left: screenWidth * 0.1,
-                    bottom: screenHeight * 0.1 + 50,
+                    bottom: screenHeight * 0.1 + 60,
                     child: SizedBox(
                       width: screenWidth * 0.8,
                       height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 237, 241, 0),
-                          surfaceTintColor: Color.fromARGB(192, 5, 165, 0),
+                          backgroundColor: Color(0xfffbaf01),
+                          surfaceTintColor: Color(0xfffbaf01),
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -284,8 +284,8 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                       height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(192, 5, 165, 0),
-                          surfaceTintColor: Color.fromARGB(192, 5, 165, 0),
+                          backgroundColor: Color(0xff789bd0),
+                          surfaceTintColor: Color(0xff789bd0),
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -402,7 +402,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                           SizedBox(height: 10),
                                           ElevatedButton(
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor: Colors.blue,
+                                              backgroundColor: Color(0xff789bd0),
                                               foregroundColor: Colors.white,
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
@@ -470,7 +470,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                         isEditing ? '확인' : '편집',
                         style: TextStyle(
                           fontSize: screenWidth * 0.04,
-                          color: Colors.blue,
+                          color: Color(0xff789bd0),
                         ),
                       ),
                     ),
@@ -516,13 +516,18 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                                 .pop(); // 모달 닫기
                                           },
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.grey,
+                                            backgroundColor: Color(0xfff7f8fc),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(8),
                                             ),
                                           ),
-                                          child: Text('취소'),
+                                          child: Text('취소',
+                                            style: TextStyle(
+                                              color: Color(0xff789bd0),
+                                              
+                                            ),
+                                          ),
                                         ),
                                       ),
                                       SizedBox(width: 10), // 버튼 사이 간격
@@ -541,13 +546,17 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                             );
                                           },
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.red,
+                                            backgroundColor: Color(0xff789bd0),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(8),
                                             ),
                                           ),
-                                          child: Text('로그아웃'),
+                                          child: Text('로그아웃',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ],

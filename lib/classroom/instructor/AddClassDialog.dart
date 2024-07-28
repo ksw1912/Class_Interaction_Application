@@ -99,7 +99,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                           height: screenHeight * 0.07,
                           child: TextField(
                             decoration: InputDecoration(
-                              fillColor: Color.fromARGB(255, 214, 214, 214),
+                              fillColor: Color(0xfff7f8fc),
                               filled: true,
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -174,7 +174,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                                       },
                                       decoration: InputDecoration(
                                         fillColor:
-                                            Color.fromARGB(255, 214, 214, 214),
+                                            Color(0xfff7f8fc),
                                         filled: true,
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius:

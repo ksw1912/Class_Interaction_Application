@@ -91,6 +91,7 @@ flutter:
   - assets/images/exit.png
   - assets/images/edit.png
   - assets/images/check.png
+  - assets/images/quiz.png
 
   
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -302,7 +302,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                                 .pop(); // 모달 닫기
                                           },
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor: Color(0xff848c99),
+                                            backgroundColor: Color(0xfff7f8fc),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(8),
@@ -311,7 +311,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                           child: Text('취소',
                                               style: TextStyle(
                                                   fontFamily: "NanumEB",
-                                                  color: Colors.white)),
+                                                  color: Color(0xff789bd0))),
                                         ),
                                       ),
                                       SizedBox(width: 10), // 버튼 사이 간격
@@ -333,7 +333,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                             );
                                           },
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor: Color(0xfff9a3b6),
+                                            backgroundColor: Color(0xff789bd0),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(8),
