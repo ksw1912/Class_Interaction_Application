@@ -402,7 +402,8 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                           SizedBox(height: 10),
                                           ElevatedButton(
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor: Color(0xff789bd0),
+                                              backgroundColor:
+                                                  Color(0xff789bd0),
                                               foregroundColor: Colors.white,
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
@@ -418,6 +419,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                                       .studentEnterClassPin(
                                                           context, classNumber);
                                               setState(() {
+                                                _controller.clear();
                                                 isLoading = false;
                                               });
                                               if (classroom == null) {
@@ -522,10 +524,10 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                                   BorderRadius.circular(8),
                                             ),
                                           ),
-                                          child: Text('취소',
+                                          child: Text(
+                                            '취소',
                                             style: TextStyle(
                                               color: Color(0xff789bd0),
-                                              
                                             ),
                                           ),
                                         ),
@@ -552,7 +554,8 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                                   BorderRadius.circular(8),
                                             ),
                                           ),
-                                          child: Text('로그아웃',
+                                          child: Text(
+                                            '로그아웃',
                                             style: TextStyle(
                                               color: Colors.white,
                                             ),
