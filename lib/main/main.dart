@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart'; // kReleaseMode 사용을 위해 추가
@@ -11,6 +12,7 @@ import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/quiz/QuizService.dart';
 
 void main() {
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   runApp(
     // MyApp()
     DevicePreview(
