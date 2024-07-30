@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class UserCount extends ChangeNotifier {
@@ -16,6 +15,7 @@ class UserCount extends ChangeNotifier {
     if (i != null) {
       evaluationList[i] += 1;
     }
+    notifyListeners();
   }
 
   // int? getEval() {

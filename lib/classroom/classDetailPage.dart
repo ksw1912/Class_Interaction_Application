@@ -114,7 +114,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
       String classId = classData.classId;
 
       return Scaffold(
-        resizeToAvoidBottomInset: false, // 키보드 오버플로우 방지
+        resizeToAvoidBottomInset: false, // 키보드 오버플 로우 방지
         appBar: AppBar(
           leading: IconButton(
             onPressed: () async {

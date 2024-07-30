@@ -47,6 +47,7 @@ class QuizService extends ChangeNotifier {
         break;
       }
     }
+    notifyListeners();
   }
 
   void addQuiz({required Quiz quiz}) {

@@ -25,6 +25,16 @@ class Enrollment {
         'updatedAt': DateFormat('yyyy-MM-dd').format(updatedAt),
       };
 
+  factory Enrollment.notArray_fromJson(Map<String, dynamic> json) {
+    return Enrollment(
+      enrollmentID: json['enrollmentID'] ?? "",
+      classroom: Classroom.fromJson_notArray(json['classroom']),
+      student: Student.fromJson(json['student']),
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+    );
+  }
+
   factory Enrollment.fromJson(Map<String, dynamic> json) {
     // JSON 데이터에서 createdAt과 updatedAt을 List<int>로 처리
     List<int> createdAtList = List<int>.from(json['createdAt']);

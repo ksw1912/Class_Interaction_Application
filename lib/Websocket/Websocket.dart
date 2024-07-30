@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:spaghetti/Dialog/Dialogs.dart';
-import 'package:spaghetti/Dialog/EvaluationResultPage.dart';
+import 'package:spaghetti/classroom/instructor/EvaluationResultPage.dart';
 import 'package:spaghetti/Websocket/MessageDTO.dart';
 import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/classroom/classDetailPage.dart';
+import 'package:spaghetti/classroom/student/classEnterPage.dart';
 import 'package:spaghetti/member/User.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
 import 'package:spaghetti/opinion/OpinionService.dart';
@@ -131,8 +132,8 @@ class Websocket {
             print("교수님께서 수업을 종료하셨습니다");
             // 사용자에게 수업끝났다고 알림
             await Dialogs.showErrorDialog(context, "교수님께서 수업을 종료하셨습니다 ");
-            await EvaluationResultPage(context);
             Navigator.pop(context);
+
             break;
           default:
             print("예외문제 확인용(default switch문) ${message.status}");

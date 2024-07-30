@@ -17,7 +17,7 @@ import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/opinion/OpinionVote.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'Quiz_class_dialog.dart';
-import 'package:spaghetti/Dialog/EvaluationResultPage.dart';
+import 'package:spaghetti/classroom/instructor/EvaluationResultPage.dart';
 
 class ClassRoomPage extends StatefulWidget {
   final Classroom? classRoomData;
@@ -34,7 +34,8 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
   String? jwt;
   final storage = FlutterSecureStorage();
   bool isLoading = false;
-  Future<void>? _webSocketFuture;
+  late Future<void> _webSocketFuture;
+
   @override
   void initState() {
     super.initState();
@@ -47,14 +48,14 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
     UserCount userCount = Provider.of<UserCount>(context, listen: false);
     jwt = await storage.read(key: "Authorization") ?? "";
     websocket = Websocket(classId, user, jwt, context);
-    userCount.evaluationList = [0, 0, 0, 0];
+    userCount.evaluationList = [0, 0, 0, 0, 0];
   }
 
   @override
   void dispose() async {
-    await websocket?.unsubscribe();
-    websocket?.stomClient(jwt, context).deactivate(); // websocket 연결 해제
-    Provider.of<OpinionService>(context, listen: false).deleteAll();
+    // await websocket?.unsubscribe();
+    // websocket?.stomClient(jwt, context).deactivate(); // websocket 연결 해제
+    // Provider.of<OpinionService>(context, listen: false).deleteAll();
     isLoading = false;
     super.dispose();
   }

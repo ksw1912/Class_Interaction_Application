@@ -32,7 +32,7 @@ class _EvaluationResultPage extends State<EvaluationResultPage> {
 
   @override
   void dispose() {
-    _disposeWebSocket();
+    // _disposeWebSocket();
     super.dispose();
   }
 
@@ -96,7 +96,7 @@ class _EvaluationResultPage extends State<EvaluationResultPage> {
                   ),
                 ),
                 SizedBox(height: 20),
-                _buildRatingChart(evaluationList),
+                _buildRatingChart(userCount.evaluationList),
                 SizedBox(height: 50),
                 SizedBox(
                   width: double.infinity,
@@ -113,7 +113,7 @@ class _EvaluationResultPage extends State<EvaluationResultPage> {
                           .initializeQuizList();
                       Navigator.push(
                         context,
-                        MaterialPageRoute(            
+                        MaterialPageRoute(
                           builder: (_) => ClassCreatePage(),
                         ),
                       );

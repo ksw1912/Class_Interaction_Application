@@ -49,6 +49,76 @@ class StartPageState extends State<StartPage> {
                       child: Image.asset('assets/images/Onboarding1.png',
                           width: 80, fit: BoxFit.fill),
                     ),
+                    Positioned(
+                      left: screenWidth * 0.1,
+                      top: screenHeight * 0.85,
+                      child: SizedBox(
+                        width: screenWidth * 0.375,
+                        height: screenWidth * 0.12,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xff789bd0),
+                            surfaceTintColor: Color(0xff789bd0),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const LoginPage(role: "instructor"),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "교수님으로 시작",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: screenWidth * 0.035,
+                              fontFamily: 'NanumEB',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: screenWidth * 0.525,
+                      top: screenHeight * 0.85,
+                      child: SizedBox(
+                        width: screenWidth * 0.375,
+                        height: screenWidth * 0.12,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xfffbaf01),
+                            surfaceTintColor: Color(0xfffbaf01),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const LoginPage(role: "student"),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "학생으로 시작",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: screenWidth * 0.035,
+                              fontFamily: 'NanumEB',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -76,6 +146,76 @@ class StartPageState extends State<StartPage> {
                       top: screenHeight * 0.775,
                       child: Image.asset('assets/images/Onboarding2.png',
                           width: 80, fit: BoxFit.fill),
+                    ),
+                    Positioned(
+                      left: screenWidth * 0.1,
+                      top: screenHeight * 0.85,
+                      child: SizedBox(
+                        width: screenWidth * 0.375,
+                        height: screenWidth * 0.12,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xff789bd0),
+                            surfaceTintColor: Color(0xff789bd0),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const LoginPage(role: "instructor"),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "교수님으로 시작",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: screenWidth * 0.035,
+                              fontFamily: 'NanumEB',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: screenWidth * 0.525,
+                      top: screenHeight * 0.85,
+                      child: SizedBox(
+                        width: screenWidth * 0.375,
+                        height: screenWidth * 0.12,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xfffbaf01),
+                            surfaceTintColor: Color(0xfffbaf01),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const LoginPage(role: "student"),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "학생으로 시작",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: screenWidth * 0.035,
+                              fontFamily: 'NanumEB',
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -105,79 +245,80 @@ class StartPageState extends State<StartPage> {
                       child: Image.asset('assets/images/Onboarding3.png',
                           width: 80, fit: BoxFit.fill),
                     ),
+                    Positioned(
+                      left: screenWidth * 0.1,
+                      top: screenHeight * 0.85,
+                      child: SizedBox(
+                        width: screenWidth * 0.375,
+                        height: screenWidth * 0.12,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xff789bd0),
+                            surfaceTintColor: Color(0xff789bd0),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const LoginPage(role: "instructor"),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "교수님으로 시작",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: screenWidth * 0.035,
+                              fontFamily: 'NanumEB',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: screenWidth * 0.525,
+                      top: screenHeight * 0.85,
+                      child: SizedBox(
+                        width: screenWidth * 0.375,
+                        height: screenWidth * 0.12,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xfffbaf01),
+                            surfaceTintColor: Color(0xfffbaf01),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const LoginPage(role: "student"),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "학생으로 시작",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: screenWidth * 0.035,
+                              fontFamily: 'NanumEB',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ],
-          ),
-          // 고정된 버튼들
-          Positioned(
-            left: screenWidth * 0.1,
-            top: screenHeight * 0.85,
-            child: SizedBox(
-              width: screenWidth * 0.375,
-              height: screenWidth * 0.12,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xff789bd0),
-                  surfaceTintColor: Color(0xff789bd0),
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginPage(role: "instructor"),
-                    ),
-                  );
-                },
-                child: Text(
-                  "교수님으로 시작",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: screenWidth * 0.035,
-                    fontFamily: 'NanumEB',
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            left: screenWidth * 0.525,
-            top: screenHeight * 0.85,
-            child: SizedBox(
-              width: screenWidth * 0.375,
-              height: screenWidth * 0.12,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xfffbaf01),
-                  surfaceTintColor: Color(0xfffbaf01),
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginPage(role: "student"),
-                    ),
-                  );
-                },
-                child: Text(
-                  "학생으로 시작",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: screenWidth * 0.035,
-                    fontFamily: 'NanumEB',
-                  ),
-                ),
-              ),
-            ),
           ),
         ],
       ),

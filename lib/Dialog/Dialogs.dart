@@ -28,7 +28,6 @@ class Dialogs {
   static Future<dynamic> showEvaluationDialog(
       BuildContext context, Websocket websocket) {
     int selectedRating = 0;
-
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -63,7 +62,7 @@ class Dialogs {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(5, (index) {
-                  int ratingValue = (index + 1);
+                  int ratingValue = index + 1;
                   return Padding(
                     padding: EdgeInsets.symmetric(horizontal: circlePadding),
                     child: GestureDetector(
@@ -104,7 +103,7 @@ class Dialogs {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    websocket.studentEvaluation(selectedRating);
+                    websocket.studentEvaluation(selectedRating - 1);
                     Navigator.of(context).pop();
                   },
                   style: ElevatedButton.styleFrom(
