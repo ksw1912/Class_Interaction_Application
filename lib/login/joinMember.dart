@@ -467,8 +467,8 @@ class _JoinmemberState extends State<Joinmember> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff848C99),
-                        foregroundColor: Colors.white,
+                        backgroundColor: Color(0xffFFF5DB),
+                        foregroundColor: Color(0xfffbaf01),
                       ),
                       onPressed: details.onStepCancel,
                       child: Text('Cancel'),

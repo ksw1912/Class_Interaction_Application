@@ -115,8 +115,7 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
                                             controller: TextEditingController(
                                                 text: quizList[index].question),
                                             decoration: InputDecoration(
-                                              fillColor: Color.fromARGB(
-                                                  255, 214, 214, 214),
+                                              fillColor: Color(0xfff7f8fc),
                                               filled: true,
                                               enabledBorder: OutlineInputBorder(
                                                 borderRadius:
@@ -154,10 +153,11 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
                         top: screenHeight * 0.6,
                         child: SizedBox(
                           width: screenWidth * 0.8,
+                          height: screenHeight * 0.06,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(192, 5, 165, 0),
-                              surfaceTintColor: Color.fromARGB(192, 5, 165, 0),
+                              backgroundColor: Color(0xfffbaf01),
+                              surfaceTintColor: Color(0xfffbaf01),
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),

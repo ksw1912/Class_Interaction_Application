@@ -136,7 +136,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                             height: 45,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xfff7c678),
+                                backgroundColor: Color(0xff789bd0),
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
@@ -167,7 +167,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                             height: 45,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xff85a3d5),
+                                backgroundColor: Color(0xfffbaf01),
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
@@ -196,8 +196,8 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                     height: screenHeight * 0.06,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 228, 228, 228),
-                        surfaceTintColor: Color.fromARGB(255, 228, 228, 228),
+                        backgroundColor: Color.fromARGB(130, 230, 230, 230),
+                        surfaceTintColor: Color.fromARGB(130, 230, 230, 230),
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -219,7 +219,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                       child: Text(
                         "수업 종료하기",
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: screenWidth * 0.05,
                         ),
                       ),
@@ -303,7 +303,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                                     SizedBox(height: 50),
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.blue,
+                                        backgroundColor: Color(0xff789bd0),
                                         foregroundColor: Colors.white,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -332,7 +332,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                   top: screenHeight * 0.1,
                   child: IconButton(
                     icon: Image.asset(
-                      'assets/images/check.png', // 수정 아이콘 경로
+                      'assets/images/quiz.png', // 수정 아이콘 경로
                       width: screenWidth * 0.06,
                       height: screenWidth * 0.06,
                     ),
@@ -449,7 +449,7 @@ void showQRCodeModal(BuildContext context, String classNumber) {
               SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Color(0xff789bd0),
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -512,6 +512,7 @@ class _BarChartExampleState extends State<BarChartExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false, // 뒤로가기 버튼 제거
         title: Text('수업 의견'),
         actions: [
@@ -521,6 +522,7 @@ class _BarChartExampleState extends State<BarChartExample> {
           ),
         ],
       ),
+      backgroundColor: Colors.white,
       body: Consumer2<ClassroomService, OpinionService>(
           builder: (context, classService, opinionService, child) {
         List<Opinion> opinionList = opinionService.opinionList; // 옵션 배열

@@ -87,7 +87,7 @@ class _EditClassDialogState extends State<EditClassDialog> {
                         TextFormField(
                           controller: titleValue,
                           decoration: InputDecoration(
-                            fillColor: Color.fromARGB(255, 214, 214, 214),
+                            fillColor: Color(0xfff7f8fc),
                             filled: true,
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -150,8 +150,7 @@ class _EditClassDialogState extends State<EditClassDialog> {
                                             controller: TextEditingController(
                                                 text: opinion?[index]),
                                             decoration: InputDecoration(
-                                              fillColor: Color.fromARGB(
-                                                  255, 214, 214, 214),
+                                              fillColor: Color(0xfff7f8fc),
                                               filled: true,
                                               enabledBorder: OutlineInputBorder(
                                                 borderRadius:
@@ -194,8 +193,8 @@ class _EditClassDialogState extends State<EditClassDialog> {
                       children: [
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff64c9c6),
-                            surfaceTintColor: Color(0xff64c9c6),
+                            backgroundColor: Color(0xff789bd0),
+                            surfaceTintColor: Color(0xff789bd0),
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -283,8 +282,8 @@ class _EditClassDialogState extends State<EditClassDialog> {
                         SizedBox(height: 10),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xfff7a3b5),
-                            surfaceTintColor: Color(0xfff7a3b5),
+                            backgroundColor: Color(0xfff7f8fc),
+                            surfaceTintColor: Color(0xfff7f8fc),
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -372,7 +371,7 @@ class _EditClassDialogState extends State<EditClassDialog> {
                             children: [
                               Text(
                                 "수업 삭제하기",
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(color: Color(0xff789bd0)),
                               ),
                               Text(
                                 "-",
