@@ -7,12 +7,11 @@ import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
+import 'package:spaghetti/classroom/student/ClassEnterPage.dart'; // ClassEnterPage import
 import 'package:spaghetti/member/User.dart';
 import 'package:spaghetti/member/UserProvider.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
-
 import 'package:spaghetti/opinion/OpinionService.dart';
-
 import 'student/quiz_add_class_dialog.dart';
 
 class classDetailPage extends StatefulWidget {
@@ -50,15 +49,6 @@ class _ClassDetailPageState extends State<classDetailPage> {
     super.didChangeDependencies();
     _opinionService = Provider.of<OpinionService>(context, listen: false);
   }
-//수업 시작전 입장 막기
-/*   Future<void> _checkClassStart() async {
-    String classId = widget.classroom.classId;
-    UserCount userCount = Provider.of<UserCount>(context, listen: false);
-    if (userCount.userList[classId]! <= 1) {
-      await Dialogs.showErrorDialog(context, "수업시작 전입니다");
-      Navigator.pop(context);
-    }
-  }*/
 
   Future<void> _initializeWebsocket() async {
     String classId = widget.classroom.classId;
@@ -122,7 +112,12 @@ class _ClassDetailPageState extends State<classDetailPage> {
               await websocket?.unsubscribe();
               websocket?.stomClient(jwt, context).deactivate();
               Provider.of<OpinionService>(context, listen: false).deleteAll();
-              Navigator.of(context).pop();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ClassEnterPage(),
+                ),
+              );
             },
             icon: Icon(Icons.arrow_back_rounded),
           ),

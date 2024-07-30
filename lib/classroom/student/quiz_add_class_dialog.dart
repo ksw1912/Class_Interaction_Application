@@ -142,11 +142,12 @@ class _AddClassDialogState extends State<AddClassDialog> {
                         left: screenWidth * 0.1,
                         top: screenHeight * 0.4,
                         child: SizedBox(
-                          width: screenWidth * 0.8, // 화면 너비의 80%
+                          width: screenWidth * 0.8,
+                          height: screenHeight * 0.06, // 화면 너비의 80%
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(192, 5, 165, 0),
-                              surfaceTintColor: Color.fromARGB(192, 5, 165, 0),
+                              backgroundColor: Color(0xff789bd0),
+                              surfaceTintColor: Color(0xff789bd0),
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
