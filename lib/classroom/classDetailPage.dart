@@ -167,14 +167,23 @@ class _ClassDetailPageState extends State<classDetailPage> {
                     ),
                   ),
                   Positioned(
-                    left: screenWidth * 0.1,
-                    top: screenHeight * 0.19,
-                    child: Text('의견 선택 후 제출해 주세요',
-                        style: TextStyle(
-                            fontSize: screenWidth * 0.04, color: Colors.grey)),
+                    left: screenWidth * 0.597,
+                    top: screenHeight * -0.04, // 선 위쪽에 배치
+                    child: Image.asset(
+                      'assets/images/opinion.png', // 이미지 경로를 설정해 주세요.
+                      width: screenWidth * 0.3, // 이미지의 너비를 설정해 주세요.
+                      height: screenHeight * 0.3, // 이미지의 높이를 설정해 주세요.
+                    ),
                   ),
                   Positioned(
-                    top: screenHeight * 0.22, // "이전 수업" 텍스트 아래 30px
+                    left: screenWidth * 0.1,
+                    top: screenHeight * 0.21,
+                    child: Text('의견 선택 후 제출해 주세요',
+                        style: TextStyle(
+                            fontSize: screenWidth * 0.035, color: Colors.grey)),
+                  ),
+                  Positioned(
+                    top: screenHeight * 0.23, // "이전 수업" 텍스트 아래 30px
                     left: screenWidth * 0.1,
                     child: Scrollbar(
                       thumbVisibility: true,

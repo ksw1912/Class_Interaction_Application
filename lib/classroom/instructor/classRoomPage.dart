@@ -233,7 +233,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                 ),
                 Positioned(
                   right: screenWidth * 0.1,
-                  top: screenHeight * 0.1,
+                  top: screenHeight * 0.14,
                   child: IconButton(
                     icon: Image.asset(
                       'assets/images/share_icon.png',
@@ -334,7 +334,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                 ),
                 Positioned(
                   right: screenWidth * 0.375, // 적절히 조정
-                  top: screenHeight * 0.1,
+                  top: screenHeight * 0.14,
                   child: IconButton(
                     icon: Image.asset(
                       'assets/images/quiz.png', // 수정 아이콘 경로
@@ -354,7 +354,7 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                 ),
                 Positioned(
                   right: screenWidth * 0.23, // 적절히 조정
-                  top: screenHeight * 0.1,
+                  top: screenHeight * 0.14,
                   child: IconButton(
                     icon: Image.asset(
                       'assets/images/edit.png', // 퀴즈 결과 창
@@ -489,7 +489,7 @@ void showQRCodeModal(BuildContext context, String classNumber) {
                   Clipboard.setData(ClipboardData(text: classNumber));
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('수업코드가 클립보드에 복사되었습니다.')),
+                    SnackBar(content: Text('QR코드가 저장되었습니다')),
                   );
                 },
                 child: Text("수업코드 복사"),
