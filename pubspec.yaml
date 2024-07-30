@@ -52,6 +52,8 @@ dependencies:
   syncfusion_flutter_charts: ^20.3.47
   email_validator: ^3.0.0
   stomp_dart_client: ^2.0.0
+  screenshot: ^3.0.0
+  image_gallery_saver: ^1.7.1
   
 dev_dependencies:
   flutter_test:

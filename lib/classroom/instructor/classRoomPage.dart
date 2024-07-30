@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/services.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:spaghetti/Dialog/CicularProgress.dart';
 import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
@@ -419,6 +424,7 @@ void addDialog(
 }
 
 void showQRCodeModal(BuildContext context, String classNumber) {
+  ScreenshotController screenshotController = ScreenshotController();
   showModalBottomSheet(
     context: context,
     builder: (BuildContext context) {
@@ -441,10 +447,14 @@ void showQRCodeModal(BuildContext context, String classNumber) {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(height: 20),
-              QrImageView(
-                data: classNumber,
-                version: QrVersions.auto,
-                size: 200.0,
+              Screenshot(
+                controller: screenshotController,
+                child: QrImageView(
+                  data: classNumber,
+                  version: QrVersions.auto,
+                  size: 200.0,
+                  backgroundColor: Colors.white,
+                ),
               ),
               SizedBox(height: 20),
               ElevatedButton(
@@ -455,7 +465,27 @@ void showQRCodeModal(BuildContext context, String classNumber) {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                onPressed: () {
+                onPressed: () async {
+                  if (Platform.isAndroid) {
+                    await screenshotController
+                        .capture(
+                            delay: Duration(milliseconds: 10),
+                            pixelRatio: MediaQuery.of(context).devicePixelRatio)
+                        .then((Uint8List? image) async {
+                      if (image != null) {
+                        final directory =
+                            await getApplicationDocumentsDirectory();
+                        final imagePath =
+                            await File('${directory.path}/image.jpg').create();
+                        await imagePath.writeAsBytes(image);
+                        await ImageGallerySaver.saveFile(imagePath.path,
+                            name: 'firstScreenshot');
+
+                        /// Share Plugin
+                        // await Share.shareFiles([imagePath.path]);
+                      }
+                    });
+                  }
                   Clipboard.setData(ClipboardData(text: classNumber));
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
