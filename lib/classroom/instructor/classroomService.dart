@@ -188,8 +188,7 @@ class ClassroomService extends ChangeNotifier {
       if (response.statusCode == 200) {
         print("응답 성공");
       } else {
-        print("응답 실패");
-        await Dialogs.showErrorDialog(context, '오류 발생: ${response.body}');
+        
       }
     } catch (exception) {
       print(exception);
