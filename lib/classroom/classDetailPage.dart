@@ -238,13 +238,13 @@ class _ClassDetailPageState extends State<classDetailPage> {
                   ),
                   Positioned(
                     left: screenWidth * 0.1,
-                    top: screenHeight * 0.65,
+                    top: screenHeight * 0.73,
                     child: SizedBox(
                       width: screenWidth * 0.8, // 화면 너비의 80%
                       height: screenHeight * 0.06,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 228, 228, 228),
+                          backgroundColor: Color(0xff789bd0),
                           surfaceTintColor: Color.fromARGB(255, 228, 228, 228),
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
@@ -267,35 +267,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
                         child: Text(
                           "제출하기",
                           style: TextStyle(
-                            color: Colors.black,
-                            fontSize: screenWidth * 0.05,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: screenWidth * 0.1,
-                    top: screenHeight * 0.75,
-                    child: SizedBox(
-                      width: screenWidth * 0.8, // 화면 너비의 80%
-                      height: screenHeight * 0.06,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 228, 228, 228),
-                          surfaceTintColor: Color.fromARGB(255, 228, 228, 228),
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        onPressed: () {
-                          addDialog(context, websocket);
-                        },
-                        child: Text(
-                          "퀴즈풀기",
-                          style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.white,
                             fontSize: screenWidth * 0.05,
                           ),
                         ),
