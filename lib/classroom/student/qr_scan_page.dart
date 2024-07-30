@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
 import 'package:spaghetti/classroom/classDetailPage.dart';
 import 'package:spaghetti/Dialog/CicularProgress.dart';
+import 'package:spaghetti/classroom/student/EnrollmentService.dart';
 
 class QRScanPage extends StatefulWidget {
   const QRScanPage({super.key});
@@ -52,11 +53,14 @@ class _QRScanPageState extends State<QRScanPage> {
             Provider.of<ClassroomService>(context, listen: false);
         var classroom =
             await classroomService.studentEnterClassPin(context, pin);
+
         setState(() {
           isLoading = false;
         });
 
         if (classroom != null) {
+          await Provider.of<EnrollmentService>(context, listen: false)
+              .addEnrollList(context, classroom);
           Navigator.push(
             context,
             MaterialPageRoute(
