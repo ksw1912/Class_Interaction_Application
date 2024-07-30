@@ -87,7 +87,7 @@ class _QuizClassDialogState extends State<QuizClassDialog> {
                       ),
                       Positioned(
                         left: screenWidth * 0.1,
-                        top: screenHeight * 0.15,
+                        top: screenHeight * 0.12,
                         right: screenWidth * 0.1,
                         bottom: screenHeight * 0.15,
                         child: Scrollbar(

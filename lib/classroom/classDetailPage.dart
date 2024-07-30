@@ -7,12 +7,11 @@ import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
+import 'package:spaghetti/classroom/student/ClassEnterPage.dart'; // ClassEnterPage import
 import 'package:spaghetti/member/User.dart';
 import 'package:spaghetti/member/UserProvider.dart';
 import 'package:spaghetti/opinion/Opinion.dart';
-
 import 'package:spaghetti/opinion/OpinionService.dart';
-
 import 'student/quiz_add_class_dialog.dart';
 
 class classDetailPage extends StatefulWidget {
@@ -50,15 +49,6 @@ class _ClassDetailPageState extends State<classDetailPage> {
     super.didChangeDependencies();
     _opinionService = Provider.of<OpinionService>(context, listen: false);
   }
-//수업 시작전 입장 막기
-/*   Future<void> _checkClassStart() async {
-    String classId = widget.classroom.classId;
-    UserCount userCount = Provider.of<UserCount>(context, listen: false);
-    if (userCount.userList[classId]! <= 1) {
-      await Dialogs.showErrorDialog(context, "수업시작 전입니다");
-      Navigator.pop(context);
-    }
-  }*/
 
   Future<void> _initializeWebsocket() async {
     String classId = widget.classroom.classId;
@@ -122,7 +112,12 @@ class _ClassDetailPageState extends State<classDetailPage> {
               await websocket?.unsubscribe();
               websocket?.stomClient(jwt, context).deactivate();
               Provider.of<OpinionService>(context, listen: false).deleteAll();
-              Navigator.of(context).pop();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ClassEnterPage(),
+                ),
+              );
             },
             icon: Icon(Icons.arrow_back_rounded),
           ),
@@ -172,14 +167,25 @@ class _ClassDetailPageState extends State<classDetailPage> {
                     ),
                   ),
                   Positioned(
+                    left: screenWidth * 0.6,
+                    top: screenHeight < 700
+                        ? screenHeight * -0.001
+                        : screenHeight * 0.01, // 선 위쪽에 배치
+                    child: Image.asset(
+                      'assets/images/opinion.png', // 이미지 경로를 설정해 주세요.
+                      width: screenWidth * 0.3, // 이미지의 너비를 설정해 주세요.
+                      height: screenHeight * 0.2, // 이미지의 높이를 설정해 주세요.
+                    ),
+                  ),
+                  Positioned(
                     left: screenWidth * 0.1,
                     top: screenHeight * 0.19,
                     child: Text('의견 선택 후 제출해 주세요',
                         style: TextStyle(
-                            fontSize: screenWidth * 0.04, color: Colors.grey)),
+                            fontSize: screenWidth * 0.035, color: Colors.grey)),
                   ),
                   Positioned(
-                    top: screenHeight * 0.22, // "이전 수업" 텍스트 아래 30px
+                    top: screenHeight * 0.23, // "이전 수업" 텍스트 아래 30px
                     left: screenWidth * 0.1,
                     child: Scrollbar(
                       thumbVisibility: true,
@@ -243,13 +249,13 @@ class _ClassDetailPageState extends State<classDetailPage> {
                   ),
                   Positioned(
                     left: screenWidth * 0.1,
-                    top: screenHeight * 0.65,
+                    top: screenHeight * 0.73,
                     child: SizedBox(
                       width: screenWidth * 0.8, // 화면 너비의 80%
                       height: screenHeight * 0.06,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 228, 228, 228),
+                          backgroundColor: Color(0xff789bd0),
                           surfaceTintColor: Color.fromARGB(255, 228, 228, 228),
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
@@ -272,35 +278,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
                         child: Text(
                           "제출하기",
                           style: TextStyle(
-                            color: Colors.black,
-                            fontSize: screenWidth * 0.05,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: screenWidth * 0.1,
-                    top: screenHeight * 0.75,
-                    child: SizedBox(
-                      width: screenWidth * 0.8, // 화면 너비의 80%
-                      height: screenHeight * 0.06,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 228, 228, 228),
-                          surfaceTintColor: Color.fromARGB(255, 228, 228, 228),
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        onPressed: () {
-                          addDialog(context, websocket);
-                        },
-                        child: Text(
-                          "퀴즈풀기",
-                          style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.white,
                             fontSize: screenWidth * 0.05,
                           ),
                         ),

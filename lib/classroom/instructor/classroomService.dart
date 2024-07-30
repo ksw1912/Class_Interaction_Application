@@ -180,16 +180,23 @@ class ClassroomService extends ChangeNotifier {
         headers: headers,
       );
 
+      // 상태 코드와 응답 본문을 출력하여 디버깅
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+      print('JWT: $jwt'); // JWT 토큰 출력하여 확인
+
       if (response.statusCode == 200) {
         print("응답 성공");
       } else {
-        await Dialogs.showErrorDialog(context, '오류 발생');
+        
       }
     } catch (exception) {
       print(exception);
       await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
     }
   }
+
+
 
 //교수클래스 입장
   Future<Classroom?> classroomOpinions(

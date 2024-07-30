@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'dart:io'; // dart:io 패키지 import
+import 'dart:io';
+import 'package:provider/provider.dart';
+import 'package:spaghetti/classroom/instructor/classroomService.dart';
+import 'package:spaghetti/classroom/classDetailPage.dart';
+import 'package:spaghetti/Dialog/CicularProgress.dart';
 
 class QRScanPage extends StatefulWidget {
   const QRScanPage({super.key});
@@ -13,6 +17,7 @@ class _QRScanPageState extends State<QRScanPage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
   QRViewController? controller;
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -33,11 +38,37 @@ class _QRScanPageState extends State<QRScanPage> {
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-        Navigator.pop(context, result!.code); // QR 코드 데이터를 반환하고 페이지 닫기
-      });
+    controller.scannedDataStream.listen((scanData) async {
+      if (!isLoading && scanData.code != null) {
+        setState(() {
+          result = scanData;
+          isLoading = true;
+        });
+
+        String pin = scanData.code!;
+        await controller.pauseCamera(); // QR 코드 스캔 중지
+
+        var classroomService =
+            Provider.of<ClassroomService>(context, listen: false);
+        var classroom =
+            await classroomService.studentEnterClassPin(context, pin);
+        setState(() {
+          isLoading = false;
+        });
+
+        if (classroom != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => classDetailPage(
+                classroom: classroom,
+              ),
+            ),
+          );
+        } else {
+          Navigator.pop(context);
+        }
+      }
     });
   }
 
@@ -47,30 +78,35 @@ class _QRScanPageState extends State<QRScanPage> {
       appBar: AppBar(
         title: Text('QR 코드 스캔'),
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 5,
-            child: QRView(
-              key: qrKey,
-              onQRViewCreated: _onQRViewCreated,
-              overlay: QrScannerOverlayShape(
-                borderColor: Colors.red,
-                borderRadius: 10,
-                borderLength: 30,
-                borderWidth: 10,
-                cutOutSize: 300,
+      body: Stack(
+        children: [
+          Column(
+            children: <Widget>[
+              Expanded(
+                flex: 5,
+                child: QRView(
+                  key: qrKey,
+                  onQRViewCreated: _onQRViewCreated,
+                  overlay: QrScannerOverlayShape(
+                    borderColor: Colors.red,
+                    borderRadius: 10,
+                    borderLength: 30,
+                    borderWidth: 10,
+                    cutOutSize: 300,
+                  ),
+                ),
               ),
-            ),
+              Expanded(
+                flex: 1,
+                child: Center(
+                  child: (result != null)
+                      ? Text('QR 코드 데이터: ${result!.code}')
+                      : Text('QR 코드를 스캔해주세요.'),
+                ),
+              ),
+            ],
           ),
-          Expanded(
-            flex: 1,
-            child: Center(
-              child: (result != null)
-                  ? Text('QR 코드 데이터: ${result!.code}')
-                  : Text('QR 코드를 스캔해주세요.'),
-            ),
-          ),
+          if (isLoading) CircularProgress.build(),
         ],
       ),
     );

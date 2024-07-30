@@ -12,6 +12,7 @@ import 'package:spaghetti/quiz/QuizService.dart';
 
 void main() {
   runApp(
+    // MyApp()
     DevicePreview(
       enabled: !kReleaseMode, // 릴리즈 모드가 아닌 경우에만 활성화
       builder: (context) => MyApp(),
