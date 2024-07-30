@@ -466,7 +466,7 @@ void showQRCodeModal(BuildContext context, String classNumber) {
                   ),
                 ),
                 onPressed: () async {
-                  if (Platform.isAndroid) {
+                  if (Platform.isAndroid || Platform.isIOS) {
                     await screenshotController
                         .capture(
                             delay: Duration(milliseconds: 10),
