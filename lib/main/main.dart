@@ -13,11 +13,11 @@ import 'package:spaghetti/quiz/QuizService.dart';
 
 void main() {
   runApp(
-    // MyApp()
-      DevicePreview(
-        enabled: !kReleaseMode, // 릴리즈 모드가 아닌 경우에만 활성화
-        builder: (context) => MyApp(),
-      ),
+    MyApp()
+      // DevicePreview(
+      //   enabled: !kReleaseMode, // 릴리즈 모드가 아닌 경우에만 활성화
+      //   builder: (context) => MyApp(),
+      // ),
       );
 }
 
@@ -38,9 +38,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => QuizService()),
       ],
       child: MaterialApp(
-        builder: DevicePreview.appBuilder, // DevicePreview.appBuilder 사용
-        useInheritedMediaQuery: true, // MediaQuery 정보를 상속 받음
-        locale: DevicePreview.locale(context), // DevicePreview 로케일 사용
+        // builder: DevicePreview.appBuilder, // DevicePreview.appBuilder 사용
+        // useInheritedMediaQuery: true, // MediaQuery 정보를 상속 받음
+        // locale: DevicePreview.locale(context), // DevicePreview 로케일 사용
+        debugShowCheckedModeBanner: false,
         home: StartPage(),
         theme: ThemeData(
           fontFamily: 'NanumB',
