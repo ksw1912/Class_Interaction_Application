@@ -15,6 +15,7 @@ class QuizService extends ChangeNotifier {
   final storage = FlutterSecureStorage();
   final String apiUrl = Apiurl().url;
 
+
   void setQuizList(List<Quiz>? quizs) {
     quizList = quizs ?? [];
     updateCountList();

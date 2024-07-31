@@ -41,6 +41,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _webSocketFuture = _initializeWebsocket();
       // _checkClassStart();
+      Provider.of<OpinionService>(context, listen: false).setOpinionSend(true);
     });
   }
 
@@ -104,7 +105,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
       String classId = classData.classId;
 
       return Scaffold(
-        resizeToAvoidBottomInset: false, // 키보드 오버플 로우 방지
+        resizeToAvoidBottomInset: false, // 키보드 오버플 로우
         appBar: AppBar(
           leading: IconButton(
             onPressed: () async {

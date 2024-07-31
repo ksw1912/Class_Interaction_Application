@@ -87,6 +87,8 @@ class Websocket {
                   .setOpinionList(message.opList);
               Provider.of<OpinionService>(context, listen: false)
                   .setOpinionList(message.opList);
+              Provider.of<OpinionService>(context, listen: false)
+                  .setOpinionSend(true);
             }
 
             break;
@@ -107,13 +109,11 @@ class Websocket {
             break;
           case Status.QUIZUPDATE:
             // 교수 퀴즈 업데이트 처리
-            print(message.quizList);
-            print(Status.QUIZUPDATE);
-            // if (user?.role == "student") {
-            Provider.of<QuizService>(context, listen: false)
-                .setQuizList(message.quizList);
-            await addDialog(context, this);
-            // }
+            if (user?.role == "student") {
+              Provider.of<QuizService>(context, listen: false)
+                  .setQuizList(message.quizList);
+              await addDialog(context, this);
+            }
             break;
           case Status.EVALUATION:
             // 수업 평가 처리

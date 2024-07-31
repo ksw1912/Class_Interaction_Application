@@ -29,8 +29,9 @@ class EnrollmentService extends ChangeNotifier {
   Future<void> addEnrollList(BuildContext context, Classroom classroom) async {
     bool check = true;
     for (int i = 0; i < enrollList.length; i++) {
-      if (enrollList[i].classroom == classroom) {
+      if (enrollList[i].classroom.classId == classroom.classId) {
         check = false;
+        break;
       }
     }
     if (check) {

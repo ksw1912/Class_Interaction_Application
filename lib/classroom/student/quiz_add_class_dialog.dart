@@ -18,10 +18,12 @@ class _AddClassDialogState extends State<AddClassDialog> {
   ScrollController? _scrollController;
   int? selectedRadio = 0;
   bool isLoading = false;
+  bool button = true;
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
+    button = true;
   }
 
   @override
@@ -153,24 +155,27 @@ class _AddClassDialogState extends State<AddClassDialog> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                isLoading = true;
-                              });
-                              if (selectedRadio != null) {
-                                print("test");
-                                widget.websocket
-                                    ?.sendQuiz(quizList[selectedRadio ?? 0]);
-                                setState(() {
-                                  isLoading = false;
-                                });
-                              } else {
-                                setState(() {
-                                  isLoading = false;
-                                });
-                                Dialogs.showErrorDialog(context, "답 맞춰라");
-                              }
-                            },
+                            onPressed: button
+                                ? () {
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+                                    if (selectedRadio != null) {
+                                      widget.websocket?.sendQuiz(
+                                          quizList[selectedRadio ?? 0]);
+                                      setState(() {
+                                        isLoading = false;
+                                        button = false;
+                                      });
+                                      Navigator.pop(context);
+                                    } else {
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                      Dialogs.showErrorDialog(context, "답 맞춰라");
+                                    }
+                                  }
+                                : null,
                             child: Text(
                               "답안 제출",
                               style: TextStyle(color: Colors.white),
