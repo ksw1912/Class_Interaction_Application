@@ -109,7 +109,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () async {
-              await Dialogs.showEvaluationDialog(context, websocket!);
+              await Dialogs.showEvaluationDialog(context, websocket!, widget.classroom.className);
               await websocket?.unsubscribe();
               websocket?.stomClient(jwt, context).deactivate();
               Provider.of<OpinionService>(context, listen: false).deleteAll();

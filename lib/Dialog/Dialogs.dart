@@ -26,7 +26,7 @@ class Dialogs {
   }
 
   static Future<dynamic> showEvaluationDialog(
-      BuildContext context, Websocket websocket) {
+      BuildContext context, Websocket websocket, String className) {
     int selectedRating = 0;
     return showDialog(
       context: context,
@@ -42,8 +42,7 @@ class Dialogs {
           ),
           title: Column(
             children: [
-              Text(
-                '공학 개념의 이해',
+              Text(className,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
