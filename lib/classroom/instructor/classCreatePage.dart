@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:spaghetti/Websocket/Websocket.dart';
@@ -18,6 +19,16 @@ class ClassCreatePage extends StatefulWidget {
 
   @override
   State<ClassCreatePage> createState() => _MyWidgetState();
+}
+
+String generateRandomNumber() {
+  final random = Random();
+  // 8자리의 무작위 숫자를 생성합니다.
+  String loginnumber = '';
+  for (int i = 0; i < 8; i++) {
+    loginnumber += random.nextInt(10).toString(); // 0에서 9까지의 무작위 숫자 생성
+  }
+  return loginnumber;
 }
 
 class _MyWidgetState extends State<ClassCreatePage> {
@@ -283,7 +294,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
                           builder: (BuildContext context) {
                             // 여기에 클래스 참여코드를 표시할 로직 추가
                             // 예시로, classNumber는 임의의 8자리 숫자 문자열
-                            String classNumber = '12345678';
+                            String loginnumber = generateRandomNumber();
 
                             return Container(
                               height: 200,
@@ -312,7 +323,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       for (int i = 0;
-                                          i < classNumber.length;
+                                          i < loginnumber.length;
                                           i++)
                                         Container(
                                           width: 30, // 숫자 박스 너비
@@ -329,7 +340,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                           ),
                                           child: Center(
                                             child: Text(
-                                              classNumber[i],
+                                              loginnumber[i],
                                               style: TextStyle(
                                                 fontSize: 30, // 숫자 크기
                                                 fontWeight: FontWeight.bold,
