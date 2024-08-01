@@ -61,7 +61,7 @@ class _MyWidgetState extends State<ClassCreatePage> {
       return Scaffold(
         resizeToAvoidBottomInset: false, // 키보드 오버플로우 방지
         body: PageView(
-          children: [
+          children: [ 
             Container(
               child: Stack(
                 children: [

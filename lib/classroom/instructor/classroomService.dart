@@ -65,11 +65,11 @@ class ClassroomService extends ChangeNotifier {
         print("응답 성공");
         // 여기에서 필요한 추가 처리를 할 수 있습니다.
       } else {
-        await Dialogs.showErrorDialog(context, '서버 응답 오류');
+        // await Dialogs.showErrorDialog(context, '서버 응답 오류');
       }
     } catch (exception) {
       print(exception);
-      await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
+      // await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
     }
   }
 
@@ -226,16 +226,12 @@ class ClassroomService extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         print("응답 성공");
-      } else {
-        
-      }
+      } else {}
     } catch (exception) {
       print(exception);
       await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
     }
   }
-
-
 
 //교수클래스 입장
   Future<Classroom?> classroomOpinions(

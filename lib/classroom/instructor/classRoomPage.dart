@@ -233,6 +233,8 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
                     onPressed: () {
                       classService.classroomMakePin(
                           context, classId, classNumber);
+                      classService.sendPinToServer(context, classNumber);
+
                       showModalBottomSheet(
                         context: context,
                         builder: (BuildContext context) {
