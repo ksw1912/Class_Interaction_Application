@@ -95,6 +95,7 @@ flutter:
   - assets/images/check.png
   - assets/images/quiz.png
   - assets/images/opinion.png
+  - assets/images/watch.png
 
   
   # An image asset can refer to one or more resolution-specific "variants", see

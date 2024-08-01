@@ -266,6 +266,89 @@ class _MyWidgetState extends State<ClassCreatePage> {
                       ),
                     ),
                   ),
+                  // watch.png 아이콘과 logout 아이콘 위치
+                  Positioned(
+                    right: screenWidth * 0.2, // 로그아웃 아이콘 왼쪽에 위치하도록 조정
+                    top: screenHeight * 0.12,
+                    child: IconButton(
+                      icon: Image.asset(
+                        'assets/images/watch.png', // watch.png 경로 설정
+                        width: screenWidth * 0.1,
+                        height: screenWidth * 0.08,
+                      ),
+                      iconSize: screenWidth * 0.08,
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            // 여기에 클래스 참여코드를 표시할 로직 추가
+                            // 예시로, classNumber는 임의의 8자리 숫자 문자열
+                            String classNumber = '12345678';
+
+                            return Container(
+                              height: 200,
+                              margin: const EdgeInsets.only(
+                                left: 25,
+                                right: 25,
+                                bottom: 40,
+                              ),
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "워치에 번호를 입력해주세요",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 20),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      for (int i = 0;
+                                          i < classNumber.length;
+                                          i++)
+                                        Container(
+                                          width: 30, // 숫자 박스 너비
+                                          height: 40, // 숫자 박스 높이
+                                          margin: EdgeInsets.only(
+                                              right: i == 3
+                                                  ? 20
+                                                  : 5), // 4번과 5번 사이 간격
+                                          decoration: BoxDecoration(
+                                            border:
+                                                Border.all(color: Colors.black),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              classNumber[i],
+                                              style: TextStyle(
+                                                fontSize: 30, // 숫자 크기
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 50),
+                                ],
+                              ),
+                            );
+                          },
+                          backgroundColor: Colors.transparent,
+                        );
+                      },
+                    ),
+                  ),
                   // logout 아이콘의 Positioned 위치
                   Positioned(
                     right: screenWidth * 0.1,
