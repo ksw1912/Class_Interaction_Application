@@ -26,8 +26,8 @@ import 'package:spaghetti/classroom/instructor/EvaluationResultPage.dart';
 
 class ClassRoomPage extends StatefulWidget {
   final Classroom? classRoomData;
-
-  const ClassRoomPage({super.key, required this.classRoomData});
+  Websocket? websocket;
+  ClassRoomPage({super.key, this.classRoomData});
 
   @override
   _ClassRoomPageState createState() => _ClassRoomPageState();
@@ -39,21 +39,31 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
   String? jwt;
   final storage = FlutterSecureStorage();
   bool isLoading = false;
-  late Future<void> _webSocketFuture;
+  User? user;
+  UserCount? userCount;
+  Future<void>? _webSocketFuture;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (user == null || userCount == null) {
+      user = Provider.of<UserProvider>(context).user;
+      userCount = Provider.of<UserCount>(context);
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    websocket = widget.websocket;
     _webSocketFuture = _initializeWebsocket();
   }
 
   Future<void> _initializeWebsocket() async {
     String classId = widget.classRoomData!.classId;
-    User? user = Provider.of<UserProvider>(context, listen: false).user;
-    UserCount userCount = Provider.of<UserCount>(context, listen: false);
     jwt = await storage.read(key: "Authorization") ?? "";
-    websocket = Websocket(classId, user, jwt, context);
-    userCount.evaluationList = [0, 0, 0, 0, 0];
+    websocket = await Websocket(classId, user, jwt, context);
+    userCount?.evaluationList = [0, 0, 0, 0, 0];
   }
 
   @override
@@ -70,18 +80,12 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
     return FutureBuilder<void>(
       future: _webSocketFuture,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return _buildClassDetailPage(context);
+        } else {
           return Scaffold(
             body: CircularProgress.build(),
           );
-        } else if (snapshot.hasError) {
-          return Scaffold(
-            body: Center(
-              child: Text('Error: ${snapshot.error}'),
-            ),
-          );
-        } else {
-          return _buildClassDetailPage(context);
         }
       },
     );

@@ -33,7 +33,7 @@ class Websocket {
   }
 
   Future<void> connect() async {
-    stompClient?.activate();
+    this.stompClient?.activate();
   }
 
   StompClient stomClient(String? jwt, context) {
@@ -61,7 +61,7 @@ class Websocket {
     );
   }
 
-  void onConnect(StompFrame frame, context) async {
+  Future<void> onConnect(StompFrame frame, context) async {
     unsubscribe = stompClient!.subscribe(
       destination: '/sub/classroom/$classId',
       callback: (frame) async {
@@ -129,11 +129,12 @@ class Websocket {
                 message.classId ?? "", message.userEmails.length);
             break;
           case Status.CLOSE:
-            print("교수님께서 수업을 종료하셨습니다");
-            // 사용자에게 수업끝났다고 알림
-            await Dialogs.showErrorDialog(context, "교수님께서 수업을 종료하셨습니다 ");
-            Navigator.pop(context);
 
+            // 사용자에게 수업끝났다고 알림
+            if (user?.role == "student") {
+              await Dialogs.showErrorDialog(context, "교수님께서 수업을 종료하셨습니다 ");
+              Navigator.pop(context);
+            }
             break;
           default:
             print("예외문제 확인용(default switch문) ${message.status}");

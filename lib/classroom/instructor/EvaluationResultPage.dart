@@ -49,28 +49,13 @@ class _EvaluationResultPage extends State<EvaluationResultPage> {
 
   @override
   Widget build(BuildContext context) {
-    // UserCount userCount = Provider.of<UserCount>(context, listen: false);
-    // 평가 리스트를 5개의 요소로 보장
-    // List<int> evaluationList = List<int>.from(userCount.evaluationList);
-
-    // double totalScore = 0; //투표 점수
-    // int totalReviews = 0; //투표 인원수
-
-    // for (int i = 0; i < evaluationList.length; i++) {
-    //   if (evaluationList[i] <= 0) {
-    //     totalScore += (i + 1) * evaluationList[i];
-    //     totalReviews += evaluationList[i];
-    //   }
-    // }
-    // double averageRating = totalReviews > 0 ? totalScore / totalReviews : 0;
-
     return Consumer<UserCount>(builder: (context, userCount, child) {
       List<int> evaluationList = userCount.evaluationList;
       double totalScore = 0; //투표 점수
       int totalReviews = 0; //투표 인원수
 
       for (int i = 0; i < evaluationList.length; i++) {
-        if (evaluationList[i] <= 0) {
+        if (evaluationList[i] >= 0) {
           totalScore += (i + 1) * evaluationList[i];
           totalReviews += evaluationList[i];
         }

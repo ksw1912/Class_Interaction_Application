@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:spaghetti/Websocket/Websocket.dart';
 import 'package:spaghetti/classroom/classroom.dart'; // Classroom 클래스 임포트
 import 'package:spaghetti/classroom/instructor/AddClassDialog.dart'; // AddClassDialog 임포트
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
@@ -195,9 +197,8 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (_) => ClassRoomPage(
-                                                    classRoomData:
-                                                        classRoomData,
-                                                  ),
+                                                      classRoomData:
+                                                          classRoomData),
                                                 ),
                                               );
                                             },
