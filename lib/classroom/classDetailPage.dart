@@ -70,27 +70,6 @@ class _ClassDetailPageState extends State<classDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<void>(
-      future: _webSocketFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
-            body: CircularProgress.build(),
-          );
-        } else if (snapshot.hasError) {
-          return Scaffold(
-            body: Center(
-              child: Text('Error: ${snapshot.error}'),
-            ),
-          );
-        } else {
-          return _buildClassDetailPage(context);
-        }
-      },
-    );
-  }
-
-  Widget _buildClassDetailPage(BuildContext context) {
     return Consumer3<ClassroomService, OpinionService, UserCount>(
         builder: (context, classService, opinionService, userCount, child) {
       List<Classroom> classList = classService.classroomList;
@@ -109,7 +88,8 @@ class _ClassDetailPageState extends State<classDetailPage> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () async {
-              await Dialogs.showEvaluationDialog(context, websocket!, widget.classroom.className);
+              await Dialogs.showEvaluationDialog(
+                  context, websocket!, widget.classroom.className);
               await websocket?.unsubscribe();
               websocket?.stomClient(jwt, context).deactivate();
               Provider.of<OpinionService>(context, listen: false).deleteAll();

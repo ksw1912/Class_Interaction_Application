@@ -185,22 +185,27 @@ class _MyWidgetState extends State<ClassCreatePage> {
                                                   classList[index];
                                               String classId =
                                                   classData.classId;
-                                              Classroom? classRoomData =
-                                                  await classService
-                                                      .classroomOpinions(
-                                                          context, classId);
-
-                                              setState(() {
-                                                isLoading = false;
-                                              });
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (_) => ClassRoomPage(
-                                                      classRoomData:
-                                                          classRoomData),
-                                                ),
-                                              );
+                                              try {
+                                                Classroom? classRoomData =
+                                                    await classService
+                                                        .classroomOpinions(
+                                                            context, classId);
+                                                if (classRoomData != null) {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (_) =>
+                                                          ClassRoomPage(
+                                                              classRoomData:
+                                                                  classRoomData),
+                                                    ),
+                                                  );
+                                                }
+                                              } finally {
+                                                setState(() {
+                                                  isLoading = false;
+                                                });
+                                              }
                                             },
                                             child: Text(
                                               "수업 입장하기",

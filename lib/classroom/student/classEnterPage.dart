@@ -190,31 +190,33 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                               setState(() {
                                                 isLoading = true;
                                               });
-                                              var classroom =
-                                                  await classroomService
-                                                      .classroomOpinions(
-                                                          context,
-                                                          enrollmentData
-                                                              .classroom
-                                                              .classId);
+                                              try {
+                                                var classroom =
+                                                    await classroomService
+                                                        .classroomOpinions(
+                                                            context,
+                                                            enrollmentData
+                                                                .classroom
+                                                                .classId);
+                                                if (classroom != null) {
+                                                  enrollmentService
+                                                      .addEnrollList(
+                                                          context, classroom);
 
-                                              enrollmentService.addEnrollList(
-                                                  context, classroom!);
-                                              setState(() {
-                                                isLoading = false; // 로딩 시작
-                                              });
-                                              if (classroom == null) {
-                                                Navigator.pop(context);
-                                              } else {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        classDetailPage(
-                                                      classroom: classroom,
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (_) =>
+                                                          classDetailPage(
+                                                        classroom: classroom,
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
+                                                  );
+                                                }
+                                              } finally {
+                                                setState(() {
+                                                  isLoading = false;
+                                                });
                                               }
                                             },
                                             child: Text(

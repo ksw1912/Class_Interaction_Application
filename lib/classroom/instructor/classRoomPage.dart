@@ -77,22 +77,6 @@ class _ClassRoomPageState extends State<ClassRoomPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<void>(
-      future: _webSocketFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return _buildClassDetailPage(context);
-        } else {
-          return Scaffold(
-            body: CircularProgress.build(),
-          );
-        }
-      },
-    );
-  }
-
-  @override
-  Widget _buildClassDetailPage(BuildContext context) {
     return Consumer3<ClassroomService, OpinionService, UserCount>(
         builder: (context, classService, opinionService, userCount, child) {
       final mediaQuery = MediaQuery.of(context);

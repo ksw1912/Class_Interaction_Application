@@ -32,10 +32,6 @@ class Websocket {
     stompClient?.activate();
   }
 
-  Future<void> connect() async {
-    this.stompClient?.activate();
-  }
-
   StompClient stomClient(String? jwt, context) {
     return StompClient(
       config: StompConfig.sockJS(
@@ -129,7 +125,6 @@ class Websocket {
                 message.classId ?? "", message.userEmails.length);
             break;
           case Status.CLOSE:
-
             // 사용자에게 수업끝났다고 알림
             if (user?.role == "student") {
               await Dialogs.showErrorDialog(context, "교수님께서 수업을 종료하셨습니다 ");
