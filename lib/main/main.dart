@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-// import 'package:device_preview/device_preview.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart'; // kReleaseMode 사용을 위해 추가
 import 'package:spaghetti/Websocket/UserCount.dart';
 import 'package:spaghetti/classroom/instructor/classroomService.dart';
@@ -12,7 +12,8 @@ import 'package:spaghetti/opinion/OpinionService.dart';
 import 'package:spaghetti/quiz/QuizService.dart';
 
 void main() {
-  runApp(MyApp()
+  runApp(
+    MyApp()
       // DevicePreview(
       //   enabled: !kReleaseMode, // 릴리즈 모드가 아닌 경우에만 활성화
       //   builder: (context) => MyApp(),
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         // builder: DevicePreview.appBuilder, // DevicePreview.appBuilder 사용
         // useInheritedMediaQuery: true, // MediaQuery 정보를 상속 받음
         // locale: DevicePreview.locale(context), // DevicePreview 로케일 사용
+        debugShowCheckedModeBanner: false,
         home: StartPage(),
         theme: ThemeData(
           fontFamily: 'NanumB',
