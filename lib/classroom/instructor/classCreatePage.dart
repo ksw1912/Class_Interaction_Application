@@ -289,13 +289,11 @@ class _MyWidgetState extends State<ClassCreatePage> {
                       ),
                       iconSize: screenWidth * 0.08,
                       onPressed: () {
+                        String loginnumber = generateRandomNumber();
+
                         showModalBottomSheet(
                           context: context,
                           builder: (BuildContext context) {
-                            // 여기에 클래스 참여코드를 표시할 로직 추가
-                            // 예시로, classNumber는 임의의 8자리 숫자 문자열
-                            String loginnumber = generateRandomNumber();
-
                             return Container(
                               height: 200,
                               margin: const EdgeInsets.only(
@@ -357,7 +355,14 @@ class _MyWidgetState extends State<ClassCreatePage> {
                           },
                           backgroundColor: Colors.transparent,
                         );
+
+                        // 여기에서 sendPinToServer 메소드 호출
+                        final classroomService = Provider.of<ClassroomService>(
+                            context,
+                            listen: false);
+                        classroomService.sendPinToServer(context, loginnumber);
                       },
+
                     ),
                   ),
                   // logout 아이콘의 Positioned 위치

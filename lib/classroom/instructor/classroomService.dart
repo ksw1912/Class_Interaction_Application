@@ -34,6 +34,45 @@ class ClassroomService extends ChangeNotifier {
     notifyListeners();
   }
 
+  //워치 로그인 Pin 번호 보내기
+  Future<void> sendPinToServer(BuildContext context, String pin) async {
+    // JWT 토큰을 저장소에서 읽어오기
+    String? jwt = await storage.read(key: 'Authorization');
+
+    if (jwt == null) {
+      // 토큰이 존재하지 않을 때 첫 페이지로 이동
+      await Dialogs.showErrorDialog(context, '로그인 시간이 만료되었습니다.');
+      Navigator.of(context).pushReplacementNamed('/Loginpage');
+      return;
+    }
+
+    // 헤더에 JWT 토큰 추가
+    var headers = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': jwt,
+    };
+
+    try {
+      var response = await http.get(
+        Uri.parse('$apiUrl/watch/phone/$pin'),
+        headers: headers,
+      );
+
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        print("응답 성공");
+        // 여기에서 필요한 추가 처리를 할 수 있습니다.
+      } else {
+        await Dialogs.showErrorDialog(context, '서버 응답 오류');
+      }
+    } catch (exception) {
+      print(exception);
+      await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
+    }
+  }
+
   //@controller("/classrooms")
   Future<void> classroomCreate(BuildContext context, String className,
       List<Opinion> opinionList, OpinionService opinionService) async {
