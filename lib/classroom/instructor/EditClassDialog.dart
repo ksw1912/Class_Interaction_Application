@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +12,7 @@ import 'classCreatePage.dart';
 class EditClassDialog extends StatefulWidget {
   final Classroom? classRoomData;
   Websocket? websocket;
-  
+
   EditClassDialog(
       {super.key, required this.classRoomData, required this.websocket});
   @override
@@ -227,8 +226,7 @@ class _EditClassDialogState extends State<EditClassDialog> {
                                   );
                                 },
                               );
-                            } else if (opinion!
-                                .any((item) => item.isEmpty)) {
+                            } else if (opinion!.any((item) => item.isEmpty)) {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -261,7 +259,7 @@ class _EditClassDialogState extends State<EditClassDialog> {
                                   Provider.of<OpinionService>(context,
                                           listen: false)
                                       .opinionList);
-                              print("진짜 김서원;;;;");
+
                               Navigator.pop(context);
                             }
                           },

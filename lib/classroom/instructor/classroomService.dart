@@ -271,15 +271,14 @@ class ClassroomService extends ChangeNotifier {
             .map((opinionJson) => Opinion.fromJson(opinionJson))
             .toList();
 
-        var opinionService =
-            Provider.of<OpinionService>(context, listen: false);
         if (opinions.isNotEmpty) {
-          opinionService.initializeOpinionList();
+          Provider.of<OpinionService>(context, listen: false)
+              .initializeOpinionList();
         }
         for (int i = 0; i < opinions.length; i++) {
-          opinionService.addOpinion(opinion: opinions[i]);
+          Provider.of<OpinionService>(context, listen: false)
+              .addOpinion(opinion: opinions[i]);
           print(opinions[i].opinion);
-          notifyListeners();
         }
 
         notifyListeners();
@@ -335,11 +334,8 @@ class ClassroomService extends ChangeNotifier {
             .map((opinionJson) => Opinion.fromJson(opinionJson))
             .toList();
 
-        var opinionService =
-            Provider.of<OpinionService>(context, listen: false);
-        if (opinions.isNotEmpty) {
-          opinionService.initializeOpinionList();
-        }
+        Provider.of<OpinionService>(context, listen: false)
+            .initializeOpinionList();
 
         for (int i = 0; i < classroomList.length; i++) {
           print(i);
@@ -349,7 +345,8 @@ class ClassroomService extends ChangeNotifier {
           }
         }
         for (int i = 0; i < opinions.length; i++) {
-          opinionService.addOpinion(opinion: opinions[i]);
+          Provider.of<OpinionService>(context, listen: false)
+              .addOpinion(opinion: opinions[i]);
           print(opinions[i].opinion);
         }
 
