@@ -30,7 +30,7 @@ class _ClassDetailPageState extends State<classDetailPage> {
   String? jwt;
   final storage = FlutterSecureStorage();
   late ScrollController _scrollController;
-  bool isLoading = false;
+  bool isLoading = true;
   Future<void>? _webSocketFuture;
   OpinionService? _opinionService;
 
