@@ -58,17 +58,12 @@ class ClassroomService extends ChangeNotifier {
         headers: headers,
       );
 
-      print('Response Status Code: ${response.statusCode}');
-      print('Response Body: ${response.body}');
-
       if (response.statusCode == 200) {
-        print("응답 성공");
         // 여기에서 필요한 추가 처리를 할 수 있습니다.
       } else {
         // await Dialogs.showErrorDialog(context, '서버 응답 오류');
       }
     } catch (exception) {
-      print(exception);
       // await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
     }
   }
@@ -113,11 +108,11 @@ class ClassroomService extends ChangeNotifier {
         headers: headers,
         body: body,
       );
-      print(response.statusCode);
+
       if (response.statusCode == 200) {
         Map<String, dynamic> responseBody =
             jsonDecode(utf8.decode(response.bodyBytes));
-        print("응답성공 ");
+
         Classroom classroom =
             Classroom.fromJson_notArray(responseBody['classroom']);
 
@@ -134,7 +129,6 @@ class ClassroomService extends ChangeNotifier {
         await Dialogs.showErrorDialog(context, '기존 수업이 존재합니다.');
       }
     } catch (exception) {
-      print(exception);
       await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
     }
   }
@@ -171,11 +165,8 @@ class ClassroomService extends ChangeNotifier {
         headers: headers,
       );
 
-      print(response.statusCode);
       if (response.statusCode == 200) {
-        print("응답성공 ");
         for (int i = 0; i < classroomList.length; i++) {
-          print(i);
           if (classroomList[i].classId == classId) {
             classroomList.removeAt(i);
             notifyListeners();
@@ -190,7 +181,6 @@ class ClassroomService extends ChangeNotifier {
         await Dialogs.showErrorDialog(context, '오류발생');
       }
     } catch (exception) {
-      print(exception);
       await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
     }
   }
@@ -219,16 +209,9 @@ class ClassroomService extends ChangeNotifier {
         headers: headers,
       );
 
-      // 상태 코드와 응답 본문을 출력하여 디버깅
-      print('Response Status Code: ${response.statusCode}');
-      print('Response Body: ${response.body}');
-      print('JWT: $jwt'); // JWT 토큰 출력하여 확인
-
       if (response.statusCode == 200) {
-        print("응답 성공");
       } else {}
     } catch (exception) {
-      print(exception);
       await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
     }
   }
@@ -259,11 +242,11 @@ class ClassroomService extends ChangeNotifier {
         Uri.parse('$apiUrl/classrooms/classroomEnter/$classId'),
         headers: headers,
       );
-      print(response.statusCode);
+
       if (response.statusCode == 200) {
         Map<String, dynamic> responseBody =
             jsonDecode(utf8.decode(response.bodyBytes));
-        print("응답성공 ");
+
         Classroom classroom =
             Classroom.fromJson_notArray(responseBody['classroom']);
 
@@ -278,7 +261,6 @@ class ClassroomService extends ChangeNotifier {
         for (int i = 0; i < opinions.length; i++) {
           Provider.of<OpinionService>(context, listen: false)
               .addOpinion(opinion: opinions[i]);
-          print(opinions[i].opinion);
         }
 
         notifyListeners();
@@ -287,7 +269,6 @@ class ClassroomService extends ChangeNotifier {
         await Dialogs.showErrorDialog(context, ' 수업 입장 중 오류 발생');
       }
     } catch (exception) {
-      print(exception);
       await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
     }
     return null;
@@ -324,11 +305,10 @@ class ClassroomService extends ChangeNotifier {
         headers: headers,
         body: body,
       );
-      print(response.statusCode);
+
       if (response.statusCode == 200) {
         Map<String, dynamic> responseBody =
             jsonDecode(utf8.decode(response.bodyBytes));
-        print("수정 성공 ");
 
         List<Opinion> opinions = (responseBody['opinions'] as List)
             .map((opinionJson) => Opinion.fromJson(opinionJson))
@@ -338,7 +318,6 @@ class ClassroomService extends ChangeNotifier {
             .initializeOpinionList();
 
         for (int i = 0; i < classroomList.length; i++) {
-          print(i);
           if (classroomList[i].classId == classroom.classId) {
             classroomList[i].className = classroom.className;
             notifyListeners();
@@ -347,17 +326,14 @@ class ClassroomService extends ChangeNotifier {
         for (int i = 0; i < opinions.length; i++) {
           Provider.of<OpinionService>(context, listen: false)
               .addOpinion(opinion: opinions[i]);
-          print(opinions[i].opinion);
         }
 
         notifyListeners();
         return classroom;
       } else {
         await Dialogs.showErrorDialog(context, '의견 수정중 오류 발생');
-        print(body);
       }
     } catch (exception) {
-      print(exception);
       await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
     }
     return null;
@@ -390,12 +366,11 @@ class ClassroomService extends ChangeNotifier {
         Uri.parse('$apiUrl/classrooms/classroomEnter/pin/$classNumber'),
         headers: headers,
       );
-      print(classNumber);
-      print(response.statusCode);
+
       if (response.statusCode == 200) {
         Map<String, dynamic> responseBody =
             jsonDecode(utf8.decode(response.bodyBytes));
-        print("응답성공 ");
+
         Classroom classroom =
             Classroom.fromJson_notArray(responseBody['classroom']);
 
@@ -411,7 +386,6 @@ class ClassroomService extends ChangeNotifier {
         }
         for (int i = 0; i < opinions.length; i++) {
           opinionService.addOpinion(opinion: opinions[i]);
-          print(opinions[i].opinion);
         }
         notifyListeners();
         return classroom;
@@ -419,7 +393,6 @@ class ClassroomService extends ChangeNotifier {
         await Dialogs.showErrorDialog(context, '오류발생');
       }
     } catch (exception) {
-      print(exception);
       await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
     }
     return null;

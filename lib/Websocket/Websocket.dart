@@ -38,9 +38,7 @@ class Websocket {
         url: '${Apiurl().url}/classroomEnter',
         onConnect: (StompFrame frame) => onConnect(frame, context),
         beforeConnect: () async {
-          print('waiting to connect...');
           await Future.delayed(const Duration(milliseconds: 2000));
-          print('connecting...');
         },
         onWebSocketError: (dynamic error) => print(error.toString()),
         onDisconnect: (frame) {},
@@ -62,8 +60,7 @@ class Websocket {
       destination: '/sub/classroom/$classId',
       callback: (frame) async {
         Map<String, dynamic> json = jsonDecode(frame.body ?? "");
-        print("수신 json:");
-        print(json);
+
         MessageDTO message = MessageDTO.fromJson(json);
         switch (message.status) {
           case Status.OPINION:
@@ -89,7 +86,7 @@ class Websocket {
 
             break;
           case Status.OPINIONINITIALIZE:
-            print("의견초기화");
+
             //의견초기화
             if (user?.role == "student") {
               Provider.of<OpinionService>(context, listen: false)
@@ -120,7 +117,7 @@ class Websocket {
             break;
           case Status.PEOPLESTATUS:
             // 사용자인원 처리
-            print("사용자인원 제공: ${message.userEmails.length}");
+
             Provider.of<UserCount>(context, listen: false).updateUserCount(
                 message.classId ?? "", message.userEmails.length);
             break;
@@ -132,7 +129,6 @@ class Websocket {
             }
             break;
           default:
-            print("예외문제 확인용(default switch문) ${message.status}");
             break;
         }
       },

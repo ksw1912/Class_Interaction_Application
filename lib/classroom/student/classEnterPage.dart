@@ -144,8 +144,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                                 color: Colors.red),
                                             onPressed: () {
                                               // 삭제 기능 추가
-                                              print(enrollList[index]
-                                                  .enrollmentID);
+
                                               setState(() {
                                                 isLoading = true;
                                               });
@@ -266,7 +265,7 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                             setState(() {
                               output = result;
                             });
-                            print('QR 코드 데이터: $result');
+
                             setState(() {
                               isLoading = true;
                             });
@@ -399,8 +398,6 @@ class _ClassEnterPageState extends State<ClassEnterPage> {
                                               setState(() {
                                                 classNumber = value;
                                               });
-                                              print(
-                                                  classNumber); // 입력 변경 시 상태 갱신
                                             },
                                             autofocus: true, // 자동으로 키보드 띄우기
                                           ),

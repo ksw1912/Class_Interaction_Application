@@ -15,7 +15,6 @@ class QuizService extends ChangeNotifier {
   final storage = FlutterSecureStorage();
   final String apiUrl = Apiurl().url;
 
-
   void setQuizList(List<Quiz>? quizs) {
     quizList = quizs ?? [];
     updateCountList();
@@ -94,7 +93,7 @@ class QuizService extends ChangeNotifier {
       if (response.statusCode == 200) {
         List<dynamic> responseBody =
             jsonDecode(utf8.decode(response.bodyBytes));
-        print(responseBody);
+
         List<Quiz> quizs =
             responseBody.map((json) => Quiz.fromJson(json)).toList();
         setQuizList(quizs);
@@ -104,7 +103,6 @@ class QuizService extends ChangeNotifier {
             context, '퀴즈 생성 실패: ${response.statusCode}');
       }
     } catch (exception) {
-      print(exception);
       await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
     }
   }

@@ -52,7 +52,6 @@ class LogoutButton extends StatelessWidget {
                 iconSize: MediaQuery.of(context).size.width * 0.08,
                 onPressed: () {
                   // 로그아웃 기능을 여기에 추가
-                  print("로그아웃 버튼이 눌렸습니다.");
                 },
               ),
             ),

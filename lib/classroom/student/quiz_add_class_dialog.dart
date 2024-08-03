@@ -165,9 +165,9 @@ class _AddClassDialogState extends State<AddClassDialog> {
                                           quizList[selectedRadio ?? 0]);
                                       setState(() {
                                         isLoading = false;
-                                        button = false;
+                                        button = false; /////// 무한 퀴즈 할수있음
                                       });
-                                      Navigator.pop(context);
+                                      Navigator.pop(context); //// 요기도
                                     } else {
                                       setState(() {
                                         isLoading = false;

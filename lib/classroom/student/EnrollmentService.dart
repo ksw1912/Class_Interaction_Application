@@ -57,14 +57,13 @@ class EnrollmentService extends ChangeNotifier {
         if (response.statusCode == 200) {
           Map<String, dynamic> responseBody =
               jsonDecode(utf8.decode(response.bodyBytes));
-          print(responseBody);
+
           Enrollment enrollment = Enrollment.notArray_fromJson(responseBody);
           enrollList.add(enrollment);
         } else {
           await Dialogs.showErrorDialog(context, '오류발생');
         }
       } catch (exception) {
-        print(exception);
         await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
       }
     }
@@ -97,10 +96,8 @@ class EnrollmentService extends ChangeNotifier {
         headers: headers,
       );
 
-      print(response.statusCode);
       if (response.statusCode == 200) {
         for (int i = 0; i < enrollList.length; i++) {
-          print(i);
           if (enrollList[i].enrollmentID == enrollmentID) {
             enrollList.removeAt(i);
             notifyListeners();
@@ -110,7 +107,6 @@ class EnrollmentService extends ChangeNotifier {
         await Dialogs.showErrorDialog(context, '오류발생');
       }
     } catch (exception) {
-      print(exception);
       await Dialogs.showErrorDialog(context, "서버와의 통신 중 오류가 발생했습니다.");
     }
   }
